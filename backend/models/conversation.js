@@ -4,6 +4,7 @@ const ConversationSchema = new mongoose.Schema(
   {
     //all users in conversation
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    
     latestMessage: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
@@ -18,6 +19,10 @@ const ConversationSchema = new mongoose.Schema(
     isGroup: {
       type: Boolean,
       default: false,
+    },
+    groupAdmin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }
