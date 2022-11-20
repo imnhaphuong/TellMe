@@ -2,9 +2,12 @@
   "name": "tellme",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/server.js",
+  "main": "backend/index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "nodemon backend/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +20,6 @@
   },
   "homepage": "https://github.com/imnhaphuong/tellme#readme",
   "dependencies": {
-    "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^6.7.2",
