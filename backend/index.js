@@ -9,12 +9,12 @@ app.use(express.json());
 
 //call API
 const userAPI = require("./routes/userRoutes");
-app.use("/api/users", userAPI);
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send({
     status: "success",
   });
 });
+app.use("/api/users", userAPI);
 
 //Connect mongodb
 const mongoUri = `mongodb+srv://nhaphuong:!2345@cluster0.nepewkn.mongodb.net/TellMe?retryWrites=true&w=majority`;
