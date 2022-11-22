@@ -1,8 +1,9 @@
-const Conversation  =()=>{
+import ConversationList from './ConversationList/ConversationList'
+const Conversation = () => {
+  return (
     <div>
-        <h1>
-            Conversation
-        </h1>
+      <ConversationList/>
     </div>
-}
+  );
+};
 export default Conversation;
