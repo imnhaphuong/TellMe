@@ -1,20 +1,17 @@
-import { useState } from "react";
+// import { useState } from "react";
+import Conversation from "./containers/client/Conversation/Conversation";
+import Client from "./containers/client/Client.jsx";
+// import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
+import Signup from "./containers/client/Singup/Signup";
+import Login from "./containers/client/Login/Login";
+import Sidebar from "./containers/shared/Sidebar/sidebar";
+
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Router> */}
+          <Sidebar/>
+      {/* </Router> */}
     </div>
   );
 }
