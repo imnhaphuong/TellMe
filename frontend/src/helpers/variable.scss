@@ -1,0 +1,42 @@
+//color
+$blue: #1c9dea;
+$gray-secondary: #1c9dea;
+
+//font size
+$fs-1: 15px;
+
+//font weight
+$fw-1: 300;
+$fw-2: 400;
+$fw-3: 600;
+$fw-4: 700;
+
+//letter spacing
+
+
+//Padding
+
+
+//Margin
+
+
+// width
+$wid-1: 100%;
+$wid-2: 85%;
+$wid-3: 70%;
+$wid-4: 88%;
+
+//break points
+$breakpoints: (
+    "extra-large": 1200px,
+    "mid-large": 1024px,
+    "large": 992px,
+    "medium": 768px,
+    "small": 576px,
+    "mid-large-down": 1023.99px,
+    "extra-large-down": 1199.98px,
+    "large-down": 991.98px,
+    "medium-down": 767.98px,
+    "small-down": 575.98px,
+    "smallest" : 320px,
+);
