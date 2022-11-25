@@ -5,12 +5,13 @@ import Client from "./containers/client/Client.jsx";
 import Signup from "./containers/client/Singup/Signup";
 import Login from "./containers/client/Login/Login";
 import Sidebar from "./containers/shared/Sidebar/sidebar";
+import Welcome from "./containers/client/header";
 
 function App() {
   return (
     <div className="App">
       {/* <Router> */}
-          <Sidebar/>
+          <Signup/>
       {/* </Router> */}
     </div>
   );
