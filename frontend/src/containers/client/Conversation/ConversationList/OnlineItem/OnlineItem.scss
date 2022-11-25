@@ -1,0 +1,22 @@
+.owl-item {
+    margin:0 20px;
+    .item {
+        .online-item {
+            background-image: url(../../../../../assets/images/person-1.jpg);
+            background-size: cover;
+            background-position: center center;
+            display: block;
+            height: 100px;
+            width: 100px;
+            border-radius: 20px;
+            position: relative;
+            .online-name {
+                color: #fff;
+                margin: 0;
+                position: absolute;
+                right: 10px !important;
+                bottom: 5px !important;
+            }
+        }
+    }
+}
