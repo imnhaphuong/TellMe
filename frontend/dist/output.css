@@ -215,16 +215,6 @@
   margin-bottom: 0.75rem !important
 }
 
-.my-6 {
-  margin-top: 1.5rem !important;
-  margin-bottom: 1.5rem !important
-}
-
-.my-2 {
-  margin-top: 0.5rem !important;
-  margin-bottom: 0.5rem !important
-}
-
 .ml-3 {
   margin-left: 0.75rem !important
 }
@@ -293,6 +283,10 @@
   height: 1.25rem !important
 }
 
+.w-\[95px\] {
+  width: 95px !important
+}
+
 .w-\[40px\] {
   width: 40px !important
 }
@@ -307,18 +301,6 @@
 
 .w-\[100\%\] {
   width: 100% !important
-}
-
-.w-\[\] {
-  width:  !important
-}
-
-.w-\[100px\] {
-  width: 100px !important
-}
-
-.w-\[95px\] {
-  width: 95px !important
 }
 
 .cursor-pointer {
@@ -343,12 +325,6 @@
 
 .justify-evenly {
   justify-content: space-evenly !important
-}
-
-.space-y-6 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0 !important;
-  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse))) !important;
-  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse)) !important
 }
 
 .overflow-y-scroll {
@@ -385,10 +361,6 @@
   border-width: 4px !important
 }
 
-.border-b {
-  border-bottom-width: 1px !important
-}
-
 .border-none {
   border-style: none !important
 }
@@ -403,6 +375,11 @@
   background-color: rgb(245 245 245 / var(--tw-bg-opacity)) !important
 }
 
+.bg-dark-gray {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(232 232 232 / var(--tw-bg-opacity)) !important
+}
+
 .bg-\[\#3fcc35\] {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(63 204 53 / var(--tw-bg-opacity)) !important
@@ -415,11 +392,6 @@
 
 .bg-\[rgba\(255\2c 78\2c 43\2c 0\.15\)\] {
   background-color: rgba(255,78,43,0.15) !important
-}
-
-.bg-dark-gray {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(232 232 232 / var(--tw-bg-opacity)) !important
 }
 
 .p-5 {
@@ -574,10 +546,6 @@
   transition-duration: 300ms !important
 }
 
-.duration-500 {
-  transition-duration: 500ms !important
-}
-
 .placeholder\:text-gray::-webkit-input-placeholder {
   --tw-text-opacity: 1 !important;
   color: rgb(100 117 137 / var(--tw-text-opacity)) !important
@@ -586,21 +554,6 @@
 .placeholder\:text-gray::placeholder {
   --tw-text-opacity: 1 !important;
   color: rgb(100 117 137 / var(--tw-text-opacity)) !important
-}
-
-.hover\/item\:bg-dark-gray:hover {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(232 232 232 / var(--tw-bg-opacity)) !important
-}
-
-.hover\:bg-primary:hover {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(28 157 234 / var(--tw-bg-opacity)) !important
-}
-
-.hover\:bg-light-gray:hover {
-  --tw-bg-opacity: 1 !important;
-  background-color: rgb(245 245 245 / var(--tw-bg-opacity)) !important
 }
 
 .hover\:shadow-xl:hover {
