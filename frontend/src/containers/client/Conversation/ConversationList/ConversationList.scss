@@ -1,13 +1,18 @@
 @import "../../../../helpers/variable.scss";
 .conversation__list {
-    width: 330px;
+    width: 350px;
     .online__list {
+        padding: 10px 20px;
+        height:180px;
     }
     .message__list {
         overflow: auto;
         overflow-x: hidden;
         overflow-y: auto;
-        height: 100vh;
+        width:100%;
+        padding: 0 20px;
+        margin-top: 15px;
+        height: calc(100vh - 180px);
         .nav-tab {
             background-color: #ffff;
             .nav-item {
@@ -111,6 +116,7 @@
                 bottom: 0px;
                 text-align: right;
             }
+            
         }
     }
 }

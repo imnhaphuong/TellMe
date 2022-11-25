@@ -24,7 +24,7 @@ export default function CallTab() {
       >
         <li className="nav-item nav-item-2 " role="presentation">
           <button
-            className="btn nav-link active  text-[14px] "
+            className="btn nav-link active  text-[13px] "
             id="pills-all-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-all"
@@ -96,11 +96,11 @@ export default function CallTab() {
                     <h6 className=" truncate">Justin Bieber</h6>
                     <p className="text-[12px] truncate ">
                       <MdCallMade className="text-success" />
-                      3:30pm
+                      2:30
                     </p>
                   </div>
                 </a>
-                <div className="contact-action flex ">
+                <div className="contact-action lg:ml-6 flex ">
                   {/* ti-pin */}
                   <button className=" border-none icon-btn text-success ml-4">
                     <BsTelephone className="left-[25%] top-[25%] absolute" />
@@ -114,11 +114,11 @@ export default function CallTab() {
                     <h6 className=" truncate">Justin Bieber</h6>
                     <p className="text-[12px] truncate ">
                       <MdCallMissed className="text-error" />
-                      3:30pm
+                      3:30
                     </p>
                   </div>
                 </a>
-                <div className="contact-action flex ">
+                <div className="contact-action lg:ml-6 flex ">
                   {/* ti-pin */}
                   <button className=" border-none bg-[rgba(255,78,43,0.15)] icon-btn text-error ml-4">
                     <BsTelephone className="left-[25%]  top-[25%] absolute" />
@@ -132,11 +132,11 @@ export default function CallTab() {
                     <h6 className=" truncate">Justin Bieber</h6>
                     <p className="text-[12px] truncate ">
                       <MdCallReceived className="text-success" />
-                      3:30pm
+                      3:30
                     </p>
                   </div>
                 </a>
-                <div className="contact-action flex ">
+                <div className="contact-action flex lg:ml-6 ">
                   {/* ti-pin */}
                   <button className=" border-none icon-btn text-success ml-4">
                     <BsTelephone className="left-[25%] top-[25%] absolute" />
