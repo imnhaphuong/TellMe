@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 # Build output.css
-### npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+### npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch
 
 In the project directory, you can run:
 
