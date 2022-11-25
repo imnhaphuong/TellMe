@@ -17,7 +17,7 @@ export default function MessageTab() {
       >
         <li className="nav-item nav-item-2 mr-[20px]" role="presentation">
           <button
-            className="btn nav-link active  text-[14px] "
+            className="btn nav-link active  text-[12px] "
             id="pills-direct-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-direct"
@@ -31,7 +31,7 @@ export default function MessageTab() {
         </li>
         <li className="nav-item nav-item-2" role="presentation">
           <button
-            className="nav-link text-[14px]"
+            className="nav-link text-[12px]"
             id="pills-group-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-group"
@@ -58,16 +58,16 @@ export default function MessageTab() {
                 <a className="no-underline flex text-[#223645]" href="#chat">
                   <img className="bg-img" src={avt} alt="avt" />
                   <div className="details">
-                    <h6 className=" truncate">Tomy</h6>
+                    <h6 className=" truncate">Tommy</h6>
                     <p className="text-[12px] truncate ">
                       Hi,I am Tomy welcome to my website
                     </p>
                   </div>
                   <div className="date-status">
                     {/* ti-pin */}
-                    <p className="text-[12px] mb-2">20/11/2022</p>
+                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
                     <p className="text-success status text-[12px] font-semibold ">
-                      Seen
+                      Đã xem
                     </p>
                   </div>
                 </a>
@@ -76,16 +76,70 @@ export default function MessageTab() {
                 <a className="no-underline flex text-[#223645]" href="#chat">
                   <img className="bg-img" src={avt} alt="avt" />
                   <div className="details">
-                    <h6 className=" truncate">Tomy</h6>
+                    <h6 className=" truncate">Tommy</h6>
                     <p className="text-[12px] truncate ">
                       Hi,I am Tomy welcome to my website
                     </p>
                   </div>
                   <div className="date-status">
                     {/* ti-pin */}
-                    <p className="text-[12px] mb-2">20/11/2022</p>
+                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
                     <p className="text-success status text-[12px] font-semibold ">
-                      Seen
+                      Đã xem
+                    </p>
+                  </div>
+                </a>
+              </li>
+              <li className="blank flex">
+                <a className="no-underline flex text-[#223645]" href="#chat">
+                  <img className="bg-img" src={avt} alt="avt" />
+                  <div className="details">
+                    <h6 className=" truncate">Tommy</h6>
+                    <p className="text-[12px] truncate ">
+                      Hi,I am Tomy welcome to my website
+                    </p>
+                  </div>
+                  <div className="date-status">
+                    {/* ti-pin */}
+                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
+                    <p className="text-success status text-[12px] font-semibold ">
+                      Đã xem
+                    </p>
+                  </div>
+                </a>
+              </li>
+              <li className="blank flex">
+                <a className="no-underline flex text-[#223645]" href="#chat">
+                  <img className="bg-img" src={avt} alt="avt" />
+                  <div className="details">
+                    <h6 className=" truncate">Tommy</h6>
+                    <p className="text-[12px] truncate ">
+                      Hi,I am Tomy welcome to my website
+                    </p>
+                  </div>
+                  <div className="date-status">
+                    {/* ti-pin */}
+                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
+                    <p className="text-success status text-[12px] font-semibold ">
+                      Đã xem
+                    </p>
+                  </div>
+                </a>
+              </li>
+              <li className="blank flex">
+                <a className="no-underline flex text-[#223645]" href="#chat">
+                  <img className="bg-img" src={avt} alt="avt" />
+                  <div className="details">
+                    <h6 className=" truncate">Tommy</h6>
+                    <p className="text-[12px] truncate ">
+                      Hi,I am Tomy welcome to my website
+                    </p>
+                  </div>
+                  <div className="date-status">
+                    {/* ti-pin */}
+                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
+                    <p className="text-success status text-[12px] font-semibold ">
+                      Đã xem
                     </p>
                   </div>
                 </a>

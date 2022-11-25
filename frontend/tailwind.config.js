@@ -18,7 +18,10 @@ module.exports = {
     colors: {
       'success': '#3fcc35',
       'primary':'##1c9dea',
-      'error': '#ff4e2b '
+      'error': '#ff4e2b ',
+      'gray':'#647589',
+      'bg_gray':'#eff1f2',
+      'blue_sky':'rgba(28, 157, 234, 0.15)',
     },
   },
   plugins: [],
