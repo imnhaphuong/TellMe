@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+// import { useState } from "react";
+import Conversation from "./containers/client/Conversation/Conversation";
+import Client from "./containers/client/Client.jsx";
+// import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
+import Signup from "./containers/client/Singup/Signup";
+import Login from "./containers/client/Login/Login";
+import Sidebar from "./containers/shared/Sidebar/sidebar";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Router> */}
+          <Sidebar/>
+          {/* <Conversation/> */}
+      {/* </Router> */}
     </div>
   );
 }
-
 export default App;

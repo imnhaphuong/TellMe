@@ -1,0 +1,27 @@
+.tab-pane {
+    .tab-content {
+        border-color: #1c9dea;
+        padding-right: 3px;
+        .blank {
+            position: relative;
+            margin:3px 0;
+            .details {
+                margin-left: 10px;
+                width: 120px;
+                h6 {
+                    padding-top: 8px;
+                    max-width: 170px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            }
+            .date-status {
+                position: absolute;
+                right: 0;
+                bottom: 0px;
+                text-align: right;
+            }
+        }
+    }
+}
