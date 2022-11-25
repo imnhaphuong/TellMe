@@ -70,7 +70,7 @@ const ConversationList = () => {
     ],
   };
   return (
-    <div className="conversation__list font-worksans h-screen pl-[25px]">
+    <div className="conversation__list font-worksans h-screen ">
       <div className="online__list ">
         <div className="top-list my-3">
           <h4 className="font-worksans font-semibold">Đang hoạt động</h4>

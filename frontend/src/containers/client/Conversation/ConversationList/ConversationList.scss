@@ -64,22 +64,7 @@
             }
         }
     }
-    .scrollbar::-webkit-scrollbar {
-        width: 4px;
-        height: 5px;
-
-      }
     
-    .scrollbar::-webkit-scrollbar-track {
-        border-radius: 100vh;
-        background: #edf1f7;
-    }
-    
-    .scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(28, 157, 234, 0.15);
-        border-radius: 100vh;
-
-    }
     
     // .scrollbar::-webkit-scrollbar-thumb:hover {
     //     background:$blue;
@@ -87,6 +72,22 @@
     ul {
         list-style: none;
     }
+}
+.scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+
+  }
+
+.scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #edf1f7;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(28, 157, 234, 0.15);
+    border-radius: 100vh;
+
 }
 .tab-pane {
     .tab-content {

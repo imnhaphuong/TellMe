@@ -12,11 +12,11 @@ import { IoMdSend } from "react-icons/io";
 export default function Chat() {
   return (
     <div className="chat-main font-worksans  ">
-      <div className="chat-content ">
-        <div className="scrollbar ">
-          <div className="contact-detail ">
+      <div className="chat-content">
+        <div className="scrollbar">
+          <div className="contact-detail  ">
             <div className="row">
-              <div className="col-7">
+              <div className="col-5">
                 <div className="media-left flex ">
                   <div className="avatar-chat">
                     <img className="bg-img" src={avt} alt="" />
@@ -66,7 +66,7 @@ export default function Chat() {
                 </div>
               </div>
               <div className="col-1 ">
-                <button className=" border-none text-primary icon-btn  ml-4 disabled:bg-slate-50" disabled >
+                <button className=" border-none text-primary icon-btn  ml-4 " >
                   <IoMdSend className=" text-[18px]" />
                 </button>
               </div>

@@ -10,8 +10,8 @@ function App() {
   return (
     <div className="App">
       {/* <Router> */}
-          {/* <Sidebar/> */}
-          <Conversation/>
+          <Sidebar/>
+          {/* <Conversation/> */}
       {/* </Router> */}
     </div>
   );

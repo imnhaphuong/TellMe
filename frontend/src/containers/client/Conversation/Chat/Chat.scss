@@ -1,5 +1,5 @@
 .chat-main {
-  width: 100%;
+  width: calc(100vw - 445px);
   transition: all 0.7s;
   height: 100vh;
   z-index: 1;
@@ -19,7 +19,7 @@
       top: 0;
       background-color: #eff7fe;
       .contact-detail {
-        width: calc(100vw - 470px);
+        width: calc(100vw - 565px);
         padding: 10px 20px;
         background-color: #fff;
         -webkit-box-shadow: 0 -55px 0px 0px #eff7fe;
@@ -27,7 +27,7 @@
         position: fixed;
         z-index: 999;
         transition: all 0.3s ease;
-        .col-7 {
+        .col-5 {
           .media-left {
             align-items: center;
             display: flex;
@@ -56,7 +56,7 @@
       }
     }
     .message-input {
-      width: calc(100% - 355px);
+      width: calc(100% - 450px);
       height: 90px;
       position: fixed;
       background-color: #fff;
@@ -77,19 +77,20 @@
   }
 }
 .sidebar {
-  width: calc(100% - 680px) !important;
+  background-color: #000;
+  width: calc(100% - 775px) !important;
 }
 .sidebar-detail {
-  width: calc(100vw - 760px) !important;
+  width: calc(100vw - 800px) !important;
 }
 .sidebar-input {
   padding: 26px 20px !important;
-  width: calc(100% - 660px) !important;
+  width: calc(100% - 755px) !important;
   .col-4 {
-    width: 33% !important;
+    width: 43% !important;
   }
   .col-7 {
-    width: 50% !important;
+    width: 45% !important;
   }
 }
 .icon-btn {
