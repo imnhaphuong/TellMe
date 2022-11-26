@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useClient } from "../../../config/agora";
-import { Grid, Button } from "@material-ui/core";
 import MicIcon from "@material-ui/icons/Mic";
 import MicOffIcon from "@material-ui/icons/MicOff";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
+import CallEndIcon from "@material-ui/icons/CallEnd";
 export default function Controls(props) {
   const client = useClient();
   const { tracks, setStart, setInCall } = props;
@@ -36,43 +34,25 @@ export default function Controls(props) {
   };
 
   return (
-    // <Grid container spacing={2} alignItems="center">
-
-    //   <Grid item>
-    //     <Button
-    //       variant="contained"
-    //       color={trackState.audio ? "primary" : "secondary"}
-    //       onClick={() => mute("audio")}
-    //     >
-    //       {trackState.audio ? <MicIcon /> : <MicOffIcon />}
-    //     </Button>
-    //   </Grid>
-    //   <Grid item>
-    //     <Button
-    //       variant="contained"
-    //       color={trackState.video ? "primary" : "secondary"}
-    //       onClick={() => mute("video")}
-    //     >
-    //       {trackState.video ? <VideocamIcon /> : <VideocamOffIcon />}
-    //     </Button>
-    //   </Grid>
-    //   <Grid item>
-    //     <Button
-    //       variant="contained"
-    //       color="default"
-    //       onClick={() => leaveChannel()}
-    //     >
-    //       Leave
-    //       <ExitToAppIcon />
-    //     </Button>
-    //   </Grid>
-    // </Grid>
-    <div class="align-items" style="">
+    <div class="grid grid-cols-1 gap-4">
       <button
-        class="rounded-full"
+        class="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray"
         onClick={() => mute("audio")}
       >
         {trackState.audio ? <MicIcon /> : <MicOffIcon />}
+      </button>
+      <button
+        class="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray"
+        onClick={() => mute("video")}
+      >
+        {trackState.video ? <VideocamIcon /> : <VideocamOffIcon />}
+      </button>
+      <button
+        class="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange"
+        onClick={() => leaveChannel()}
+      >
+        <CallEndIcon 
+        />
       </button>
     </div>
   );

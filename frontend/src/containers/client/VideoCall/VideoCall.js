@@ -69,7 +69,7 @@ export default function VideoCall(props) {
   return (
     <div>
       <div style={{ height: "100vh", position: "relative" }}>
-        <div class="fixed bottom-0 right-0 z-10">
+        <div class="fixed bottom-5 right-5 z-10">
           <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
         </div>
         {start && tracks && <Video tracks={tracks} users={users} />}
