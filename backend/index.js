@@ -10,7 +10,6 @@ const mongoose = require("mongoose");
 //call API
 const accessToken = require("./access-token");
 const userAPI = require("./routes/userRoutes");
-
 app.get("/", (req, res) => {
   res.send({
     status: "success",
