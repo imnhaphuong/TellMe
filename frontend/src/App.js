@@ -11,7 +11,8 @@ function App() {
   return (
     <div className="App">
       {/* <Router> */}
-          <Signup/>
+          <Sidebar/>
+          {/* <Conversation/> */}
       {/* </Router> */}
     </div>
   );
