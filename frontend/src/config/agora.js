@@ -1,13 +1,11 @@
-import React from "react";
 import {
-  AgoraVideoPlayer,
   createClient,
   createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
 
 export const appId = "26631c618a2a4e1794aa355292ef1514";
 export const token =
-  "007eJxTYJBfXM35dIvcLEb/9y+LtHZdm82zYudBDf743ZoPow6sKZitwGBkZmZsmGxmaJFolGiSamhuaZKYaGxqamRplJpmaGpoojilOrkhkJHB8csPRkYGCATxWRhyEzPzGBgAM3QfKw==";
+  "007eJxTYPBhEWs8ImG5ntnVdFvGOWOuoiVs/8yjZ9283ZN6OjgogkuBwcjMzNgw2czQItEo0STV0NzSJDHR2NTUyNIoNc3Q1NDkbFZjckMgI4OQaQsTIwMEgvgsDLmJmXkMDAA1LRuA";
 
 export const config = { mode: "rtc", codec: "vp8", appId: appId, token: token };
 export const useClient = createClient(config);
