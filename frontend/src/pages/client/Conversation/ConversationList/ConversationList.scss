@@ -1,0 +1,129 @@
+@import "../../../.././utils/helpers/variable.scss";
+.conversation__list {
+    width: 350px;
+    .online__list {
+        padding: 10px 20px;
+        height:180px;
+    }
+    .message__list {
+        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width:100%;
+        padding: 0 20px;
+        margin-top: 15px;
+        height: calc(100vh - 180px);
+        .nav-tab {
+            background-color: #ffff;
+            .nav-item {
+                padding: 0 2px;
+                align-items: center;
+                color: #223645;
+                width: 100%;
+                height: 40px;
+                justify-content: center;
+                .nav-link {
+                    border-radius: 20px;
+                    font-size: 12px;
+                    width: 100%;
+                    padding: 8px 5px;
+                    border-color: #eff1f2;
+                    background-color: #eff1f2;
+                    color: #223645;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background-color: $blue;
+                        transition-duration: 0.2s;
+                        color: #fff;
+                    }
+                }
+                .active {
+                    background-color: $blue;
+                    // transition-duration: 0.4s;
+                    color: #fff;
+                    box-shadow: -1px 10px 16px -10px #1c9dea;
+                }
+            }
+            .nav-item-2 {
+                .active {
+                    background-color: rgba(28, 157, 234, 0.15);
+                    // transition-duration: 0.4s;
+                    color: $blue;
+                    box-shadow: -1px 10px 16px -10px #1c9dea;
+                }
+                .nav-link {
+                    border-radius: 10px;
+
+                    &:hover {
+                        background-color: rgba(28, 157, 234, 0.15);
+                        transition-duration: 0.2s;
+                        color: $blue;
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    // .scrollbar::-webkit-scrollbar-thumb:hover {
+    //     background:$blue;
+    // }
+    ul {
+        list-style: none;
+    }
+}
+.scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 5px;
+
+  }
+
+.scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #edf1f7;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(28, 157, 234, 0.15);
+    border-radius: 100vh;
+
+}
+.tab-pane {
+    .tab-content {
+        border-color: #1c9dea;
+        padding-right: 3px;
+        .blank {
+            position: relative;
+            margin:3px 0;
+            p{
+                color: #647589;
+            }
+            .details {
+                margin-left: 10px;
+                width: 120px;
+                h6 {
+                    padding-top: 8px;
+                    max-width: 170px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+                
+            }
+            .date-status {
+                position: absolute;
+                right: 0;
+                bottom: 0px;
+                text-align: right;
+            }
+            
+        }
+    }
+}
+.bg-img {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    border-radius: 20px;
+}
