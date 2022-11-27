@@ -5,7 +5,7 @@ import {
   useClient,
   useMicrophoneAndCameraTracks,
   channelName,
-} from "../../../config/agora";
+} from "../../../utils/agora";
 import {Grid} from "@material-ui/core";
 import Video from "./Video";
 import Controls from "./Controls";

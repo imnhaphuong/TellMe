@@ -1,5 +1,5 @@
-import Client from "./containers/client/Client.jsx";
+import WebRoutes from "./pages/routes";
 function App() {
-  return <Client />;
+  return <WebRoutes />;
 }
 export default App;
