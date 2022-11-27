@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useClient } from "../config/agora";
+import { useClient } from "../../../config/agora";
 import { Grid, Button } from "@material-ui/core";
 import MicIcon from "@material-ui/icons/Mic";
 import MicOffIcon from "@material-ui/icons/MicOff";

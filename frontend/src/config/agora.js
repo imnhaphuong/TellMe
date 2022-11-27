@@ -1,6 +1,4 @@
-import React from "react";
 import {
-  AgoraVideoPlayer,
   createClient,
   createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
