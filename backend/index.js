@@ -6,17 +6,16 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 const mongoose = require("mongoose");
-
+const nocache = require("./access-token");
+const generateAccessToken = require("./access-token");
 //call API
-const accessToken = require("./access-token");
 const userAPI = require("./routes/userRoutes");
-
 app.get("/", (req, res) => {
   res.send({
     status: "success",
   });
 });
-app.use("/agora", accessToken);
+app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 
 //Connect mongodb

@@ -1,9 +1,8 @@
-const express = require("express");
-const router = express.Router();
 //AGORA TOKEN GENERATION
 const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
 const APP_ID = process.env.APP_ID;
 const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
+
 const nocache = (req, res, next) => {
   res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
   res.header("Expires", "-1");
@@ -12,7 +11,7 @@ const nocache = (req, res, next) => {
 };
 const generateAccessToken = (req, res) => {
   //set res header
-  res.header("Acess-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
   //get channel name
   const channel = req.query.channel;
   if (!channel) {
@@ -49,10 +48,10 @@ const generateAccessToken = (req, res) => {
   );
   //return the token
   return res.json({
-    token: token,
-    uid: uid,
+    _channel: channel,
+    _token: token,
+    _uid: uid,
   });
 };
 
-router.get("/access-token", nocache, generateAccessToken);
-module.exports = router;
+module.exports = (nocache, generateAccessToken);
