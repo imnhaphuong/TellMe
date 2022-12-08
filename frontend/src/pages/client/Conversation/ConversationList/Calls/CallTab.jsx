@@ -11,11 +11,11 @@ import { MdCallMissed } from "react-icons/md";
 export default function CallTab() {
   return (
     <div
-      class="tab-pane fade"
+      className="tab-pane fade"
       id="pills-profile"
       role="tabpanel"
       aria-labelledby="pills-profile-tab"
-      tabindex="0"
+      tabIndex="0"
     >
       <ul
         className="nav-pills  font-bold nav-tab mt-3 w-[100%] justify-evenly flex list-none px-0 font-worksans"
@@ -79,13 +79,13 @@ export default function CallTab() {
           </button>
         </li>
       </ul>
-      <div class="tab-content" id="pills-tabContent">
+      <div className="tab-content" id="pills-tabContent">
         <div
-          class="tab-pane  fade show active"
+          className="tab-pane  fade show active"
           id="pills-direct"
           role="tabpanel"
           aria-labelledby="pills-direct-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           <div className="tab-content">
             <ul className="list p-0">
@@ -147,11 +147,11 @@ export default function CallTab() {
           </div>
         </div>
         <div
-          class="tab-pane fade"
+          className="tab-pane fade"
           id="pills-group"
           role="tabpanel"
           aria-labelledby="pills-group-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           group
         </div>
