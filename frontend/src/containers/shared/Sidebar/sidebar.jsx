@@ -7,7 +7,6 @@ import {
 import {
   AiFillSetting,
   AiOutlinePoweroff,
-  AiFillMessage,
 } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
 import { memo, useState } from "react";
