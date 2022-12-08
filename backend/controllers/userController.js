@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Verification = require("../services/VerificationEmail")
 
 const userController = {
   getAllUsers(req, res) {
@@ -22,6 +23,7 @@ const userController = {
     newUser
       .save()
       .then((data) => {
+        Verification({_id: data._id, email: data.email})
         res.send(data);
         console.log(`Create ${req.body.name}'s account successfully`);
       })

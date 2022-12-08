@@ -7,4 +7,5 @@ const User = require("../models/user");
 router.get("/", userController.getAllUsers);
 router.post("/create", userController.createUser);
 
+
 module.exports = router;
