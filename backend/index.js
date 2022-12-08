@@ -2,19 +2,21 @@ require("dotenv").config();
 
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 4000;
-const mongoose = require("mongoose");
-
 app.use(express.json());
 
+const port = process.env.PORT || 3000;
+const mongoose = require("mongoose");
+const nocache = require("./access-token");
+const generateAccessToken = require("./access-token");
 //call API
 const userAPI = require("./routes/userRoutes");
-app.use("/api/users", userAPI);
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send({
     status: "success",
   });
 });
+app.get("/access-token", nocache, generateAccessToken);
+app.use("/api/users", userAPI);
 
 //Connect mongodb
 const mongoUri = `mongodb+srv://nhaphuong:!2345@cluster0.nepewkn.mongodb.net/TellMe?retryWrites=true&w=majority`;

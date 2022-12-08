@@ -1,19 +1,5 @@
-// import { useState } from "react";
-import Conversation from "./containers/client/Conversation/Conversation";
-import Client from "./containers/client/Client.jsx";
-// import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
-import Signup from "./containers/client/Singup/Signup";
-import Sidebar from "./containers/shared/Sidebar/sidebar";
-import SigninForm from "containers/client/Signin/Signin";
-
+import WebRoutes from "./pages/routes";
 function App() {
-  return (
-    <div className="App">
-      {/* <Router> */}
-          <Signup/>
-          {/* <Conversation/> */}
-      {/* </Router> */}
-    </div>
-  );
+  return <WebRoutes />;
 }
 export default App;
