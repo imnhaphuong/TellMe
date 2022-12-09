@@ -5,6 +5,8 @@ const User = require("../models/user");
 
 //get all users
 router.get("/", userController.getAllUsers);
-router.post("/create", userController.createUser);
+router.post("/signup", userController.signup);
+router.post("/verifyOTP", userController.verifyOTP);
+
 
 module.exports = router;
