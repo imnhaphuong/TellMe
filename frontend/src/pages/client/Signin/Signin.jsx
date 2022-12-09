@@ -1,30 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Welcome from "../header";
 
-const SigninForm = () => {
-    const { login,handleSubmit, formState: { errors } } = useForm();
-    const handleRegistration = async (data) => {
-        console.log(data);
-        await axios({
-            method: 'post',
-            url: 'http://localhost:4000/api/users/create',
-            data: data
-        });
-    }
+const LoginForm = () => {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    // const handleLogin = async (data) => {
+    //     console.log(data);
+    //     reset({ phone: "", password: "" });
+    //     const res = await axios({
+    //         method: 'post',
+    //         url: 'http://localhost:4000/api/users/signup',
+    //         data: data
+
+    //     });
+    //     console.log(res.data);
+    // }
     return (
         <div className="flex flex-row">
             <div className="w-1/3 mx-10">
-                <Welcome/>
-                <form className="container " onSubmit={handleSubmit(handleRegistration)} >
+                <Welcome />
+                <form className="container " onSubmit={handleSubmit()} >
                     <div className="mb-6">
-                        <label for="phone" className="block mb-2 text-sm font-medium text-gray-900 ">Phone or Email</label>
-                        <input type="text" id="phone" className="bg-gray-50 border text-gray-900 text-sm rounded-lg w-full p-2.5" placeholder="09xxxxxxxx" />
+                        <label for="phone" className="block mb-2 text-sm font-medium text-gray-900 ">Phone</label>
+                        <input type="text" id="phone" className="bg-gray-50 border text-gray-900 text-sm rounded-lg w-full p-2.5" placeholder="09xxxxxxxx" {...register("phone")} />
                     </div>
                     <div className="mb-6">
-                        <label for="password" className="block mb-2 text-sm font-medium text-gray-900 ">Your password</label>
-                        <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"/>
+                        <label for="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                        <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" {...register("password")} />
                     </div>
                     <div className="flex items-start mb-6">
                         <div className="flex items-center h-5">
@@ -39,7 +42,6 @@ const SigninForm = () => {
             <div className="bg-[url('https://d1hjkbq40fs2x4.cloudfront.net/2017-08-21/files/landscape-photography_1645.jpg')] w-screen h-screen bg-cover">
             </div>
         </div>
-
     );
 };
-export default SigninForm;
+export default LoginForm;

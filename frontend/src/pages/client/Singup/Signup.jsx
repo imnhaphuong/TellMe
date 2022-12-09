@@ -2,18 +2,25 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Welcome from "../header";
+import { useNavigate } from "react-router";
 
 const RegisterForm = () => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const [OTPDATA, setOTPDATA] = useState({ Userid: "", otp: "" });
+    const [errorMessage, setErrorMessage] = useState();
+    const navigate = useNavigate();
+    const { register, handleSubmit, reset } = useForm();
     const handleRegistration = async (data) => {
         console.log(data);
-        reset({name:"", phone: "", email:"", password:""});
-        await axios({
+        reset({ name: "", phone: "", email: "", password: "" });
+        const res = await axios({
             method: 'post',
-            url: 'http://localhost:4000/api/users/create',
+            url: 'http://localhost:4000/api/users/signup',
             data: data
-
         });
+        console.log(res.data);
+        setOTPDATA(prev => ({
+            ...prev, Userid: res.data.data.Userid
+        }))
         setModalVisible(true);
     }
     const [modalVisible, setModalVisible] = useState(false);
@@ -52,13 +59,32 @@ const RegisterForm = () => {
                                 <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">Your OTP </h3>
                                 <form className="space-y-6" action="#">
                                     <div>
-                                        <label for="otp" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your OTP</label>
-                                        <input type="text" name="otp" id="otp" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                                        {errorMessage &&
+                                            <span className="text-error text-sm">{errorMessage}</span>}
+                                        <label htmlFor="otp" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your OTP</label>
+                                        <input onChange={(e) => {
+                                            setOTPDATA(prev => {
+                                                console.log({ ...prev, otp: e.target.value });
+                                                return { ...prev, otp: e.target.value }
+                                            })
+                                        }} type="text" name="otp" id="otp" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
                                     </div>
                                     <div className="flex">
-                                        <button type="submit" className="w-full text-white bg-success border font-medium rounded-lg text-sm px-5 py-2.5 text-center">Confirm</button>
-                                        <button type="button" className="w-full text-white bg-error border font-medium rounded-lg text-sm px-5 py-2.5 text-center" 
-                                        onClick={() =>{setModalVisible(false)}}>Cancel</button>
+                                        <button onClick={async () => {
+                                            const res = await axios({
+                                                method: 'post',
+                                                url: 'http://localhost:4000/api/users/verifyOTP',
+                                                data: OTPDATA
+                                            });
+                                            if (res.data.status === "FAILD") {
+                                                setErrorMessage(res.data.message)
+                                            } else {
+                                                navigate("/signin")
+                                            }
+                                            console.log(res.data, "DATA");
+                                        }} type="button" className="w-full text-white bg-success border font-medium rounded-lg text-sm px-5 py-2.5 text-center">Confirm</button>
+                                        <button type="button" className="w-full text-white bg-error border font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                            onClick={() => { setModalVisible(false) }}>Cancel</button>
                                     </div>
                                 </form>
                             </div>
