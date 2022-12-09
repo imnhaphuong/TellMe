@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserOtpVerificationSchema = new mongoose.Schema(
+const UserOTPVerificationSchema = new mongoose.Schema(
     {
         Userid: String,
         otp: String,
@@ -10,4 +10,4 @@ const UserOtpVerificationSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model("userverification", UserOtpVerificationSchema)
+module.exports = mongoose.model("UserOTPVerification", UserOTPVerificationSchema)

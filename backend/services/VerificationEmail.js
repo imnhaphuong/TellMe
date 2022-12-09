@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({ // config mail server
         pass: '23conmuc' //Mật khẩu tài khoản gmail vừa tạo
     }
 });
-const senOTPVerificationEmail = async ({ _id, email }) => {
+const senOTPVerificationEmail = async ({ _id, email }, res) => {
     try {
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -34,28 +34,29 @@ const senOTPVerificationEmail = async ({ _id, email }) => {
         const saltRounds = 10;
         const hashedOTP = await bcrypt.hash(otp, saltRounds);
         const newOTPVerification = await new userOtpVerification({
-            userID: _id,
+            Userid: _id,
             otp: hashedOTP,
             createdAt: Date.now(),
             expireAt: Date.now() + 3600000,
         });
         //save otp record 
-        await newOTPVerification.save();
+        const data = await newOTPVerification.save();
         await transporter.sendMail(mailOption);
-        // res.json({
-        //     status: "PENDING",
-        //     message: "Verification otp email sent",
-        //     data: {
-        //         userID: _id,
-        //         email,
-        //     },
-        // })
+        console.log(data);
+        return res.json({
+            status: "PENDING",
+            message: "Verification otp email sent",
+            data: {
+                Userid: _id,
+                email,
+            },
+        })
+        // return data
     } catch (error) {
-        // res.json({
-        //     status: "FAILED",
-        //     message: error.message,
-        // });
-        console.log(error)
+        return res.json({
+            status: "FAILED",
+            message: error.message,
+        });
     }
 }
 module.exports = senOTPVerificationEmail;
