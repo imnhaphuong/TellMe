@@ -7,11 +7,10 @@ import {
 import {
   AiFillSetting,
   AiOutlinePoweroff,
-  AiFillMessage,
 } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
 import { memo, useState } from "react";
-import Conversation from "containers/client/Conversation/Conversation";
+import Conversation from "pages/client/Conversation/Conversation";
 
 const Sidebar = () => {
   const [current, setCurrent] = useState(0);

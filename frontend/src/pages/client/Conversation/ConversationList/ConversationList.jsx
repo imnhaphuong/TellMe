@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./ConversationList.scss";
-import OnlineItem from "containers/client/Conversation/ConversationList/OnlineItem/OnlineItem.jsx";
+import OnlineItem from "pages/client/Conversation/ConversationList/OnlineItem/OnlineItem.jsx";
 import Message from "./Messages/Message";
 import MessageTab from "./Messages/MessageTab";
 import Contact from "./Contacts/Contact";
