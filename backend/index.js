@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
-app.use("/api/message", messageAPI);
+app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
 
 
