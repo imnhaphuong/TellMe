@@ -10,6 +10,10 @@ const nocache = require("./access-token");
 const generateAccessToken = require("./access-token");
 //call API
 const userAPI = require("./routes/userRoutes");
+const messageAPI = require("./routes/messageRoute");
+const conversationAPI = require("./routes/conversationRoute");
+
+
 app.get("/", (req, res) => {
   res.send({
     status: "success",
@@ -17,9 +21,13 @@ app.get("/", (req, res) => {
 });
 app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
+app.use("/api/message", messageAPI);
+app.use("/api/convers", conversationAPI);
+
+
 
 //Connect mongodb
-const mongoUri = `mongodb+srv://nhaphuong:!2345@cluster0.nepewkn.mongodb.net/TellMe?retryWrites=true&w=majority`;
+const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
