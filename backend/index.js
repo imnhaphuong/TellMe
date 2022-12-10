@@ -33,8 +33,21 @@ mongoose.connection.on("error", (err) => {
   console.log("Has an error when connect with Mongo", err);
 });
 
-app.listen(port, () => {
+const server  = app.listen(port, () => {
   console.log(
     `server is running example is listening at http://localhost:${port}`
   );
 });
+
+
+const io = require ("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: `http://localhost:${port}`
+  }
+})
+
+io.on('connection', (socket)=>{
+  console.log('Yahoohh, connected with socket.io ');
+})
+

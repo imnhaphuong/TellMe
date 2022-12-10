@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  config,
+  appId,
+  channelName,
   useClient,
   useMicrophoneAndCameraTracks,
-  channelName,
 } from "../../../utils/agora";
 import Video from "./Video";
 import Controls from "./Controls";
@@ -12,12 +12,14 @@ export default function VideoCall(props) {
   const { setInCall } = props;
   const [users, setUsers] = useState([]);
   const [start, setStart] = useState(false);
-  const client = useClient();
+
+  //config client 
+  const client = useClient()
+  const channel = channelName
   const { ready, tracks } = useMicrophoneAndCameraTracks();
-  const channel = channelName;
 
   useEffect(() => {
-    let init = async (name) => {
+    let init = async (channelName) => {
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
         if (mediaType === "video") {
@@ -48,13 +50,15 @@ export default function VideoCall(props) {
       });
 
       try {
-        await client.join(config.appId, name, config.token, null);
+        await client.join(appId, sessionStorage.getItem('channel'), sessionStorage.getItem('token'), null);
       } catch (error) {
         console.log("error");
       }
 
-      if (tracks) await client.publish([tracks[0], tracks[1]]);
-      setStart(true);
+      if (tracks){
+        await client.publish([tracks[0], tracks[1]]);
+        setStart(true);
+      } 
     };
 
     if (ready && tracks) {
@@ -67,11 +71,11 @@ export default function VideoCall(props) {
   }, [channel, client, ready, tracks]);
 
   return (
-    <div>
-      <div style={{ height: "100vh", position: "relative" }}>
-        <div class="fixed bottom-5 right-5 z-10">
-          <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
-        </div>
+    <div className="relative h-screen w-screen">
+      <div className="fixed bottom-5 right-5 z-10">
+        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall}/>
+      </div>
+      <div>
         {start && tracks && <Video tracks={tracks} users={users} />}
       </div>
     </div>
