@@ -116,7 +116,7 @@ const ConversationList = () => {
           <Call />
           <Contact />
         </ul>
-        <div class="tab-content" id="pills-tabContent">
+        <div className="tab-content" id="pills-tabContent">
           <MessageTab />
           <CallTab />
           <ContactTab />
