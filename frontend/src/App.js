@@ -1,8 +1,20 @@
-import WebRoutes from "./pages/routes";
+import React, { useState, useEffect, useRef } from "react";
+import socketIOClient from "socket.io-client";
+
+const host = "http://localhost:4000";
+
 function App() {
-  return <WebRoutes />;
-}
-export default App;
+  const socketRef = null;
+
+  useEffect(() => {
+    socketRef = socketIOClient.connect(host)
+  }, [])
+  }
+// import WebRoutes from "./pages/routes";
+// function App() {
+//   return <WebRoutes />;
+// }
+// export default App;
 // import { Button } from "@material-ui/core";
 // import { useState } from "react";
 // import VideoCall from "./pages/client/VideoCall";
@@ -26,4 +38,4 @@ export default App;
 //     </div>
 //   );
 // }
-// export default App;
+export default App;
