@@ -6,11 +6,11 @@ import "./ContactTab.scss";
 export default function ContactTab() {
   return (
     <div
-      class="tab-pane fade"
+      className="tab-pane fade"
       id="pills-contact"
       role="tabpanel"
       aria-labelledby="pills-contact-tab"
-      tabindex="0"
+      tabIndex="0"
     >
       <div className="tab-content">
         <ul className="list p-0">

@@ -4,11 +4,11 @@ import "./MessageTab.scss";
 export default function MessageTab() {
   return (
     <div
-      class="tab-pane fade show active"
+      className="tab-pane fade show active"
       id="pills-home"
       role="tabpanel"
       aria-labelledby="pills-home-tab"
-      tabindex="0"
+      tabIndex="0"
     >
       <ul
         className="nav-pills  font-bold nav-tab mt-3 w-[100%] justify-evenly flex list-none px-0 font-worksans"
@@ -44,13 +44,13 @@ export default function MessageTab() {
           </button>
         </li>
       </ul>
-      <div class="tab-content" id="pills-tabContent">
+      <div className="tab-content" id="pills-tabContent">
         <div
-          class="tab-pane  fade show active"
+          className="tab-pane  fade show active"
           id="pills-direct"
           role="tabpanel"
           aria-labelledby="pills-direct-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           <div className="tab-content">
             <ul className="list p-0">
@@ -149,11 +149,11 @@ export default function MessageTab() {
           </div>
         </div>
         <div
-          class="tab-pane fade"
+          className="tab-pane fade"
           id="pills-group"
           role="tabpanel"
           aria-labelledby="pills-group-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           group
         </div>

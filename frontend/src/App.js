@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
+import WebRoutes from "./pages/routes";
 
 const host = "http://localhost:4000";
 
 function App() {
   const socketRef = null;
-
   useEffect(() => {
-    socketRef = socketIOClient.connect(host)
-  }, [])
-  }
-// import WebRoutes from "./pages/routes";
-// function App() {
-//   return <WebRoutes />;
-// }
-// export default App;
+    socketRef = socketIOClient.connect(host);
+  }, []);
+  return <WebRoutes />;
+}
 // import { Button } from "@material-ui/core";
 // import { useState } from "react";
 // import VideoCall from "./pages/client/VideoCall";
