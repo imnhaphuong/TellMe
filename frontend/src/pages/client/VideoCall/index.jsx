@@ -9,7 +9,6 @@ import Video from "./Video";
 import Controls from "./Controls";
 
 export default function VideoCall(props) {
-  const { setInCall } = props;
   const [users, setUsers] = useState([]);
   const [start, setStart] = useState(false);
 
@@ -73,7 +72,7 @@ export default function VideoCall(props) {
   return (
     <div className="relative h-screen w-screen">
       <div className="fixed bottom-5 right-5 z-10">
-        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall}/>
+        <Controls tracks={tracks} setStart={setStart}/>
       </div>
       <div>
         {start && tracks && <Video tracks={tracks} users={users} />}

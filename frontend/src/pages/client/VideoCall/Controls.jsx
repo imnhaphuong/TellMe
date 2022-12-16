@@ -8,7 +8,7 @@ import CallEndIcon from "@material-ui/icons/CallEnd";
 
 export default function Controls(props) {
   const client = useClient()
-  const { tracks, setStart, setInCall } = props;
+  const { tracks, setStart} = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   const mute = async (type) => {
@@ -31,25 +31,25 @@ export default function Controls(props) {
     tracks[0].close();
     tracks[1].close();
     setStart(false);
-    setInCall(false);
+    window.open('','_self').close()
   };
 
   return (
     <div className="grid grid-cols-1 gap-4">
       <button
-        className="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray"
+        className="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray border-none"
         onClick={() => mute("audio")}
       >
         {trackState.audio ? <MicIcon /> : <MicOffIcon />}
       </button>
       <button
-        className="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray"
+        className="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray border-none"
         onClick={() => mute("video")}
       >
         {trackState.video ? <VideocamIcon /> : <VideocamOffIcon />}
       </button>
       <button
-        className="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange"
+        className="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange border-none"
         onClick={() => leaveChannel()}
       >
         <CallEndIcon />

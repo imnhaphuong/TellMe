@@ -29,6 +29,12 @@ const UserSchema = new mongoose.Schema(
       default:
         "https://tse2.mm.bing.net/th?id=OIP.f1IszCjHtBlCEXYmy9hsQwHaHa&pid=Api&P=0",
     },
+    contacts: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
+      },
+    ],
   },
   { timestamps: true }
 );
