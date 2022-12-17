@@ -3,7 +3,6 @@ const UserOTPVerification = require("../models/userOtpVerification");
 const senOTPVerificationEmail = require("../services/VerificationEmail");
 const bcrypt = require("bcrypt");
 
-
 const userController = {
   getAllUsers(req, res) {
     User.find()
@@ -57,9 +56,10 @@ const userController = {
           Userid,
         });
         if (UserOTPVerificationRecords.length <= 0) {
-          throw new Error("Account record doesn't exist or has been verified already.")
-        }
-        else {
+          throw new Error(
+            "Account record doesn't exist or has been verified already."
+          );
+        } else {
           const { expiresAt } = UserOTPVerificationRecords[0];
           const hashedOTP = UserOTPVerificationRecords[0].otp;
 
@@ -77,7 +77,7 @@ const userController = {
               return res.json({
                 status: "VERIFIED",
                 message: `User email verified successfully.`,
-              })
+              });
             }
           }
         }
@@ -86,7 +86,7 @@ const userController = {
       return res.json({
         status: "FAILD",
         message: error.message,
-      })
+      });
     }
   },
   async signin(req, res) {
@@ -116,7 +116,19 @@ const userController = {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
+  //Get by id
+  getUserByID: async (req, res) => {
+    User.findById(req.body.id)
+      .populate("contacts")
+      .then((data) => {
+        console.log("got the user has id " + req.body.id);
+        res.send(data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  },
 };
 
 module.exports = userController;

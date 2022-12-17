@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://tellme-api.vercel.app/';
+export const BASE_URL = 'https://tellme-api.vercel.app/api';

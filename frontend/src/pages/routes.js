@@ -3,7 +3,7 @@ import Signup from "./client/Singup/Signup";
 import Signin from "./client/Signin/Signin";
 import Sidebar from "./shared/Sidebar";
 import NoPage from "./404";
-import VideoCall from "./client/VideoCall/VideoCall";
+import VideoCall from "./client/VideoCall";
 
 const WebRoutes = () => {
   return (
