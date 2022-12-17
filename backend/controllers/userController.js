@@ -115,7 +115,7 @@ const userController = {
           message: `LOGIN SUCCESS`,
           data: {
             phone: req.body.phone,
-            password: req.body.password
+            id: Usersignin._id
           },
         })
       }
