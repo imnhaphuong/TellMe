@@ -4,7 +4,7 @@ import axios from 'axios';
 const messageApi = {
   getMessageAPI(converId) {
     return axios({
-      url: `http://localhost:4000/api/messages/${converId}`,
+      url: `http://localhost:8080/api/messages/${converId}`,
       method: 'get',
 
     });
