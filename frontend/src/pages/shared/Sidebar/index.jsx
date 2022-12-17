@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
 import { memo, useState } from "react";
-import Conversation from "pages/client/Conversation/Conversation";
+import Conversation from '../../client/Conversation/Conversation';
 
 const Sidebar = () => {
   const [current, setCurrent] = useState(0);
@@ -19,7 +19,7 @@ const Sidebar = () => {
       title: "Message",
       icon: <MdMessage className="text-[18px]" />,
       page: <Conversation />,
-      selectedIcon: <MdMessage className="text-white text-[18px]" />,
+      selectedIcon: <MdMessage className="text-white text-[18px] " />,
     },
     {
       title: "Favourite",
@@ -61,7 +61,7 @@ const Sidebar = () => {
       title: "Signout",
       icon: <AiOutlinePoweroff />,
       page: <span>Signout</span>,
-      selectedIcon: <AiOutlinePoweroff className="text-white" />,
+      selectedIcon: <AiOutlinePoweroff className="text-white " />,
     },
   ];
   return (
@@ -98,7 +98,7 @@ const Sidebar = () => {
                   setCurrent(index);
                 }}
               >
-                <div>{current === index ? menu.selectedIcon : menu.icon}</div>
+                <div className="flex">{current === index ? menu.selectedIcon : menu.icon}</div>
               </div>
             ))}
           </div>

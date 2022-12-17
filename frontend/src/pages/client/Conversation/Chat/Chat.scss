@@ -9,7 +9,7 @@
     position: relative;
     animation: fadeInLeft 300ms ease-in-out;
     .scrollbar {
-      padding: 40px;
+      padding:0 40px 40px;
       height: calc(100vh - 90px);
       min-height: calc(100vh - 90px);
       overflow: auto;
@@ -53,6 +53,7 @@
         }
       }
       .contact-chat {
+        margin-top: 105px;
       }
     }
     .message-input {
