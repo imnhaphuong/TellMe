@@ -93,15 +93,21 @@ const userController = {
     try {
       const Usersignin = await User.findOne({ phone: req.body.phone })
       if (!Usersignin) {
-        throw Error("Số điện thoại này chưa được đăng ký.");
+        return res.json({
+          status: "FAILD",
+          message: `Số điện thoại chưa được đăng ký`,
+        })
       } else {
         if (Usersignin.isVerified === false) {
-          throw Error("Bạn cần xác nhận mã OTP trước khi đăng nhập.")
+          return res.json({
+            status: "FAILD",
+            message: `Bạn cần xác nhận email trước khi đăng nhập`,
+          })
         }
         if (!bcrypt.compareSync(req.body.password, Usersignin.password)) {
           return res.json({
             status: "FAILD",
-            message: `LOGIN NOT SUCCESS`,
+            message: `Mật khẩu không đúng`,
           })
         }
         return res.json({
