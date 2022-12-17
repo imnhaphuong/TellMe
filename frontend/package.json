@@ -14,6 +14,8 @@
     "axios": "^1.2.0",
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
+    "javascript-time-ago": "^2.5.9",
+    "moment": "^2.29.4",
     "nodemailer": "^6.8.0",
     "react": "^18.2.0",
     "react-devtools": "^4.27.1",
@@ -30,6 +32,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.5.4",
     "styled-components": "^5.3.6",
+    "timeago-react": "^3.0.5",
     "timeago.js": "^4.0.2",
     "web-vitals": "^2.1.4"
   },
