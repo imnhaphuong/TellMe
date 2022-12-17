@@ -9,7 +9,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const [userDATA, setUserDATA] = useState({ phone: "", password: "" });
     const [errorMessage, setErrorMessage] = useState();
-    const { handleSubmit, reset } = useForm();
+    const { handleSubmit } = useForm();
     // const handleLogin = async (data) => {
     //     console.log(data);
     //     reset({ phone: "", password: "" });
@@ -40,8 +40,6 @@ const LoginForm = () => {
                         }} type="text" id="phone" className="bg-gray-50 border text-gray-900 text-sm rounded-lg w-full p-2.5" placeholder="09xxxxxxxx" />
                     </div>
                     <div className="mb-6">
-                        {errorMessage &&
-                            <span className="text-error text-sm">{errorMessage}</span>}
                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
                         <input onChange={(e) => {
                             setUserDATA(prev => {
