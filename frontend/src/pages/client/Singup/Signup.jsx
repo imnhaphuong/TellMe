@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Welcome from "../header";
 import { useNavigate } from "react-router";
+import { BASE_URL } from "settings/apiConfig";
+
 
 const RegisterForm = () => {
     const [OTPDATA, setOTPDATA] = useState({ Userid: "", otp: "" });
@@ -14,7 +16,7 @@ const RegisterForm = () => {
         reset({ name: "", phone: "", email: "", password: "" });
         const res = await axios({
             method: 'post',
-            url: 'https://tellme-api.vercel.app/api/users/signup',
+            url: `${BASE_URL}/users/signup`,
             data: data
         });
         console.log(res.data);
@@ -73,7 +75,7 @@ const RegisterForm = () => {
                                         <button onClick={async () => {
                                             const res = await axios({
                                                 method: 'post',
-                                                url: 'https://tellme-api.vercel.app/api/users/verifyOTP',
+                                                url: `${BASE_URL}/users/verifyOTP`,
                                                 data: OTPDATA
                                             });
                                             if (res.data.status === "FAILD") {

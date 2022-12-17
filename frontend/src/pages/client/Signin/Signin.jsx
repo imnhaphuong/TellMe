@@ -10,19 +10,6 @@ const LoginForm = () => {
     const [userDATA, setUserDATA] = useState({ phone: "", password: "" });
     const [errorMessage, setErrorMessage] = useState();
     const { handleSubmit } = useForm();
-    // const handleLogin = async (data) => {
-    //     console.log(data);
-    //     reset({ phone: "", password: "" });
-    //     const res = await axios({
-    //         method: 'post',
-    //         url: 'http://localhost:4000/api/users/signin',
-    //         data: data
-    //     });
-    //     console.log(res.data);
-    //     setUserDATA(prev => ({
-    //         ...prev, Userid: res.data.data.phone
-    //     }))
-    // }
     return (
         <div className="flex flex-row">
             <div className="w-1/3 mx-10">
@@ -43,7 +30,6 @@ const LoginForm = () => {
                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
                         <input onChange={(e) => {
                             setUserDATA(prev => {
-                                console.log({ ...prev, password: e.target.value });
                                 return { ...prev, password: e.target.value }
                             })
                         }} type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5" />
@@ -65,6 +51,7 @@ const LoginForm = () => {
                         if (res.data.status === "FAILD") {
                             setErrorMessage(res.data.message)
                         } else {
+                            console.log("USER",res.data)
                             navigate("/")
                         }
                     }} type="button" className="text-white bg-success rounded-lg border text-sm w-full sm:w-auto px-5 py-2.5 text-center">SIGN IN</button>
