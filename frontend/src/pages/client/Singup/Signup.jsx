@@ -14,7 +14,7 @@ const RegisterForm = () => {
         reset({ name: "", phone: "", email: "", password: "" });
         const res = await axios({
             method: 'post',
-            url: 'http://localhost:4000/api/users/signup',
+            url: 'https://tellme-api.vercel.app/api/users/signup',
             data: data
         });
         console.log(res.data);
@@ -73,7 +73,7 @@ const RegisterForm = () => {
                                         <button onClick={async () => {
                                             const res = await axios({
                                                 method: 'post',
-                                                url: 'http://localhost:4000/api/users/verifyOTP',
+                                                url: 'https://tellme-api.vercel.app/api/users/verifyOTP',
                                                 data: OTPDATA
                                             });
                                             if (res.data.status === "FAILD") {
