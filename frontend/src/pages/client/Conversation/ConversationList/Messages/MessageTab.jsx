@@ -1,7 +1,22 @@
-import React from "react";
-import avt from "assets/images/person-1.jpg";
+import React, { useEffect, useState } from "react";
 import "./MessageTab.scss";
+import converApi from "apis/converApi";
 export default function MessageTab() {
+  const [convers, setConvers] = useState([]);
+  const userId = "639c998f7ca070cc12e2f5b6"
+  const showMessage=()=>{
+    console.log("show message");
+  }
+  useEffect(() => {
+    converApi
+      .getConverByUserAPI(userId)
+      .then((result) => {
+        setConvers(result.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }, []);
   return (
     <div
       className="tab-pane fade show active"
@@ -44,6 +59,7 @@ export default function MessageTab() {
           </button>
         </li>
       </ul>
+      {/* List conversation*/}
       <div className="tab-content" id="pills-tabContent">
         <div
           className="tab-pane  fade show active"
@@ -54,97 +70,34 @@ export default function MessageTab() {
         >
           <div className="tab-content">
             <ul className="list p-0">
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Tommy</h6>
-                    <p className="text-[12px] truncate ">
-                      Hi,I am Tomy welcome to my website
-                    </p>
-                  </div>
-                  <div className="date-status">
-                    {/* ti-pin */}
-                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
-                    <p className="text-success status text-[12px] font-semibold ">
-                      Đã xem
-                    </p>
-                  </div>
-                </a>
-              </li>
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Tommy</h6>
-                    <p className="text-[12px] truncate ">
-                      Hi,I am Tomy welcome to my website
-                    </p>
-                  </div>
-                  <div className="date-status">
-                    {/* ti-pin */}
-                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
-                    <p className="text-success status text-[12px] font-semibold ">
-                      Đã xem
-                    </p>
-                  </div>
-                </a>
-              </li>
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Tommy</h6>
-                    <p className="text-[12px] truncate ">
-                      Hi,I am Tomy welcome to my website
-                    </p>
-                  </div>
-                  <div className="date-status">
-                    {/* ti-pin */}
-                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
-                    <p className="text-success status text-[12px] font-semibold ">
-                      Đã xem
-                    </p>
-                  </div>
-                </a>
-              </li>
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Tommy</h6>
-                    <p className="text-[12px] truncate ">
-                      Hi,I am Tomy welcome to my website
-                    </p>
-                  </div>
-                  <div className="date-status">
-                    {/* ti-pin */}
-                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
-                    <p className="text-success status text-[12px] font-semibold ">
-                      Đã xem
-                    </p>
-                  </div>
-                </a>
-              </li>
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Tommy</h6>
-                    <p className="text-[12px] truncate ">
-                      Hi,I am Tomy welcome to my website
-                    </p>
-                  </div>
-                  <div className="date-status">
-                    {/* ti-pin */}
-                    <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
-                    <p className="text-success status text-[12px] font-semibold ">
-                      Đã xem
-                    </p>
-                  </div>
-                </a>
-              </li>
-              
+              {
+                convers.map((conver, index) => {
+                  const partner = conver.members.find(user=>user._id!==userId)
+                  return (
+                    <li key={conver._id} className="blank flex">
+                      <a className="no-underline flex text-[#223645]" href="#chat" onClick={()=>showMessage()}>
+                        <img className="bg-img" src={partner.avatar} alt="avt" />
+                        <div className="details">
+                          <h6 className=" truncate">{partner.name}</h6>
+                          <p className="text-[12px] truncate ">
+                            Hi,I am Tomy welcome to my website
+                          </p>
+                        </div>
+                        <div className="date-status">
+                          {/* ti-pin */}
+                          <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
+                          <p className="text-success status text-[12px] font-semibold ">
+                            Đã xem
+                          </p>
+                        </div>
+                      </a>
+                    </li>
+                  )
+
+                })
+              }
+
+
             </ul>
           </div>
         </div>
