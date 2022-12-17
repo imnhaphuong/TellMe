@@ -7,6 +7,6 @@ const User = require("../models/user");
 router.get("/", userController.getAllUsers);
 router.post("/signup", userController.signup);
 router.post("/verifyOTP", userController.verifyOTP);
-
+router.post("/signin", userController.signin);
 
 module.exports = router;
