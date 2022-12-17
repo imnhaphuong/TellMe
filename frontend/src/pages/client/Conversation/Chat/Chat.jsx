@@ -11,18 +11,6 @@ import { IoMdSend } from "react-icons/io";
 import Message from "components/Message/Message";
 import messageApi from "apis/messageApi";
 export default function Chat() {
-  const [data,setData]=useState([]);
-  useEffect(() => {
-    messageApi
-      .getMessageAPI()
-      .then((result) => {
-        setData(result.data);
-        console.log("data", result.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }, []);
   return (
     <div className="chat-main font-worksans  ">
       <div className="chat-content">
@@ -53,14 +41,7 @@ export default function Chat() {
               </div>
             </div>
           </div>
-          <div className="contact-chat">
-            {data.map((message,index) =>{
-              return(
-                <Message message={message.content} />
-
-              )
-            })}
-          </div>
+          <div className="contact-chat"></div>
         </div>
         <div className="message-input  ">
           <div className="wrap emoji-main">

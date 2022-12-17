@@ -1,10 +1,9 @@
 import "./message.scss";
-import { format } from "timeago.js";
 import { BsThreeDots } from "react-icons/bs";
 
 export default function Message({ message, own }) {
   return (
-    <div className= {own ? "message own" : "message"}>
+    <div className={own ? "message own" : "message"}>
       <div className="messageTop">
         <img
           className="messageImg"
@@ -13,7 +12,7 @@ export default function Message({ message, own }) {
         />
         <div className="info-message mt-2">
           <p className="messageText mb-0">{message}</p>
-          <span className="messageBottom">{format(message.createdAt)}</span>
+          <span className="messageBottom">{message.createdAt}</span>
         </div>
         <div className={own ? "dropstart mr-2 mt-2" : "dropend ml-2 mt-2"}>
           <button
@@ -21,7 +20,7 @@ export default function Message({ message, own }) {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <BsThreeDots className=" text-[16px]"/>
+            <BsThreeDots className=" text-[16px]" />
           </button>
           <ul className="dropdown-menu text-[13px]">
             <li>
@@ -31,7 +30,7 @@ export default function Message({ message, own }) {
             </li>
             <li>
               <a className="dropdown-item" href="#saochep">
-               Sao chép
+                Sao chép
               </a>
             </li>
           </ul>

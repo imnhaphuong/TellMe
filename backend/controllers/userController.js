@@ -3,7 +3,6 @@ const UserOTPVerification = require("../models/userOtpVerification");
 const senOTPVerificationEmail = require("../services/VerificationEmail");
 const bcrypt = require("bcrypt");
 
-
 const userController = {
   getAllUsers(req, res) {
     User.find()
@@ -26,13 +25,13 @@ const userController = {
     newUser
       .save()
       .then((data) => {
-        senOTPVerificationEmail(data, res)
+        senOTPVerificationEmail(data, res);
         // res.send(data);
         // console.log(`Create ${req.body.name}'s account successfully`);
       })
       .catch((err) => {
         console.log("err", err);
-        res.send([])
+        res.send([]);
       });
   },
   async verifyOTP(req, res) {
@@ -45,9 +44,10 @@ const userController = {
           Userid,
         });
         if (UserOTPVerificationRecords.length <= 0) {
-          throw new Error("Account record doesn't exist or has been verified already.")
-        }
-        else {
+          throw new Error(
+            "Account record doesn't exist or has been verified already."
+          );
+        } else {
           const { expiresAt } = UserOTPVerificationRecords[0];
           const hashedOTP = UserOTPVerificationRecords[0].otp;
 
@@ -60,15 +60,14 @@ const userController = {
             if (!validOTP) {
               //supplied otp is wrong
               throw new Error("Invalid code passes. Check your inbox.");
-            }
-            else {
+            } else {
               // success
-              await User.updateOne({_id: Userid}, {isVerified: true });
+              await User.updateOne({ _id: Userid }, { isVerified: true });
               await UserOTPVerification.deleteMany({ Userid });
               return res.json({
                 status: "VERIFIED",
                 message: `User email verified successfully.`,
-              })
+              });
             }
           }
         }
@@ -77,8 +76,20 @@ const userController = {
       return res.json({
         status: "FAILD",
         message: error.message,
-      })
+      });
     }
+  },
+  //Get by id
+  getUserByID: async (req, res) => {
+    User.findById(req.body.id)
+      .populate("contacts")
+      .then((data) => {
+        console.log("got the user has id " + req.body.id);
+        res.send(data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
   },
 };
 
