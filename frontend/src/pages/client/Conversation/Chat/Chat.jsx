@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import avt from "assets/images/person-1.jpg";
 import "./Chat.scss";
 import { BsTelephoneFill } from "react-icons/bs";
@@ -8,7 +8,8 @@ import { MdInsertEmoticon } from "react-icons/md";
 import { TfiThemifyFaviconAlt } from "react-icons/tfi";
 import { BsPlusLg } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
-
+import Message from "components/Message/Message";
+import messageApi from "apis/messageApi";
 export default function Chat() {
   return (
     <div className="chat-main font-worksans  ">
@@ -60,13 +61,18 @@ export default function Chat() {
               </div>
               <div className="col-7">
                 <div className="input-content">
-                <input type="text" name="mess" class=" px-3 py-2 bg-white border-none font-medium
+                  <textarea
+                    type="text"
+                    name="mess"
+                    className=" px-3 py-2 bg-white border-none font-medium
                 text-[16px]
-                placeholder-gray focus:outline-none  block w-full rounded-md sm:text-sm " placeholder="Nhập tin nhắn ..." />
+                placeholder-gray focus:outline-none  block w-full rounded-md sm:text-sm "
+                    placeholder="Nhập tin nhắn ..."
+                  />
                 </div>
               </div>
               <div className="col-1 ">
-                <button className=" border-none text-primary icon-btn  ml-4 " >
+                <button className=" border-none text-primary icon-btn  ml-4 ">
                   <IoMdSend className=" text-[18px]" />
                 </button>
               </div>

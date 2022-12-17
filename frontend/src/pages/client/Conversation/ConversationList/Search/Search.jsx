@@ -2,14 +2,14 @@ import React from "react";
 
 export default function Search() {
   return (
-      <form class="form-inline search-form open">
-        <div class="form-group">
+      <form className="form-inline search-form open">
+        <div className="form-group">
           <input
-            class="form-control-plaintext"
+            className="form-control-plaintext"
             type="search"
             placeholder="Search.."
           />
-          <div class="icon-close close-search"> </div>
+          <div className="icon-close close-search"> </div>
         </div>
       </form>
   );

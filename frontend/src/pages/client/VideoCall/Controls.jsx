@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useClient } from "../../../utils/agora";
-import { Grid, Button } from "@material-ui/core";
 import MicIcon from "@material-ui/icons/Mic";
 import MicOffIcon from "@material-ui/icons/MicOff";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import CallEndIcon from "@material-ui/icons/CallEnd";
+
 export default function Controls(props) {
-  const client = useClient();
-  const { tracks, setStart, setInCall } = props;
+  const client = useClient()
+  const { tracks, setStart} = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   const mute = async (type) => {
@@ -31,25 +31,25 @@ export default function Controls(props) {
     tracks[0].close();
     tracks[1].close();
     setStart(false);
-    setInCall(false);
+    window.open('','_self').close()
   };
 
   return (
-    <div class="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <button
-        class="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray"
+        className="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray border-none"
         onClick={() => mute("audio")}
       >
         {trackState.audio ? <MicIcon /> : <MicOffIcon />}
       </button>
       <button
-        class="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray"
+        className="bg-white rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-dark-gray border-none"
         onClick={() => mute("video")}
       >
         {trackState.video ? <VideocamIcon /> : <VideocamOffIcon />}
       </button>
       <button
-        class="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange"
+        className="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange border-none"
         onClick={() => leaveChannel()}
       >
         <CallEndIcon />
