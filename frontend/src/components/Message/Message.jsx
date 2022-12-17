@@ -1,5 +1,4 @@
 import "./message.scss";
-import { format } from "timeago.js";
 import { BsThreeDots } from "react-icons/bs";
 
 export default function Message({ message, own }) {
@@ -13,7 +12,7 @@ export default function Message({ message, own }) {
         />
         <div className="info-message mt-2">
           <p className="messageText mb-0">{message}</p>
-          <span className="messageBottom">{format(message.createdAt)}</span>
+          <span className="messageBottom">{message.createdAt}</span>
         </div>
         <div className={own ? "dropstart mr-2 mt-2" : "dropend ml-2 mt-2"}>
           <button
