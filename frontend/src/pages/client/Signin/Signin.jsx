@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Welcome from "../header";
 import { useNavigate } from "react-router";
-
+import { BASE_URL } from "settings/apiConfig";
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const LoginForm = () => {
     //     reset({ phone: "", password: "" });
     //     const res = await axios({
     //         method: 'post',
-    //         url: 'http://localhost:4000/api/users/signin',
+    //         url: 'http://localhost:8080/api/users/signin',
     //         data: data
     //     });
     //     console.log(res.data);
@@ -58,7 +58,7 @@ const LoginForm = () => {
                     <button onClick={async () => {
                         const res = await axios({
                             method: 'post',
-                            url: 'https://tellme-api.vercel.app/api/users/signin',
+                            url: `${BASE_URL}/users/signin`,
                             data: userDATA
                         });
                         //console.log("LOGIN", res.data);

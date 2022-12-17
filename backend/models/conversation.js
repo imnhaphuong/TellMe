@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-
+const user = require("../models/user");
 const ConversationSchema = new mongoose.Schema(
   {
     //all users in conversation
-    members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: user }],
 
     //FOR GROUP CHAT
     // chatName: {
