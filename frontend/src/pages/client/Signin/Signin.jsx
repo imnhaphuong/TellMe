@@ -21,7 +21,6 @@ const LoginForm = () => {
                         <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 ">Phone</label>
                         <input onChange={(e) => {
                             setUserDATA(prev => {
-                                console.log({ ...prev, phone: e.target.value });
                                 return { ...prev, phone: e.target.value }
                             })
                         }} type="text" id="phone" className="bg-gray-50 border text-gray-900 text-sm rounded-lg w-full p-2.5" placeholder="09xxxxxxxx" />
@@ -47,7 +46,6 @@ const LoginForm = () => {
                             url: `${BASE_URL}/users/signin`,
                             data: userDATA
                         });
-                        //console.log("LOGIN", res.data);
                         if (res.data.status === "FAILD") {
                             setErrorMessage(res.data.message)
                         } else {
