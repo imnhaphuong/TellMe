@@ -13,7 +13,7 @@ var transporter = nodemailer.createTransport({ // config mail server
     host: "smtp.office365.com",
     port: 587,
     auth: {
-        user: 'flmaster022@hotmail.com', //Tài khoản gmail vừa tạo
+        user: 'tellme022@hotmail.com', //Tài khoản gmail vừa tạo
         pass: '23conmuc' //Mật khẩu tài khoản gmail vừa tạo
     }
 });
@@ -23,7 +23,7 @@ const senOTPVerificationEmail = async ({ _id, email }, res) => {
 
         //email option
         const mailOption = {
-            from: 'flmaster022@hotmail.com',
+            from: 'tellme022@hotmail.com',
             to: email,
             subject: "Verify your email",
             html: `Hi!
@@ -51,8 +51,9 @@ const senOTPVerificationEmail = async ({ _id, email }, res) => {
                 email,
             },
         })
-        // return data
+        //return data
     } catch (error) {
+        console.log(error)
         return res.json({
             status: "FAILED",
             message: error.message,

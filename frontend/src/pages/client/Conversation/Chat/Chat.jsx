@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import avt from "assets/images/person-1.jpg";
+import React, { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { BsTelephoneFill } from "react-icons/bs";
 import { BsFillCameraVideoFill } from "react-icons/bs";
@@ -10,23 +9,85 @@ import { BsPlusLg } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
 import Message from "components/Message/Message";
 import messageApi from "apis/messageApi";
+import converApi from "apis/converApi";
+import axios from "axios";
+
 export default function Chat() {
+  const [data, setData] = useState([]);
+  const userId = "639c998f7ca070cc12e2f5b6"
+  const converId = "639d3cfd84729a3c459544eb"
+  const [convers, setConvers] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const socket = useRef();
+
+  useEffect(() => {
+    messageApi
+      .getMessageAPI(converId)
+      .then((result) => {
+        setData(result.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+    converApi
+      .getConverByIdAPI(converId)
+      .then((result) => {
+        setConvers(result.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }, []);
+  const handleSubmit = async (e) => {
+    console.log(newMessage)
+    e.preventDefault();
+    const message = {
+      sender: userId,
+      content: newMessage,
+      conversationId: converId,
+    };
+
+    // const receiverId = convers.members.find(user => user._id !== userId)
+
+    // socket.current.emit("sendMessage", {
+    //   senderId: userId,
+    //   receiverId,
+    //   text: newMessage,
+    // });
+    try {
+      const res = await messageApi.sendMessage(message);
+      setMessages([...messages, res.data]);
+      setNewMessage("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
+    // List conversation
     <div className="chat-main font-worksans  ">
       <div className="chat-content">
         <div className="scrollbar">
           <div className="contact-detail  ">
             <div className="row">
               <div className="col-5">
-                <div className="media-left flex ">
-                  <div className="avatar-chat">
-                    <img className="bg-img" src={avt} alt="" />
-                  </div>
-                  <div className="detail-account items-center  ml-3">
-                    <h6 className="font-semibold truncate mt-2">Tommy</h6>
-                    <p className="account-active bg-[#3fcc35]">Hoạt động</p>
-                  </div>
-                </div>
+                {
+                  convers.map((conver, index) => {
+                    const partner = conver.members.find(user => user._id !== userId)
+                    return (
+                      <div key={index} className="media-left flex ">
+                        <div className="avatar-chat">
+                          <img className="bg-img" src={partner.avatar} alt="" />
+                        </div>
+                        <div className="detail-account items-center  ml-3">
+                          <h6 className="font-semibold truncate mt-2">{partner.name}</h6>
+                          <p className="account-active bg-[#3fcc35]">Hoạt động</p>
+                        </div>
+                      </div>
+                    )
+                  }
+                  )}
+
               </div>
               <div className="col">
                 <button className=" border-none bg-bg_gray icon-btn  ml-4">
@@ -41,7 +102,13 @@ export default function Chat() {
               </div>
             </div>
           </div>
-          <div className="contact-chat"></div>
+          <div className="contact-chat">
+            {data.map((message, index) => {
+              return (
+                <Message sender={message.sender} key={index} message={message.content} own={message.sender._id === userId ? userId : ""} />
+              )
+            })}
+          </div>
         </div>
         <div className="message-input  ">
           <div className="wrap emoji-main">
@@ -64,6 +131,8 @@ export default function Chat() {
                   <textarea
                     type="text"
                     name="mess"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
                     className=" px-3 py-2 bg-white border-none font-medium
                 text-[16px]
                 placeholder-gray focus:outline-none  block w-full rounded-md sm:text-sm "
@@ -72,7 +141,7 @@ export default function Chat() {
                 </div>
               </div>
               <div className="col-1 ">
-                <button className=" border-none text-primary icon-btn  ml-4 ">
+                <button onClick={handleSubmit} className=" border-none text-primary icon-btn  ml-4 ">
                   <IoMdSend className=" text-[18px]" />
                 </button>
               </div>
