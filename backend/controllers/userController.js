@@ -135,6 +135,17 @@ const userController = {
         console.log("err", err);
       });
   },
+  getUserByPhone: async (req, res) => {
+    User.find({phone: req.body.phone})
+    .then((data) => {
+      console.log("got users by phone is: ", req.body.phone);
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log("err", err);
+      res.send([]);
+    });
+  }
 };
 
 module.exports = userController;
