@@ -19,7 +19,7 @@ const Conversation = () => {
 //   }
 // },[conver])
 
-  
+    console.log("currentC",currentC)
   return (
     <div className="flex ">
       <ConversationList setCurrentC={setCurrentC} onlineUser={onlineUser} userId={userId}  />
