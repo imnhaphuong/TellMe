@@ -15,6 +15,7 @@
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
     "dotenv": "^16.0.3",
+    "emoji-picker-react": "^4.4.7",
     "javascript-time-ago": "^2.5.9",
     "moment": "^2.29.4",
     "nodemailer": "^6.8.0",
