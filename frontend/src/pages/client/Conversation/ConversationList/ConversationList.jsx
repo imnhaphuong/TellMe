@@ -11,14 +11,14 @@ import Call from "./Calls/Call";
 import CallTab from "./Calls/CallTab";
 import ContactTab from "./Contacts/ContactTab";
 import { IoMdSearch } from "react-icons/io";
-const ConversationList = ({setCurrentC}) => {
+const ConversationList = ({setCurrentC,onlineUser,userId}) => {
   var settings = {
     dots: false,
     infinite: true,
     slidesToShow: 2,
     slidesToScroll: 2,
     // initialSlide: 4,
-    swipeToSlide: true,
+    swipeToSlide: false,
     autoplay: true,
     speed: 1000,
     autoplaySpeed: 2000,
@@ -77,10 +77,9 @@ const ConversationList = ({setCurrentC}) => {
         </div>
         <div className="online__body mt-6">
           <Slider {...settings}>
-            <OnlineItem />
-            <OnlineItem />
-            <OnlineItem />
-            <OnlineItem />
+            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser}/>
+            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser}/>
+
           </Slider>
         </div>
       </div>

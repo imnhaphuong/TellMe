@@ -16,24 +16,43 @@ import { io } from "socket.io-client";
 export default function Chat(props) {
 
   const [data, setData] = useState([]);
-  const userId = "639c998f7ca070cc12e2f5b6"
+  const userId = props.userId
   // const converId = "639d3cfd84729a3c459544eb"
   const converId = props.currentC
   const [convers, setConvers] = useState([]);
   const [messages, setMessages] = useState("");
   const [newMessage, setNewMessage] = useState("");
-  // const [socket, setSocket] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  // const [onlineUsers, setOnlineUsers] = useState([]);
+
   const scrollRef = useRef();
   const socket = useRef();
   // const {idConvers} = useSelector((state) => state.conversReducer)
   // const converId = conversReducer.idConver
+
+  //connect socket && get message
   useEffect(() => {
     socket.current = io("ws://localhost:8900")
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
   }, [])
+
+  useEffect(() => {
+    arrivalMessage &&
+      convers?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, convers]);
+
   useEffect(() => {
     socket.current.emit("addUser", userId)
     socket.current.on("getUsers", users => {
       console.log(users)
+      props.setOnlineUsers(users)
     })
 
   }, [userId])
@@ -69,13 +88,13 @@ export default function Chat(props) {
       conversationId: converId,
     };
 
-    // const receiverId = convers.members.find(user => user._id !== userId)
+    const receiverId = convers.members.find(user => user._id !== userId)
 
-    // socket.current.emit("sendMessage", {
-    //   senderId: userId,
-    //   receiverId,
-    //   text: newMessage,
-    // });
+    socket.current.emit("sendMessage", {
+      senderId: userId,
+      receiverId,
+      text: newMessage,
+    });
     try {
       const res = await messageApi.sendMessage(message);
       setMessages([...messages, res.data]);

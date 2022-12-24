@@ -6,21 +6,24 @@ import ConversationList from './ConversationList/ConversationList'
 import { useEffect } from 'react';
 import { useState } from 'react';
 const Conversation = () => {
+  const userId = "639c998f7ca070cc12e2f5b6"
   const conver = useSelector((state) => state.conversReducer)
  const  [currentC, setCurrentC] = useState("")
- useEffect(()=>{
-  console.log("conversReducer",conver)
-  if(conver!==undefined){
-    console.log("converId",conver.idConvers)
+ const  [onlineUser, setOnlineUser] = useState("")
 
-  }
-},[conver])
-console.log(currentC)
+//  useEffect(()=>{
+//   console.log("conversReducer",conver)
+//   if(conver!==undefined){
+//     console.log("converId",conver.idConvers)
+
+//   }
+// },[conver])
+
   
   return (
     <div className="flex ">
-      <ConversationList setCurrentC={setCurrentC}/>
-      <Chat currentC={currentC} />
+      <ConversationList setCurrentC={setCurrentC} onlineUser={onlineUser} userId={userId}  />
+      <Chat currentC={currentC} setOnlineUser={setOnlineUser} userId={userId} />
     </div>
   );
 };
