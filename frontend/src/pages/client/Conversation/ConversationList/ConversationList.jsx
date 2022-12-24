@@ -11,7 +11,7 @@ import Call from "./Calls/Call";
 import CallTab from "./Calls/CallTab";
 import ContactTab from "./Contacts/ContactTab";
 import { IoMdSearch } from "react-icons/io";
-const ConversationList = () => {
+const ConversationList = ({setCurrentC}) => {
   var settings = {
     dots: false,
     infinite: true,
@@ -117,7 +117,7 @@ const ConversationList = () => {
           <Contact />
         </ul>
         <div className="tab-content" id="pills-tabContent">
-          <MessageTab />
+          <MessageTab setCurrentC={setCurrentC} />
           <CallTab />
           <ContactTab />
         </div>

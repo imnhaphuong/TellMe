@@ -5,7 +5,7 @@ const initialState = {
     
 }
 export const messageSlice = createSlice({
-    name: 'quest',
+    name: 'message',
     initialState,
     reducers: {
         getMessage: (state, action) => {
@@ -13,6 +13,6 @@ export const messageSlice = createSlice({
         },
     }
 })
-export const {  } = messageSlice.actions
+export const { getMessage } = messageSlice.actions
 
 export default messageSlice.reducer
