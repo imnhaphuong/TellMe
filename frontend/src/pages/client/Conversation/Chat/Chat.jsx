@@ -10,16 +10,34 @@ import { IoMdSend } from "react-icons/io";
 import Message from "components/Message/Message";
 import messageApi from "apis/messageApi";
 import converApi from "apis/converApi";
-import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux'
+import { io } from "socket.io-client";
 
-export default function Chat() {
+export default function Chat(props) {
+
   const [data, setData] = useState([]);
   const userId = "639c998f7ca070cc12e2f5b6"
-  const converId = "639d3cfd84729a3c459544eb"
+  // const converId = "639d3cfd84729a3c459544eb"
+  const converId = props.currentC
   const [convers, setConvers] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState("");
   const [newMessage, setNewMessage] = useState("");
+  // const [socket, setSocket] = useState(null);
+  const scrollRef = useRef();
   const socket = useRef();
+  // const {idConvers} = useSelector((state) => state.conversReducer)
+  // const converId = conversReducer.idConver
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900")
+  }, [])
+  useEffect(() => {
+    socket.current.emit("addUser", userId)
+    socket.current.on("getUsers", users => {
+      console.log(users)
+    })
+
+  }, [userId])
+  
 
   useEffect(() => {
     messageApi
@@ -38,9 +56,12 @@ export default function Chat() {
       .catch((err) => {
         console.log("err", err);
       });
-  }, []);
+
+  }, [converId]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages, converId]);
   const handleSubmit = async (e) => {
-    console.log(newMessage)
     e.preventDefault();
     const message = {
       sender: userId,
@@ -71,7 +92,7 @@ export default function Chat() {
           <div className="contact-detail  ">
             <div className="row">
               <div className="col-5">
-                {
+                {converId ? (
                   convers.map((conver, index) => {
                     const partner = conver.members.find(user => user._id !== userId)
                     return (
@@ -86,7 +107,14 @@ export default function Chat() {
                       </div>
                     )
                   }
-                  )}
+                  )) : (
+                  <div>
+                    <h1>Bắt đầu cuộc trò chuyện ngay</h1>
+                  </div>
+                )
+
+                }
+
 
               </div>
               <div className="col">
@@ -102,10 +130,12 @@ export default function Chat() {
               </div>
             </div>
           </div>
-          <div className="contact-chat">
+          <div className="contact-chat" >
             {data.map((message, index) => {
               return (
-                <Message sender={message.sender} key={index} message={message.content} own={message.sender._id === userId ? userId : ""} />
+                <div key={index} ref={scrollRef}>
+                  <Message createdAt={message.createdAt} sender={message.sender} message={message.content} own={message.sender._id === userId ? userId : ""} />
+                </div>
               )
             })}
           </div>
