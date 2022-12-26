@@ -4,12 +4,14 @@ import axios from 'axios';
 import Welcome from "../header";
 import { useNavigate } from "react-router";
 import { BASE_URL } from "settings/apiConfig";
+import User from "utils/userContext"
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const [userDATA, setUserDATA] = useState({ phone: "", password: "" });
     const [errorMessage, setErrorMessage] = useState();
     const { handleSubmit } = useForm();
+
     return (
         <div className="flex flex-row">
             <div className="w-1/3 mx-10">
@@ -49,14 +51,17 @@ const LoginForm = () => {
                         if (res.data.status === "FAILD") {
                             setErrorMessage(res.data.message)
                         } else {
-                            console.log("USER",res.data)
+                            console.log("USER", res.data)
                             navigate("/")
+                            localStorage.setItem('yourId',  res.data.data.id)
+                            return <User.Provider value={res.data.data.id}></User.Provider> 
                         }
                     }} type="button" className="text-white bg-success rounded-lg border text-sm w-full sm:w-auto px-5 py-2.5 text-center">SIGN IN</button>
                 </form>
             </div>
             <div className="bg-[url('https://d1hjkbq40fs2x4.cloudfront.net/2017-08-21/files/landscape-photography_1645.jpg')] w-screen h-screen bg-cover">
             </div>
+            {}
         </div>
     );
 };

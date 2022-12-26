@@ -5,15 +5,11 @@ const userApi = {
   signUpApi: (user) => {
     return callApi("SignUp", "POST", user);
   },
-  getUserByID: async (handleData) => {
-    await axios
-      .post(`${BASE_URL}/users/id`, { id: localStorage.getItem('yourId') })
-      .then((res) => {
-        handleData(res.data);
-      })
-      .catch((err) => {
-        console.log("Error when get user by id ", err);
-      });
-  },
+  getUserByID:  async (handleData) => {
+    const res = await axios.post(`${BASE_URL}/users/id`, {
+      id: localStorage.getItem("yourId"),
+    });
+    if (res.status === 200) {handleData(res.data)}
+  }
 };
 export default userApi;

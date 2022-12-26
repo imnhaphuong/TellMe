@@ -9,10 +9,19 @@ import {
   AiOutlinePoweroff,
 } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
+import userApi from "apis/userApi";
+import { socket } from "utils/socket"
 
 const Sidebar = () => {
+  const [user, setUser] = useState([])
+
+  useEffect(() => {
+    userApi.getUserByID(setUser)
+    socket.emit('setup', localStorage.getItem('yourId'))
+  }, [])
+
   const [current, setCurrent] = useState(0);
   const menus = [
     {
@@ -69,7 +78,7 @@ const Sidebar = () => {
       <div className="h-screen border scrollbar scroll-smooth overflow-y-scroll w-[95px]">
         <div className="p-5 border-bottom">
           <img
-            src={require("../../../asset/image/avatar.jpg")}
+            src={user.avatar}
             width="50"
             height="50"
             alt=""
@@ -78,7 +87,7 @@ const Sidebar = () => {
         <div className="p-5 ">
           <div>
             <img
-              src={require("../../../asset/image/avatar.jpg")}
+              src={user.avatar}
               width="50"
               height="50"
               className="border-4 border-blue-700 rounded-full"
@@ -89,11 +98,9 @@ const Sidebar = () => {
             {menus.map((menu, index) => (
               <div
                 key={index}
-                className={`rounded-[50%] flex w-[40px] h-[40px] items-center justify-center p-3 my-3 cursor-pointer duration-300 ${
-                  current === index ? "bg-primary" : "bg-light-gray"
-                } hover/item:${
-                  current === index ? "bg-primary" : "bg-dark-gray"
-                }`}
+                className={`rounded-[50%] flex w-[40px] h-[40px] items-center justify-center p-3 my-3 cursor-pointer duration-300 ${current === index ? "bg-primary" : "bg-light-gray"
+                  } hover/item:${current === index ? "bg-primary" : "bg-dark-gray"
+                  }`}
                 onClick={() => {
                   setCurrent(index);
                 }}

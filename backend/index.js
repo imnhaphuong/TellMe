@@ -5,25 +5,6 @@ var app = express();
 app.use(express.json());
 const server = http.createServer(app);
 
-//Config socket.io
-const socketIo = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-  },
-});
-socketIo.on("connection", (socket) => {
-  ///Handle khi có connect từ client tới
-  console.log("New client connected" + socket.id);
-
-  socket.on("sendDataClient", function (data) {
-    // Handle khi có sự kiện tên là sendDataClient từ phía client
-    socketIo.emit("sendDataServer", { data }); // phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
-  });
-  socket.on("disconnect", () => {
-    console.log("Client disconnected"); // Khi client disconnect thì log ra terminal.
-  });
-});
-
 const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");
 const nocache = require("./access-token");
@@ -64,6 +45,36 @@ mongoose.connection.on("connected", () => {
 mongoose.connection.on("error", (err) => {
   console.log("Has an error when connect with Mongo", err);
 });
+
+// ------------------------------------------------------- //
+//Config socket.io
+const socketEvents = require("./events");
+const io = require ("socket.io") (server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("Connected to Socket. New client is " + socket.id);
+
+  //register socket
+  socket.on("setup", (userId) => {
+    socketEvents.register(socket, io, userId)
+    socket.emit("connected", "connected");
+  });
+
+  //send call notif
+  socket.on("calling", (call) => {
+    socketEvents.call(socket, io , call)
+  });
+
+  //user disconnect
+  socket.on("disconnect", () => {
+    socketEvents.disconnect(socket, io);
+  });
+});
+// ------------------------------------------------------- //
 
 server.listen(port, () => {
   console.log(
