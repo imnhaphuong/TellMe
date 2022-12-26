@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Welcome from "../header";
 import { useNavigate } from "react-router";
 import { BASE_URL } from "settings/apiConfig";
-import User from "utils/userContext"
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -54,7 +53,7 @@ const LoginForm = () => {
                             console.log("USER", res.data)
                             navigate("/")
                             localStorage.setItem('yourId',  res.data.data.id)
-                            return <User.Provider value={res.data.data.id}></User.Provider> 
+                            localStorage.setItem('0_glb',  res.data.data.id)
                         }
                     }} type="button" className="text-white bg-success rounded-lg border text-sm w-full sm:w-auto px-5 py-2.5 text-center">SIGN IN</button>
                 </form>

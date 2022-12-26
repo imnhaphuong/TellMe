@@ -6,7 +6,6 @@ import { socket } from "utils/socket";
 import userApi from "apis/userApi"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import User from 'utils/userContext'
 
 export default function ContactTab() {
   const [user, setUser] = useState([])
@@ -66,9 +65,6 @@ export default function ContactTab() {
 
   return (
     <>
-    <User.Consumer>
-      {value => <div>{value}</div>}
-    </User.Consumer>
       <div
         className="tab-pane fade"
         id="pills-contact"
