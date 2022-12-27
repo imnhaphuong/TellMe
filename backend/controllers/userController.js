@@ -2,6 +2,7 @@ const User = require("../models/user");
 const UserOTPVerification = require("../models/userOtpVerification");
 const senOTPVerificationEmail = require("../services/VerificationEmail");
 const bcrypt = require("bcrypt");
+const user = require("../models/user");
 
 const userController = {
   getAllUsers(req, res) {
@@ -37,8 +38,6 @@ const userController = {
         .save()
         .then((data) => {
           senOTPVerificationEmail(data, res)
-          // res.send(data);
-          // console.log(`Create ${req.body.name}'s account successfully`);
         })
         .catch((err) => {
           console.log("err", err);
@@ -73,7 +72,7 @@ const userController = {
             }
             else {
               await User.updateOne({ _id: Userid }, { isVerified: true });
-              await UserOTPVerification.deleteOne({Userid});
+              await UserOTPVerification.deleteOne({ Userid });
               return res.json({
                 status: "VERIFIED",
                 message: `User email verified successfully.`,
@@ -135,16 +134,66 @@ const userController = {
         console.log("err", err);
       });
   },
-  getUserByPhone: async (req, res) => {
-    User.find({phone: req.body.phone})
-    .then((data) => {
-      console.log("got users by phone is: ", req.body.phone);
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log("err", err);
-      res.send([]);
-    });
+  getUserByEmail: async (req, res) => {
+    const UserFind = await User.findOne({ email: req.body.email })
+    if (UserFind) {
+      senOTPVerificationEmail(UserFind, res)
+    } else {
+      return res.json({
+        status: "FAILD",
+        message: `Email chưa được đăng ký`,
+      })
+    }
+  },
+  getUserByEmailOrPhone: async (req, res) => {
+    const find = req.body.find
+    const UserFindPhone = await User.find({ phone: find })
+    if (!UserFindPhone.length) {
+      const UserFindEmail = await user.find({ email: find })
+      if (!UserFindEmail.length) {
+        return res.json({
+          status: "FAILD",
+          message: `Không có người dùng nào`,
+        })
+      } else {
+        console.log("Email", UserFindEmail);
+        return res.json({
+          status: "SUCCESs",
+          data: {
+            email: UserFindEmail[0].email,
+            id: UserFindEmail[0]._id,
+            phone: UserFindEmail[0].phone,
+            name: UserFindEmail[0].name,
+            avatar: UserFindEmail[0].avatar,
+          },
+        })
+      }
+    }
+    else {
+      console.log("Phone", UserFindPhone);
+      return res.json({
+        status: "SUCCESs",
+        data: {
+          email: UserFindPhone[0].email,
+          id: UserFindPhone[0]._id,
+          phone: UserFindPhone[0].phone,
+          name: UserFindPhone[0].name,
+          avatar: UserFindPhone[0].avatar,
+        },
+      })
+    }
+  },
+  updatePassword: async (req, res) => {
+    req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 10);
+    User.findByIdAndUpdate(req.body.id, { password: req.body.newPassword })
+      .then((data) => {
+        console.log("update password success");
+        res.send(data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        res.send([]);
+      });
   }
 };
 
