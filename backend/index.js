@@ -7,6 +7,7 @@ const server = http.createServer(app);
 // const cookieParser = require('cookie-parser');
 // app.use(cookieParser());
 
+
 //Config socket.io
 const socketIo = require("socket.io")(server, {
   cors: {
@@ -35,6 +36,17 @@ const userAPI = require("./routes/userRoutes");
 const messageAPI = require("./routes/messageRoute");
 const conversationAPI = require("./routes/conversationRoute");
 
+//config cors
+const cors = require("cors");
+
+app.use(
+    cors({
+        origin: "*",
+        optionsSuccessStatus: 200,
+    })
+);
+
+
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -43,6 +55,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+//end config cors
 app.get("/", (req, res) => {
   res.send({
     status: "success",
