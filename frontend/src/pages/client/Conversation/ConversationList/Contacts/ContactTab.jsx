@@ -30,8 +30,8 @@ export default function ContactTab() {
       <div className="tab-content">
         <ul className="list p-0">
           {
-            user.hasOwnProperty('contacts') ? user.contacts.map(e => (
-              <li className="blank flex">
+            user.hasOwnProperty('contacts') ? user.contacts.map((e,i) => (
+              <li key={i} className="blank flex">
                 <a className="no-underline flex text-[#223645]" href="#chat">
                   <img className="bg-img" src={e.avatar} alt="avt" />
                   <div className="details">

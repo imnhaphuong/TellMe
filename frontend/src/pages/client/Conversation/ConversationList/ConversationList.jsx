@@ -116,7 +116,7 @@ const ConversationList = ({setCurrentC,onlineUser,userId}) => {
           <Contact />
         </ul>
         <div className="tab-content" id="pills-tabContent">
-          <MessageTab setCurrentC={setCurrentC} />
+          <MessageTab setCurrentC={setCurrentC} currentUserId={userId}/>
           <CallTab />
           <ContactTab />
         </div>

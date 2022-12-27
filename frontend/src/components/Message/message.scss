@@ -15,15 +15,14 @@
             margin-top: 10px;
         }
         .info-message {
-
-
+            overflow-wrap: break-word;
             .messageText {
                 font-size: 14px;
                 font-weight: 500;
                 padding: 10px;
                 border-radius: 20px;
-                background-color: $blue;
-                color: white;
+                background-color: $gray-secondary;
+                color: black;
                 max-width: 300px;
             }
         }
@@ -42,6 +41,15 @@
         .messageImg {
             margin-left: 10px;
             margin-right: 0;
+        }
+        .info-message {
+            overflow-wrap: break-word;
+            .messageText {
+                background-color: $blue;
+                color: white;
+
+
+            }
         }
     }
     .messageBottom {

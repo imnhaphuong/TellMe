@@ -4,11 +4,12 @@ import converApi from "apis/converApi";
 import { useDispatch, useSelector } from 'react-redux'
 import { setConverById } from "stores/slices/conversationSlice";
 
-export default function MessageTab({setCurrentC}) {
+export default function MessageTab({setCurrentC,currentUserId}) {
   const [convers, setConvers] = useState([]);
+  const [active,setActive] = useState(false)
   const dispatch = useDispatch();
 
-  const userId = "639c998f7ca070cc12e2f5b6"
+  const userId = currentUserId
   const showMessage=(id)=>{
     // console.log(id);
     dispatch(setConverById(id))
@@ -24,7 +25,7 @@ export default function MessageTab({setCurrentC}) {
       .catch((err) => {
         console.log("err", err);
       });
-  }, []);
+  }, [userId]);
   return (
     <div
       className="tab-pane fade show active"
@@ -77,13 +78,13 @@ export default function MessageTab({setCurrentC}) {
           tabIndex="0"
         >
           <div className="tab-content">
-            <ul className="list p-0">
+            <ul className="list p-0" >
               {
                 convers.map((conver, index) => {
                   const partner = conver.members.find(user=>user._id!==userId)
                   return (
-                    <li key={conver._id} className="blank flex">
-                      <a className="no-underline flex text-[#223645]" href="#chat" onClick={()=>setCurrentC(conver._id)}>
+                    <li key={conver._id} className={` hover:bg-light-gray blank flex p-[5px] ${active === index && 'bg-light-gray'} `} >
+                      <a className=" no-underline flex text-[#223645] items-center " href="#chat" onClick={()=>{setCurrentC(conver._id); setActive(index) }}>
                         <img className="bg-img" src={partner.avatar} alt="avt" />
                         <div className="details">
                           <h6 className=" truncate">{partner.name}</h6>

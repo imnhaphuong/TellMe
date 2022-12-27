@@ -18,76 +18,81 @@ export default function Chat(props) {
   const [data, setData] = useState([]);
   const userId = props.userId
   // const converId = "639d3cfd84729a3c459544eb"
-  const converId = props.currentC
+  const [converId, setConverId] = useState("");
   const [convers, setConvers] = useState([]);
   const [messages, setMessages] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [showPicker, setShowPicker] = useState(false)
   const [arrivalMessage, setArrivalMessage] = useState(null);
   // const [onlineUsers, setOnlineUsers] = useState([]);
-
-  const scrollRef = useRef();
+  const [partner, setPartner] = useState(null);
+  const scrollRef = useRef(null);
   const socket = useRef();
-  // const {idConvers} = useSelector((state) => state.conversReducer)
-  // const converId = conversReducer.idConver
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages]);
   const onEmojiClick = (emojiObject, event) => {
     setNewMessage(newMessage + emojiObject.emoji);
     setShowPicker(false);
   };
-  console.log("picker", newMessage)
   //connect socket && get message
+  useEffect(() => {
+    setConverId(props.currentC);
+    if (props.currentC !== "") {
+      messageApi
+        .getMessageAPI(props.currentC)
+        .then((result) => {
+          // console.log("converId", converId)
+          setMessages(result.data);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
+
+  }, [props.currentC, messages])
+  useEffect(() => {
+    if (props.currentC !== "") {
+      converApi
+        .getConverByIdAPI(props.currentC)
+        .then((result) => {
+          setConvers(result.data);
+          setPartner(result.data.members.find(user => user._id !== userId))
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
+  }, [props.currentC])
   useEffect(() => {
     socket.current = io("ws://localhost:8900")
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
-        text: data.text,
+        content: data.text,
         createdAt: Date.now(),
       });
     });
   }, [])
 
   useEffect(() => {
+
     arrivalMessage &&
       convers?.members.includes(arrivalMessage.sender) &&
-      setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, convers]);
+      setMessages(pre => [...pre, arrivalMessage]);
 
+  }, [arrivalMessage]);
   useEffect(() => {
     socket.current.emit("addUser", userId)
     socket.current.on("getUsers", users => {
-      console.log(users)
-      props.setOnlineUsers(users)
+      // console.log(users)
+      // props.setOnlineUsers(users)
     })
 
   }, [userId])
 
 
-  useEffect(() => {
-    messageApi
-      .getMessageAPI(converId)
-      .then((result) => {
-        setData(result.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-    converApi
-      .getConverByIdAPI(converId)
-      .then((result) => {
-        console.log("resultresult", result.data)
-
-        setConvers(result.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-
-  }, [converId, messages]);
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages, converId]);
   useEffect(() => {
     const listener = event => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -100,7 +105,7 @@ export default function Chat(props) {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, );
+  },);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const message = {
@@ -109,9 +114,7 @@ export default function Chat(props) {
       conversationId: converId,
     };
     let receiverId;
-    convers.map((item, index) => {
-      receiverId = item.members.find(user => user._id !== userId)._id
-    })
+    receiverId = convers.members.find(user => user._id !== userId)._id
     // console.log("receiverId",receiverId);
     socket.current.emit("sendMessage", {
       senderId: userId,
@@ -137,23 +140,19 @@ export default function Chat(props) {
                 <div className="row">
                   <div className="col-5">
                     {
-                      convers.map((conver, index) => {
-                        const partner = conver.members.find(user => user._id !== userId)
-                        return (
-                          <div key={index} className="media-left flex ">
-                            <div className="avatar-chat">
-                              <img className="bg-img" src={partner.avatar} alt="" />
-                            </div>
-                            <div className="detail-account items-center  ml-3">
-                              <h6 className="font-semibold truncate mt-2">{partner.name}</h6>
-                              <p className="account-active bg-[#3fcc35]">Hoạt động</p>
-                            </div>
+                      partner && (
+                        <div className="media-left flex ">
+                          <div className="avatar-chat">
+                            <img className="bg-img" src={partner.avatar} alt="" />
                           </div>
-                        )
-                      }
+                          <div className="detail-account items-center  ml-3">
+                            <h6 className="font-semibold truncate mt-2">{partner.name}</h6>
+                            <p className="account-active bg-[#3fcc35]">Hoạt động</p>
+                          </div>
+                        </div>
                       )
-
                     }
+
 
 
                   </div>
@@ -171,13 +170,17 @@ export default function Chat(props) {
                 </div>
               </div>
               <div className="contact-chat" >
-                {data.map((message, index) => {
-                  return (
-                    <div key={index} ref={scrollRef}>
-                      <Message createdAt={message.createdAt} sender={message.sender} message={message.content} own={message.sender._id === userId ? userId : ""} />
-                    </div>
-                  )
-                })}
+                {messages &&
+                  messages.map((message, index) => {
+                    console.log("message", message)
+                    return (
+                      <div key={index} ref={scrollRef}>
+                        <Message createdAt={message.createdAt} sender={message.sender} message={message.content} own={message.sender._id === userId ? userId : ""} />
+                      </div>
+                    )
+                  })
+                }
+
               </div>
             </div>
             <div className="message-input  ">
@@ -192,10 +195,11 @@ export default function Chat(props) {
                         <MdInsertEmoticon className=" text-[18px]" />
                       </button>
                       <button className=" border-none text-primary icon-btn  ml-5">
+                        <input type="file" className="file-input" />
                         <BsPlusLg className=" text-[16px]" />
                       </button>
                     </div>
-                    {showPicker && <div className="icon-container"><Picker pickerStyle={{ with: '100%' }} onEmojiClick={onEmojiClick} /></div>}
+                    {showPicker && <div className="icon-container"><Picker pickerStyle={{ with: '100%' }} height={400} onEmojiClick={onEmojiClick} /></div>}
                   </div>
                   <div className="col-7">
                     <div className="input-content">
@@ -223,7 +227,7 @@ export default function Chat(props) {
 
         ) : (
           <div className="scrollbar">
-            <h1>Bắt đầu cuộc trò chuyện ngay</h1>
+            <h1 className="mt-[30px]">Bắt đầu cuộc trò chuyện ngay</h1>
           </div>
         )}
 

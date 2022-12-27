@@ -71,8 +71,20 @@
         .col-4 {
           width: 25%;
           height: 100%;
+          .input-left {
+            .file-input {
+              position: absolute;
+              left: 0px;
+              top: 5px;
+              width: 30px;
+              height: 50px;
+              z-index: 2;
+              cursor: pointer;
+              opacity: 0;
+            }
+          }
           .icon-container {
-            bottom: 480px;
+            bottom: 440px;
             height: 100%;
             position: absolute;
           }

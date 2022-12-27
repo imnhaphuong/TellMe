@@ -49,8 +49,8 @@ const LoginForm = () => {
                         if (res.data.status === "FAILD") {
                             setErrorMessage(res.data.message)
                         } else {
-                            console.log("USER",res.data)
                             navigate("/")
+                            localStorage.setItem('yourId',res.data.data.id)
                         }
                     }} type="button" className="text-white bg-success rounded-lg border text-sm w-full sm:w-auto px-5 py-2.5 text-center">SIGN IN</button>
                 </form>
