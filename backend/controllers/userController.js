@@ -3,6 +3,14 @@ const UserOTPVerification = require("../models/userOtpVerification");
 const senOTPVerificationEmail = require("../services/VerificationEmail");
 const bcrypt = require("bcrypt");
 const user = require("../models/user");
+const authMethod = require("../auth/auth.method")
+const randToken = require("rand-token");
+
+const jwtVariable = {
+  accessTokenSecret: "access-token-secret-example",
+  accessTokenLife: "10m",
+  refreshTokenSize: 100,
+}
 
 const userController = {
   getAllUsers(req, res) {
@@ -109,18 +117,106 @@ const userController = {
             message: `Mật khẩu không đúng`,
           })
         }
+        const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
+        const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+        const accessTokenSize = process.env.ACCESS_TOKEN_SIZE;
+
+        const dataForAccessToken = {
+          id: Usersignin._id,
+        };
+
+        const accessToken = await authMethod.generateToken(
+          dataForAccessToken,
+          accessTokenSecret,
+          accessTokenLife,
+        );
+
+        if (!accessToken) {
+          return res
+            .status(401)
+            .send('Đăng nhập không thành công, vui lòng thử lại.');
+        }
+
+        let refreshToken = randToken.generate(accessTokenSize); // tạo 1 refresh token ngẫu nhiên
+        console.log("USERSIGN",Usersignin);
+        if (!Usersignin.refreshToken) {
+          // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
+          await User.findByIdAndUpdate(Usersignin._id, { refreshToken: refreshToken });
+        } else {
+          // Nếu user này đã có refresh token thì lấy refresh token đó từ database
+          refreshToken = Usersignin.refreshToken;
+        }
         return res.json({
           status: "SUCCES",
           message: `LOGIN SUCCESS`,
           data: {
             phone: req.body.phone,
-            id: Usersignin._id
+            id: Usersignin._id,
+            accessToken,
+            refreshToken
           },
         })
       }
     } catch (error) {
       console.log(error);
     }
+  },
+  async refreshToken(req, res) {
+    // Lấy access token từ header
+	const accessTokenFromHeader = req.headers.x_authorization;
+	if (!accessTokenFromHeader) {
+		return res.status(400).send('Không tìm thấy access token.');
+	}
+    // Lấy refresh token từ body
+    const refreshTokenFromBody = req.body.refreshToken;
+    if (!refreshTokenFromBody) {
+      return res.status(400).send('Không tìm thấy refresh token.');
+    }
+
+    const accessTokenSecret =
+      process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+    const accessTokenLife =
+      process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
+
+    // Decode access token đó
+    const decoded = await authMethod.decodeToken(
+      accessTokenFromHeader,
+      accessTokenSecret,
+    );
+    if (!decoded) {
+      return res.status(400).send('Access token không hợp lệ.');
+    }
+
+    const id = decoded.payload.id; // Lấy id từ payload
+    console.log("id", id);
+    const user = await User.findById(id);
+    console.log("USER",user);
+    if (!user) {
+      return res.status(401).send('User không tồn tại.');
+    }
+
+    if (refreshTokenFromBody !== user.refreshToken) {
+      return res.status(400).send('Refresh token không hợp lệ.');
+    }
+
+    // Tạo access token mới
+    const dataForAccessToken = {
+      id,
+    };
+
+    const accessToken = await authMethod.generateToken(
+      dataForAccessToken,
+      accessTokenSecret,
+      accessTokenLife,
+    );
+    if (!accessToken) {
+      return res
+        .status(400)
+        .send('Tạo access token không thành công, vui lòng thử lại.');
+    }
+    return res.json({
+      accessToken,
+    });
   },
   //Get by id
   getUserByID: async (req, res) => {

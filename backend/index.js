@@ -1,5 +1,9 @@
-require("dotenv").config();
 var express = require("express");
+const createError = require('http-errors');
+require('express-async-errors');
+require("dotenv").config();
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const http = require("http");
 var app = express();
 app.use(express.json());
@@ -39,13 +43,21 @@ const conversationAPI = require("./routes/conversationRoute");
 //config cors
 const cors = require("cors");
 
+const authRouter = require('./routes/userRoutes');
+app.use(morgan('dev'));
 app.use(
-    cors({
-        origin: "*",
-        optionsSuccessStatus: 200,
-    })
+  bodyParser.urlencoded({
+    extended: false,
+  }),
 );
+app.use(bodyParser.json());
 
+app.use(
+  cors({
+    origin: "*",
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -65,6 +77,7 @@ app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
+app.use('/auth', authRouter);
 
 //Connect mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
