@@ -71,19 +71,19 @@ const LoginForm = () => {
 	 */
 	const cofirmEmail = async (email) => {
 		if (email.email !== "") {
-			const res = await axios({
-				method: 'post',
-				url: `${BASE_URL}/users/email`,
-				data: email
+			await axios.post(`${BASE_URL}/users/email`,email).then(res=>{
+				if (res.data.status === "FAILD") {
+					throw "Email chưa được đăng ký"
+				} else {
+					//Gọi modal để xác nhận email 
+					setId(res.data.data.Userid)
+					setModalVerifyOTP(true)
+					setModalFogotPassword(false)
+				}
+			}).catch(err=>{
+				throw err
 			});
-			if (res.data.status === "FAILD") {
-				throw "Email chưa được đăng ký"
-			} else {
-				//Gọi modal để xác nhận email 
-				setId(res.data.data.Userid)
-				setModalVerifyOTP(true)
-				setModalFogotPassword(false)
-			}
+
 		} else {
 			throw "Vui lòng nhập địa chỉ email"
 		}
