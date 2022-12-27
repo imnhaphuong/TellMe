@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./MessageTab.scss";
 import converApi from "apis/converApi";
-export default function MessageTab() {
+import { useDispatch, useSelector } from 'react-redux'
+import { setConverById } from "stores/slices/conversationSlice";
+
+export default function MessageTab({setCurrentC}) {
   const [convers, setConvers] = useState([]);
+  const dispatch = useDispatch();
+
   const userId = "639c998f7ca070cc12e2f5b6"
-  const showMessage=()=>{
-    console.log("show message");
+  const showMessage=(id)=>{
+    // console.log(id);
+    dispatch(setConverById(id))
+    
   }
+  
   useEffect(() => {
     converApi
       .getConverByUserAPI(userId)
@@ -75,7 +83,7 @@ export default function MessageTab() {
                   const partner = conver.members.find(user=>user._id!==userId)
                   return (
                     <li key={conver._id} className="blank flex">
-                      <a className="no-underline flex text-[#223645]" href="#chat" onClick={()=>showMessage()}>
+                      <a className="no-underline flex text-[#223645]" href="#chat" onClick={()=>setCurrentC(conver._id)}>
                         <img className="bg-img" src={partner.avatar} alt="avt" />
                         <div className="details">
                           <h6 className=" truncate">{partner.name}</h6>

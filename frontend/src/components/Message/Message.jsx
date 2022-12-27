@@ -3,7 +3,8 @@ import { BsThreeDots } from "react-icons/bs";
 import TimeAgo from 'timeago-react';
 import * as timeago from 'timeago.js';
 import vi from 'timeago.js/lib/lang/vi';
-export default function Message({ message, own, sender }) {
+
+export default function Message({ message, own, sender, createdAt }) {
   timeago.register('vi', vi);
   return (
     <div className={own ? "message own" : "message"}>
@@ -15,13 +16,9 @@ export default function Message({ message, own, sender }) {
         />
         <div className="info-message mt-2">
           <p className="messageText mb-0">{message}</p>
-          <span className="messageBottom">
-            <TimeAgo
-              datetime={message.createdAt}
-              locale='vi'
-            />
-            </span>
+
         </div>
+
         <div className={own ? "dropstart mr-2 mt-2" : "dropend ml-2 mt-2"}>
           <button
             className="border-none bg-none icon-btn   bdropdown-toggle"
@@ -43,6 +40,15 @@ export default function Message({ message, own, sender }) {
             </li>
           </ul>
         </div>
+      </div>
+      <div className="info-message">
+        <span className="messageBottom">
+
+          <TimeAgo
+            datetime={createdAt}
+            locale='vi'
+          />
+        </span>
       </div>
     </div>
   );

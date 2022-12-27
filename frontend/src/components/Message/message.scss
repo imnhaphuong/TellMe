@@ -15,10 +15,7 @@
             margin-top: 10px;
         }
         .info-message {
-            .messageBottom {
-                font-size: 12px;
-                margin-left: 5px;
-            }
+
 
             .messageText {
                 font-size: 14px;
@@ -33,6 +30,10 @@
         
         
     }
+    .messageBottom {
+        font-size: 12px;
+        margin-left: 60px;
+    }
 }
 .message.own {
     align-items: flex-end;
@@ -42,6 +43,10 @@
             margin-left: 10px;
             margin-right: 0;
         }
+    }
+    .messageBottom {
+        font-size: 12px;
+        margin-right: 50px;
     }
 }
 
