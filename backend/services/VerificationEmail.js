@@ -20,7 +20,6 @@ var transporter = nodemailer.createTransport({ // config mail server
 const senOTPVerificationEmail = async ({ _id, email }, res) => {
     try {
         const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
-
         //email option
         const mailOption = {
             from: 'tellme022@hotmail.com',
@@ -30,6 +29,7 @@ const senOTPVerificationEmail = async ({ _id, email }, res) => {
             Please help me turn off the “Use only SMS for confirming transfer of funds” and “Use only SMS to confirm the request for withdrawal”.　
             <p> Enter <b>${otp}</b> in the app to verify your email address.　</p>　Thank’s `
         };
+
         //hash the otp 
         const saltRounds = 10;
         const hashedOTP = await bcrypt.hash(otp, saltRounds);
@@ -39,6 +39,7 @@ const senOTPVerificationEmail = async ({ _id, email }, res) => {
             createdAt: Date.now(),
             expireAt: Date.now() + 3600000,
         });
+
         //save otp record 
         const data = await newOTPVerification.save();
         await transporter.sendMail(mailOption);
@@ -54,10 +55,10 @@ const senOTPVerificationEmail = async ({ _id, email }, res) => {
         //return data
     } catch (error) {
         console.log(error)
-        return res.json({
-            status: "FAILED",
-            message: error.message,
-        });
+        // return res.json({
+        //     status: "FAILED",
+        //     message: error.message,
+        // });
     }
 }
 module.exports = senOTPVerificationEmail;
