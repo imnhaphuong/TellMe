@@ -11,9 +11,13 @@ import {
 import { MdMessage } from "react-icons/md";
 import { memo, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
+import { useSelector } from "react-redux";
+
 
 const Sidebar = () => {
   const [current, setCurrent] = useState(0);
+  const { user } = useSelector(state => state.userReducer);
+  console.log("USER", user);
   const menus = [
     {
       title: "Message",

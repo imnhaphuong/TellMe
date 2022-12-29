@@ -5,12 +5,19 @@ import { FiVideo } from "react-icons/fi";
 import "./ContactTab.scss";
 import userApi from "apis/userApi"
 
-export default function ContactTab() {
+export default function ContactTab(props) {
   const [user, setUser] = useState([])
+  const [listUser, setListUser] = useState()
   useEffect(() => {
     userApi.getUserByID(setUser)
-    console.log(user);
   }, [])
+  useEffect(() => {
+    const featchData = async () => {
+      await userApi.searchUser(props.keyWord);
+    }
+    featchData()
+  }, [props.keyWord])
+
   const popUp = (channelName, partner) => {
     const width = 1000
     const height = 800
@@ -44,7 +51,7 @@ export default function ContactTab() {
                   <button className=" border-none icon-btn text-primary mr-2">
                     <BsTelephone className="left-[25%] top-[25%] absolute" />
                   </button>
-                  <button className="icon-btn border-none text-[18px]  text-success" onClick={() => popUp((user._id+e._id), e.name)}>
+                  <button className="icon-btn border-none text-[18px]  text-success" onClick={() => popUp((user._id + e._id), e.name)}>
                     <FiVideo className=" left-[25%] top-[25%] absolute" />
                   </button>
                 </div>

@@ -15,5 +15,8 @@ const userApi = {
         console.log("Error when get user by id ", err);
       });
   },
+  searchUser: async (keyWord) => {
+    return await axios.post(`${BASE_URL}/users/search`, { find: keyWord, userId: localStorage.getItem('yourId') })
+  }
 };
 export default userApi;

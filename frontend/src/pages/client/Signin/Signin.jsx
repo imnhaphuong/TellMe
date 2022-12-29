@@ -7,10 +7,13 @@ import { BASE_URL } from "settings/apiConfig";
 import ForgotPassword from "components/Modal/ForgotPassword";
 import VerifyOTP from "components/Modal/VerifyOTP";
 import ChangePassword from "components/Modal/ChangePassword";
+import authService from "services/auth.service";
+import { useDispatch } from "react-redux";
+import {signin} from "stores/slices/userSlice";
 
 const LoginForm = () => {
 	const navigate = useNavigate();
-
+	const dispatch = useDispatch();
 	const [userData, setUserData] = useState({ phone: "", password: "", remember: false });
 	const [errorMessageSignIn, setErrorMessageSignIn] = useState();
 	const [modalFogotPassword, setModalFogotPassword] = useState(false);
@@ -50,28 +53,38 @@ const LoginForm = () => {
 	/**
 	 * Đăng nhập
 	 */
-	const signIn = async () => {
-		if (userData.phone || userData.password !== "") {
-			const res = await axios({
-				method: 'post',
-				url: `${BASE_URL}/users/signin`,
-				data: userData
-			});
+	const signIn = () => {
+		authService.signin(userData.phone, userData.password).then(res => {
 			if (res.data.status === "FAILD") {
 				setErrorMessageSignIn(res.data.message)
 			} else {
+				console.log("DATA",res.data);
+				dispatch(signin(res.data));
 				navigate("/")
 			}
-		} else {
-			setErrorMessageSignIn("Vui lòng nhập đầy đủ thông tin")
-		}
+		});
+
+		// if (userData.phone || userData.password !== "") {
+		// 	const res = await axios({
+		// 		method: 'post',
+		// 		url: `${BASE_URL}/users/signin`,
+		// 		data: userData
+		// 	});
+		// 	if (res.data.status === "FAILD") {
+		// 		setErrorMessageSignIn(res.data.message)
+		// 	} else {
+		// 		navigate("/")
+		// 	}
+		// } else {
+		// 	setErrorMessageSignIn("Vui lòng nhập đầy đủ thông tin")
+		// }
 	}
 	/**
 	 * Xác nhận email người dùng
 	 */
 	const cofirmEmail = async (email) => {
 		if (email.email !== "") {
-			await axios.post(`${BASE_URL}/users/email`,email).then(res=>{
+			await axios.post(`${BASE_URL}/users/email`, email).then(res => {
 				if (res.data.status === "FAILD") {
 					throw "Email chưa được đăng ký"
 				} else {
@@ -80,7 +93,7 @@ const LoginForm = () => {
 					setModalVerifyOTP(true)
 					setModalFogotPassword(false)
 				}
-			}).catch(err=>{
+			}).catch(err => {
 				throw err
 			});
 
@@ -125,7 +138,7 @@ const LoginForm = () => {
 					setModalChangePassword(false)
 				}
 			} else {
-			throw "Mật khẩu không khớp"
+				throw "Mật khẩu không khớp"
 			}
 		} else {
 			throw "Vui lòng nhập đầy đủ thông tin"
