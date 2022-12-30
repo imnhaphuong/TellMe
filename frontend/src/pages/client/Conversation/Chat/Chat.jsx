@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { BsTelephoneFill } from "react-icons/bs";
 import { BsFillCameraVideoFill } from "react-icons/bs";
@@ -25,14 +25,14 @@ export default function Chat(props) {
   const [isLoading, setIsLoading] = useState(false)
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [partner, setPartner] = useState(null);
+  const [isOnline, setIsOnline] = useState(false)
+  const [onlUser, setOnlUser] = useState([])
+
   const scrollRef = useRef(null);
   const socket = useRef();
   const [files, setFiles] = useState([])
   const [filesId, setFilesId] = useState([])
-  //scroll to bottom
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages, props.currentC]);
+
   const onEmojiClick = (emojiObject, event) => {
     setNewMessage(newMessage + emojiObject.emoji);
     setShowPicker(false);
@@ -55,6 +55,7 @@ export default function Chat(props) {
       props.setOnlineUser(
         users
       )
+      setOnlUser(users);
     })
   }, [userId])
   useEffect(() => {
@@ -95,7 +96,11 @@ export default function Chat(props) {
       setMessages(pre => [...pre, arrivalMessage]);
 
   }, [arrivalMessage]);
-
+  //scroll to bottom
+  useEffect(() => {
+    console.log("scroll",messages)
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages]);
   //enterKey
   useEffect(() => {
     const listener = event => {
@@ -206,7 +211,13 @@ export default function Chat(props) {
                           </div>
                           <div className="detail-account items-center  ml-3">
                             <h6 className="font-semibold truncate mt-2">{partner.name}</h6>
-                            <p className="account-active bg-[#3fcc35]">Hoạt động</p>
+                            {
+                              onlUser.find(user => user.userId === partner._id) && partner._id === onlUser.find(user => user.userId === partner._id).userId ? (
+                                <p className="account-active bg-[#3fcc35]">Hoạt động</p>
+                              ) : (
+                                <p className="account-active bg-danger">Không hoạt động</p>
+                              )
+                            }
                           </div>
                         </div>
                       )

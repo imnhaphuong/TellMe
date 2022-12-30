@@ -91,16 +91,6 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
         }
         console.log("fonline", fOnline)
       })
-      // for (let index = 0; index < onlineUser.length; index++) {
-      //   for (let i = 0; i < friends.length; i++) {
-      //     if(onlineUser[index].userId === friends[i]._id) {
-
-      //     }
-
-      //   }
-
-
-      // }
     }
 
   }, [userId, onlineUser])
@@ -123,7 +113,7 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
               <Slider {...settings}>
                 {
                   onlFriends.map((f, i) => (
-                    <OnlineItem key={i} name={f.name} avt={f.avatar} />
+                    <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
                   ))
                 }
 

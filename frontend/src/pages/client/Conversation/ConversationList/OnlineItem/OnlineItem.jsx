@@ -1,14 +1,11 @@
-// import avt from "../../../assets/images/person-1.jpg";
-import { useState } from 'react';
 import './OnlineItem.scss';
-const OnlineItem = ({ name, avt, key }) => {
-  console.log(name)
+const OnlineItem = ({ name, avt, keyIndex }) => {
   return (
-    <div key={key} className="owl-item font-worksans">
+    <div key={keyIndex} className="owl-item font-worksans">
       <div className="item">
-        <span class="flex absolute z-[1000] h-3 w-3">
-          <span class="animate-ping absolute z-[1000] top-[3px] inline-flex rounded-full h-3 w-3 bg-success"></span>
-          <span class="relative  inline-flex top-[3px] rounded-full h-3 w-3 bg-success"></span>
+        <span className="flex absolute z-[1000] h-3 w-3">
+          <span className="animate-ping absolute z-[1000] top-[3px] inline-flex rounded-full h-3 w-3 bg-success"></span>
+          <span className="relative  inline-flex top-[3px] rounded-full h-3 w-3 bg-success"></span>
         </span>
         <div className="item-info">
           <img className="online-item" src={avt} alt={name} />

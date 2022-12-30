@@ -12,14 +12,6 @@ const Conversation = () => {
   const [currentC, setCurrentC] = useState("")
   const [onlineUser, setOnlineUser] = useState([])
 
-  //  useEffect(()=>{
-  //   console.log("conversReducer",conver)
-  //   if(conver!==undefined){
-  //     console.log("converId",conver.idConvers)
-
-  //   }
-  // },[conver])
-
   console.log("currentC", currentC)
   return (
     <div className="flex ">
