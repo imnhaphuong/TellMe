@@ -5,6 +5,7 @@ var app = express();
 app.use(express.json());
 const server = http.createServer(app);
 
+
 //Config socket.io
 const socketIo = require("socket.io")(server, {
   cors: {
@@ -27,12 +28,20 @@ socketIo.on("connection", (socket) => {
 const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");
 const nocache = require("./access-token");
+// gridfs
+const multer = require("multer");
+const {GridFsStorage} = require("multer-gridfs-storage")
+const Grid = require("gridfs-stream")
+const methodOverride = require("method-override")
+const bodyParser = require('body-parser');
+const path = require('path');
+const crypto = require('crypto');
 //call API
 const generateAccessToken = require("./access-token");
 const userAPI = require("./routes/userRoutes");
 const messageAPI = require("./routes/messageRoute");
 const conversationAPI = require("./routes/conversationRoute");
-
+const fileRouter = require('./routes/fileRoute');
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -50,13 +59,40 @@ app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
-
+//middleware
+app.use(methodOverride('_method'));
+app.use(bodyParser.json());
+app.set('view engine','ejs')
 //Connect mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+
+
+//create storage emgie
+const storage = new GridFsStorage({
+  url: mongoUri,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+const upload = multer({ storage });
+app.use('/api/files',fileRouter(upload));
 //Check connection
 mongoose.connection.on("connected", () => {
   console.log("Yehhh, congratulation! Connected with Mongo");

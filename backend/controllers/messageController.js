@@ -1,4 +1,5 @@
 const Message = require("../models/message");
+const User = require("../models/user");
 
 const messageController = {
   getAllMessages(req, res) {
@@ -14,6 +15,7 @@ const messageController = {
   },
   sendMess: async (req, res) => {
     const newMessage = new Message(req.body);
+    console.log(req.body)
     try {
       const savedMessage = await newMessage.save();
       res.status(200).json(savedMessage);
@@ -25,13 +27,12 @@ const messageController = {
     try {
       const messages = await Message.find({
         conversationId: req.params.conversationId,
-      }).populate('sender').populate('conversationId');
+      }).populate('sender').populate('conversationId').populate('filesId');
       res.status(200).json(messages);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-
 };
 
 module.exports = messageController;
