@@ -5,15 +5,16 @@
         .blank {
             position: relative;
             margin:3px 0;
+            align-content: center;
+            border-radius: 10px;
+            padding: 5px;
+            // background-color: #000;
             .details {
                 margin-left: 10px;
                 width: 120px;
                 h6 {
                     padding-top: 8px;
                     max-width: 170px;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
                 }
             }
             .date-status {
@@ -21,7 +22,9 @@
                 right: 0;
                 bottom: 0px;
                 text-align: right;
+                margin-right: 10px;
             }
         }
+
     }
 }
