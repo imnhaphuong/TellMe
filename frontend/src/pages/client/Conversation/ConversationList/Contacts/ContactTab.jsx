@@ -40,7 +40,7 @@ export default function ContactTab() {
   useEffect(() => {
     // getUser()
     console.log(socket);
-    userApi.getUserByID(setUser);
+    userApi.getCurrentUser(setUser);
     //check connect
     socket.on("connected", () => setSocketConnected(true));
     console.log("connect socket ", socketConnected);

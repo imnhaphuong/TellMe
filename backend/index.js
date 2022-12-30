@@ -1,9 +1,16 @@
+require('express-async-errors');
 require("dotenv").config();
 var express = require("express");
+const createError = require('http-errors');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const http = require("http");
 var app = express();
 app.use(express.json());
 const server = http.createServer(app);
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 
 const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");
@@ -14,6 +21,26 @@ const userAPI = require("./routes/userRoutes");
 const messageAPI = require("./routes/messageRoute");
 const conversationAPI = require("./routes/conversationRoute");
 
+//config cors
+const cors = require("cors");
+
+const authRouter = require('./routes/userRoutes');
+app.use(morgan('dev'));
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  }),
+);
+app.use(bodyParser.json());
+
+app.use(
+  cors({
+    origin: "*",
+    optionsSuccessStatus: 200,
+    credentials: false,
+  })
+);
+
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -22,6 +49,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+//end config cors
 app.get("/", (req, res) => {
   res.send({
     status: "success",
@@ -32,6 +60,7 @@ app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
+app.use('/auth', authRouter);
 
 //Connect mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;

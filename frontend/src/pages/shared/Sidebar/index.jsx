@@ -13,16 +13,21 @@ import { memo, useEffect, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
 import userApi from "apis/userApi";
 import { socket } from "utils/socket"
+import { useSelector } from "react-redux";
+import SignOutModal from "components/Modal/SignOut";
 
 const Sidebar = () => {
   const [user, setUser] = useState([])
+  const [singOutModal, setSingOutModal] = useState(true)
 
   useEffect(() => {
-    userApi.getUserByID(setUser)
+    userApi.getCurrentUser(setUser)
+  console.log("USER", user);
     socket.emit('setup', localStorage.getItem('yourId'))
   }, [])
 
   const [current, setCurrent] = useState(0);
+  // const { user } = useSelector(state => state.userReducer);
   const menus = [
     {
       title: "Message",
@@ -69,7 +74,7 @@ const Sidebar = () => {
     {
       title: "Signout",
       icon: <AiOutlinePoweroff />,
-      page: <span>Signout</span>,
+      page: <SignOutModal onCloseModal={setSingOutModal}/>,
       selectedIcon: <AiOutlinePoweroff className="text-white " />,
     },
   ];

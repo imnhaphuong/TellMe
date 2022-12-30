@@ -1,5 +1,4 @@
 import { hashMD5 } from 'pages/shared/Hash';
-import Popout from 'react-popout'
 
 export default function CallWindow(status, senderId, senderName, receiverId, receiverName, nameInTitle) {
     const channelName = senderId + receiverId
