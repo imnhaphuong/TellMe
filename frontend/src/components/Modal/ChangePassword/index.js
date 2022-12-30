@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function ChangePassword(props) {
 	const [newPassword, setNewPassword] = useState({ newPassword: "", repeatPassword: "" });
 	const [errorMessage, setErrorMessage] = useState();
-	
+
 	const btnConfirm = async () => {
 		try {
 			await props.confirmPassword(newPassword)
@@ -22,20 +22,20 @@ function ChangePassword(props) {
 								<div>
 									{errorMessage &&
 										<span className="text-error text-sm">{errorMessage}</span>}
-									<label htmlFor="otp" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu mới</label>
+									<label htmlFor="newPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu mới</label>
 									<input onChange={(e) => {
 										setNewPassword(prev => {
 											return { ...prev, newPassword: e.target.value }
 										})
-									}} type="password" name="otp" id="otp" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+									}} type="password" name="newPassword" id="newPassword" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
 								</div>
 								<div>
-									<label htmlFor="otp" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nhập lại mật khẩu</label>
+									<label htmlFor="repeatPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nhập lại mật khẩu</label>
 									<input onChange={(e) => {
 										setNewPassword(prev => {
 											return { ...prev, repeatPassword: e.target.value }
 										})
-									}} type="password" name="otp" id="otp" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+									}} type="password" name="repeatPassword" id="repeatPassword" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
 								</div>
 								<div className="flex">
 									<button onClick={btnConfirm} type="button" className="w-full text-white bg-success border font-medium rounded-lg text-sm px-5 py-2.5 text-center">Confirm</button>

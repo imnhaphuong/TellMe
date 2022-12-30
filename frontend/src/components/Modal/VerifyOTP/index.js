@@ -10,24 +10,25 @@ function VerifyOTP(props) {
     /**
      * Kiểm tra request là từ màn hình nào
      */
-    if (props.method === "SignUp") {
+    if (props.method == "SignUp") {
       await setOtpData(prev => {
         return { ...prev, Userid: props.UserID }
       })
-      console.log("otpData", otpData);
-
     } else {
       await setOtpData(prev => {
         return { ...prev, Userid: props.UserId }
       })
+      console.log("DATA", otpData);
     }
     try {
       await props.cofirmOTP({
-        Userid: props.UserID,
+        Userid: otpData.Userid,
         otp: otpData.otp
       })
+      console.log("DATA", otpData);
     } catch (error) {
-      setErrorMessage(error)
+      setErrorMessage(error);
+      console.log("DATA", otpData);
     }
   }
   return (

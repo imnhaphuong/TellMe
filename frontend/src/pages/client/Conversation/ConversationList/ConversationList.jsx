@@ -11,7 +11,11 @@ import Call from "./Calls/Call";
 import CallTab from "./Calls/CallTab";
 import ContactTab from "./Contacts/ContactTab";
 import { IoMdSearch } from "react-icons/io";
-const ConversationList = ({setCurrentC,onlineUser,userId}) => {
+import { useState, useTransition } from "react";
+import axios from "axios";
+import { BASE_URL } from "settings/apiConfig";
+
+const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
   var settings = {
     dots: false,
     infinite: true,
@@ -69,6 +73,15 @@ const ConversationList = ({setCurrentC,onlineUser,userId}) => {
       },
     ],
   };
+
+  const [isPending,startTransition] = useTransition()
+  const [keyWord, setKeyWord] = useState("");
+  const onChangeKeyWord = (e) => {
+    startTransition(async () =>{
+      setKeyWord(e.target.value)
+    })
+  }
+
   return (
     <div className="conversation__list font-worksans h-screen ">
       <div className="online__list ">
@@ -77,8 +90,8 @@ const ConversationList = ({setCurrentC,onlineUser,userId}) => {
         </div>
         <div className="online__body mt-6">
           <Slider {...settings}>
-            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser}/>
-            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser}/>
+            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser} />
+            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser} />
 
           </Slider>
         </div>
@@ -102,6 +115,7 @@ const ConversationList = ({setCurrentC,onlineUser,userId}) => {
                 placeholder="Tìm kiếm"
                 type="text"
                 name="search"
+                onChange={onChangeKeyWord}
               />
             </label>
           </div>
@@ -118,7 +132,7 @@ const ConversationList = ({setCurrentC,onlineUser,userId}) => {
         <div className="tab-content" id="pills-tabContent">
           <MessageTab setCurrentC={setCurrentC} />
           <CallTab />
-          <ContactTab />
+          <ContactTab keyWord={keyWord} />
         </div>
       </div>
     </div>
