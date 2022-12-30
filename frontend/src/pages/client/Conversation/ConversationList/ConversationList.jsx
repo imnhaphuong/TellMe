@@ -74,7 +74,7 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
     ],
   };
 
-  const [isPending,startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition()
   const [keyWord, setKeyWord] = useState("");
   const onChangeKeyWord = (e) => {
     startTransition(async () =>{

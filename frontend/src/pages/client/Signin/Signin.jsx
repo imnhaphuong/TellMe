@@ -66,8 +66,8 @@ const LoginForm = () => {
 					console.log("DATA", res.data);
 					dispatch(signin(res.data));
 					navigate("/")
-					localStorage.setItem('yourId',  res.data.data.id)
-					localStorage.setItem('0_glb',  res.data.data.id)
+					localStorage.setItem('yourId',  res.data.id)
+					localStorage.setItem('0_glb',  res.data.id)
 				}
 			});
 		}

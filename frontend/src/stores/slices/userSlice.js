@@ -14,7 +14,6 @@ export const userSlice = createSlice({
     //       return{...state,accessToken:action.payload.accessToken,refreshToken:action.payload.refreshToken}
     // },
     signin: (state,action) =>{
-      console.log(action.payload);
       state.user = action.payload
     },
     checkLogin: (state,action) =>{
