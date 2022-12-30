@@ -18,12 +18,8 @@ const IncommingCall = () => {
     }
     //loader
     useEffect(() => {
-        console.log(socket);
-        socket.on("connected", () => setSocketConnected(true));
-        console.log("connect socket ", socketConnected);
-    
         ringtone.autoplay = true;
-        ringtone.muted = true
+        ringtone.muted = false
         ringtone.addEventListener("canplaythrough", () => {
             ringtone.play()
         });
@@ -60,18 +56,25 @@ const IncommingCall = () => {
             <h5 className="pt-2">{sender.name}</h5>
             <h6 id="loader" className="p-5">Cuộc gọi đến</h6>
             <div className="flex flex-row">
-                <button
-                    className="bg-green rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-yellow border-none mx-3"
-                    onClick={() => stop()} title="Chấp nhận"
-                >
-                    <CallIcon />
-                </button>
-                <button
-                    className="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange border-none mx-3"
-                    onClick={() => decline()} title="Từ chối"
-                >
-                    <CallEndIcon />
-                </button>
+                <div className="flex flex-column mx-3 justify-center items-center">
+                    <button
+                        className="bg-success rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-light_green border-none"
+                        onClick={() => stop()} title="Chấp nhận"
+                    >
+                        <CallIcon />
+                    </button>
+                    <p className="text-sm font-semibold text-gray">Chấp nhận</p>
+                </div>
+                
+                <div className="flex flex-column mx-3 justify-center items-center">
+                    <button
+                        className="bg-danger rounded-full md:w-12 md:h-12 w-10 h-10 drop-shadow-md hover:bg-orange border-none"
+                        onClick={() => decline()} title="Từ chối"
+                    >
+                        <CallEndIcon />
+                    </button>
+                    <p className="text-sm font-semibold text-gray">Từ chối</p>
+                </div>
             </div>
         </div>
     )

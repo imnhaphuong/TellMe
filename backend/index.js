@@ -58,11 +58,18 @@ const io = require ("socket.io") (server, {
 
 io.on("connection", (socket) => {
   console.log("Connected to Socket. New client is " + socket.id);
+  socket.on('userConnected', (uid) => {
+    socket.join (uid)
+    io.to(uid).emit("connected", uid);
+  });
+  socket.on('userDisconnected', (uid) => {
+    socket.leave(uid)
+    io.to(uid).emit("leave", uid);
+  });
 
   //register socket
   socket.on("setup", (userId) => {
     socketEvents.register(socket, io, userId)
-    socket.emit("connected", "connected");
   });
 
   //send call notif

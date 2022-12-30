@@ -24,16 +24,16 @@ export default function ContactTab() {
   const [socketConnected, setSocketConnected] = useState(false);
 
   const callFailed = (message) =>
-    toast.warn( message, {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      },
+    toast.warn(message, {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    },
       { containerId: "call-failed" }
     );
 
@@ -68,7 +68,7 @@ export default function ContactTab() {
         //007
         CallWindow('007', call.sender, call.senderName, call.receiver, call.receiverName, call.receiverName)
       } else if (call.status === "DECLINE") {
-        callFailed(`Không thể kết nối với ${call.receiverName} ❌`);
+        // callFailed(`Không thể kết nối với ${call.receiverName} ❌`);
       }
     });
   }, []);

@@ -53,7 +53,8 @@ const socketEvents = {
     call.status = 'DECLINE'
     setIsCalling(call.sender, 'EMPTY', '')
     setIsCalling(call.receiver, 'EMPTY', '')
-    io.to(sender.socket).emit("decline", call);
+    io.to(call.sender).emit("decline", call);
+    io.to(sender.socket).emit("call-status", call);
   },
 
   disconnect: (socket, io) => {
