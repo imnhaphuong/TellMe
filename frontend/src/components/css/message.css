@@ -1,0 +1,65 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.message .messageTop {
+  display: flex;
+}
+
+.message .messageTop .messageImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.message .messageTop .info-message {
+  overflow-wrap: break-word;
+}
+
+.message .messageTop .info-message .messageText {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #eff1f2;
+  color: black;
+  max-width: 300px;
+}
+
+.message .messageBottom {
+  font-size: 12px;
+  margin-left: 60px;
+}
+
+.message.own {
+  align-items: flex-end;
+}
+
+.message.own .messageTop {
+  flex-direction: row-reverse;
+}
+
+.message.own .messageTop .messageImg {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.message.own .messageTop .info-message {
+  overflow-wrap: break-word;
+}
+
+.message.own .messageTop .info-message .messageText {
+  background-color: #1c9dea;
+  color: white;
+}
+
+.message.own .messageBottom {
+  font-size: 12px;
+  margin-right: 50px;
+}
+/*# sourceMappingURL=message.css.map */

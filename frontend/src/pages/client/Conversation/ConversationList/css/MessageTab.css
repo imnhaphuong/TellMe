@@ -1,0 +1,31 @@
+.tab-pane .tab-content {
+  border-color: #1c9dea;
+  padding-right: 3px;
+}
+
+.tab-pane .tab-content .blank {
+  position: relative;
+  margin: 3px 0;
+  align-content: center;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.tab-pane .tab-content .blank .details {
+  margin-left: 10px;
+  width: 120px;
+}
+
+.tab-pane .tab-content .blank .details h6 {
+  padding-top: 8px;
+  max-width: 170px;
+}
+
+.tab-pane .tab-content .blank .date-status {
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  text-align: right;
+  margin-right: 10px;
+}
+/*# sourceMappingURL=MessageTab.css.map */

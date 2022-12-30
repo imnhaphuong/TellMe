@@ -16,18 +16,17 @@
         }
         .info-message {
             overflow-wrap: break-word;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 20px;
+            background-color: $gray-secondary;
+            max-width: 300px;
             .messageText {
-                font-size: 14px;
-                font-weight: 500;
-                padding: 10px;
-                border-radius: 20px;
-                background-color: $gray-secondary;
-                color: black;
-                max-width: 300px;
+            color: black;
+
             }
         }
-        
-        
     }
     .messageBottom {
         font-size: 12px;
@@ -36,7 +35,7 @@
 }
 .message.own {
     align-items: flex-end;
-    .messageTop{
+    .messageTop {
         flex-direction: row-reverse;
         .messageImg {
             margin-left: 10px;
@@ -44,10 +43,9 @@
         }
         .info-message {
             overflow-wrap: break-word;
+            background-color: $blue;
             .messageText {
-                background-color: $blue;
-                color: white;
-
+            color: white;
 
             }
         }
@@ -57,4 +55,3 @@
         margin-right: 50px;
     }
 }
-

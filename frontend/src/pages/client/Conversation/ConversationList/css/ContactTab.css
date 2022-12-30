@@ -1,0 +1,26 @@
+.conversation__list .tab-content .contact-action {
+  align-items: center;
+}
+
+.conversation__list .tab-content .contact-action .icon-btn {
+  position: relative;
+  background: rgba(28, 157, 234, 0.15);
+  height: 34px;
+  width: 34px;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.conversation__list .tab-content .contact-action .icon-btn:hover {
+  background-color: rgba(28, 157, 234, 0.25) !important;
+  box-shadow: -1px 10px 16px -10px #1c9dea;
+  transition: all 0.3s ease;
+}
+
+.conversation__list .tab-content .contact-action .text-error:hover {
+  background-color: rgba(255, 78, 43, 0.25) !important;
+  box-shadow: -1px 10px 16px -10px #1c9dea;
+  transition: all 0.3s ease;
+}
+/*# sourceMappingURL=ContactTab.css.map */
