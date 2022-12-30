@@ -1,22 +1,37 @@
 .owl-item {
-    margin:0 20px;
+    margin: 0 20px;
     .item {
-        .online-item {
-            background-image: url(../../../../../assets/images/person-1.jpg);
-            background-size: cover;
-            background-position: center center;
-            display: block;
-            height: 100px;
-            width: 100px;
-            border-radius: 20px;
+        width: fit-content;
+        position: relative;
+        .online-dot::before {
+            content: "";
+            background-color: #3fcc35;   
+            height: 11px;
+            width: 11px;
+            position: absolute;
+            top: 5px;
+            right: 1px;
+            z-index: 1;
+            border-radius: 50%;
+        }
+        .item-info {
             position: relative;
-            .online-name {
-                color: #fff;
-                margin: 0;
-                position: absolute;
-                right: 10px !important;
-                bottom: 5px !important;
+            .online-item {
+                background-size: cover;
+                background-position: center center;
+                display: block;
+                height: 100px;
+                width: 100px;
+                border-radius: 20px;
             }
+            
+        }
+        .online-name {
+            color: #fff;
+            margin: 0;
+            position: absolute;
+            right: 10px !important;
+            bottom: 5px !important;
         }
     }
 }

@@ -15,5 +15,15 @@ const userApi = {
         console.log("Error when get user by id ", err);
       });
   },
+  getContactApi:async(handleData)=>{
+    await axios
+      .post(`${BASE_URL}/users/id`, { id: localStorage.getItem('yourId') })
+      .then((res) => {
+        handleData(res.data.contacts);
+      })
+      .catch((err) => {
+        console.log("Error when get user by id ", err);
+      });
+  }
 };
 export default userApi;

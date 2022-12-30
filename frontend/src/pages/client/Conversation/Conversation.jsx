@@ -10,7 +10,7 @@ const Conversation = () => {
   const userId = localStorage.getItem('yourId');
   const conver = useSelector((state) => state.conversReducer)
   const [currentC, setCurrentC] = useState("")
-  const [onlineUser, setOnlineUser] = useState("")
+  const [onlineUser, setOnlineUser] = useState([])
 
   //  useEffect(()=>{
   //   console.log("conversReducer",conver)

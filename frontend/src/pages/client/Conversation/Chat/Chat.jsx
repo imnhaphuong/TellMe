@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState } from "react";
 import "./Chat.scss";
 import { BsTelephoneFill } from "react-icons/bs";
 import { BsFillCameraVideoFill } from "react-icons/bs";
@@ -13,21 +13,17 @@ import { MdOutlineCancel } from "react-icons/md";
 import Message from "components/Message/Message";
 import messageApi from "apis/messageApi";
 import converApi from "apis/converApi";
-import { useDispatch, useSelector } from 'react-redux'
 import { io } from "socket.io-client";
 import Picker from 'emoji-picker-react'
 export default function Chat(props) {
-
-  const [data, setData] = useState([]);
   const userId = props.userId
-  // const converId = "639d3cfd84729a3c459544eb"
   const [converId, setConverId] = useState("");
   const [convers, setConvers] = useState([]);
   const [messages, setMessages] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [showPicker, setShowPicker] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  // const [onlineUsers, setOnlineUsers] = useState([]);
   const [partner, setPartner] = useState(null);
   const scrollRef = useRef(null);
   const socket = useRef();
@@ -36,7 +32,7 @@ export default function Chat(props) {
   //scroll to bottom
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages]);
+  }, [messages, props.currentC]);
   const onEmojiClick = (emojiObject, event) => {
     setNewMessage(newMessage + emojiObject.emoji);
     setShowPicker(false);
@@ -56,7 +52,9 @@ export default function Chat(props) {
     socket.current.emit("addUser", userId)
     socket.current.on("getUsers", users => {
       // console.log(users)
-      // props.setOnlineUsers(users)
+      props.setOnlineUser(
+        users
+      )
     })
   }, [userId])
   useEffect(() => {
@@ -123,7 +121,7 @@ export default function Chat(props) {
   const uploadFile = async (event) => {
 
     const file = event.target.files[0];
-    file.isLoading = true;
+    setIsLoading(true)
 
     //upload file 
     let formData = new FormData();
@@ -136,7 +134,7 @@ export default function Chat(props) {
 
     const res = await messageApi.sendFiles(formData);
     if (res.data.success) {
-      file.isLoading = false;
+      setIsLoading(false)
     }
     console.log("res.data", res.data)
     setFiles([...files, file])
@@ -153,12 +151,17 @@ export default function Chat(props) {
       const message = {
         sender: userId,
         filesId: filesId,
+        content: newMessage,
         conversationId: converId,
       };
-      const res = await messageApi.sendMessage(message);
-      setFiles([])
-      setFilesId([])
-      console.log("res.data", res.data)
+      try {
+        await messageApi.sendMessage(message);
+        setFiles([])
+        setFilesId([])
+        setNewMessage("");
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       console.log("2")
       const message = {
@@ -247,10 +250,10 @@ export default function Chat(props) {
                         files &&
                         files.map((f, i) => (
 
-                          f.isLoading === true ? (
+                          isLoading === true ? (
                             <button className="btn btn-primary" type="button" disabled>
                               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              Loading...
+                              Đang tải lên...
                             </button>
                           ) : (<li key={i} className="flex items-center mx-3 border-primary border-dotted h-fit p-1">
                             <FcDocument className="text-[40px]" />
@@ -276,23 +279,11 @@ export default function Chat(props) {
                       <button type="button" onClick={() => setShowPicker(!showPicker)} className=" border-none text-primary icon-btn  ml-5">
                         <MdInsertEmoticon className=" text-[18px]" />
                       </button>
-                      <button className="border-none text-primary icon-btn  ml-5 " disabled={true} >
-                        <input type="file" className="file-input" onChange={uploadFile} />
+                      <button type="button" className="border-none disabled:bg-bg_gray disabled:text-white text-primary icon-btn  ml-5 " disabled={files.length >= 3 ? true : false} >
+                        <input type="file" className="file-input" onChange={uploadFile} disabled={files.length >= 3 ? true : false} />
                         <BsPlusLg className=" text-[16px]" />
                       </button>
-                      {/* {
-                        files.length >= 3 ? (
-                          <button type="button" className="border-none text-primary icon-btn  ml-5 " disabled >
-                            <input type="file" className="file-input" onChange={uploadFile} />
-                            <BsPlusLg className=" text-[16px]" />
-                          </button>
-                        ) : (
-                          <button className="border-none text-primary icon-btn  ml-5 " >
-                            <input type="file" className="file-input" onChange={uploadFile} />
-                            <BsPlusLg className=" text-[16px]" />
-                          </button>
-                        )
-                      } */}
+
 
                     </div>
                     {showPicker && <div className="icon-container"><Picker pickerStyle={{ with: '100%' }} height={400} onEmojiClick={onEmojiClick} /></div>}
@@ -312,8 +303,8 @@ export default function Chat(props) {
                     </div>
                   </div>
                   <div className="col-1 ">
-                    <button onClick={handleSubmit} className=" border-none text-primary icon-btn  ml-4 ">
-                      <IoMdSend className=" text-[18px]" />
+                    <button onClick={handleSubmit} className=" border-none text-primary icon-btn  ml-4 disabled:bg-bg_gray disabled:text-white" disabled={newMessage === "" && filesId.length === 0 ? true : false} >
+                      <IoMdSend className=" text-[18px] " />
                     </button>
                   </div>
                 </div>

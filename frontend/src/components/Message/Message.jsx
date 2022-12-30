@@ -41,25 +41,25 @@ export default function Message({ message, own, sender, createdAt, filesId }) {
           {
             filesId &&
             filesId.map((f, i) => (
-              // (f.contentType === 'image/jpeg' || f.contentType === 'image/png' || f.contentType === 'image/svg+xml') ? (
-              //   <li key={i} className="list-none  h-fit p-1">
-              //     <div className="flex items-center">
-              //       <img src={'http://localhost:8080/api/files/File/' + f.filename} className="text-[100px]" alt={f.name}/>
-              //       <span className="truncate w-[100px]">{f.name}</span>
-              //     </div>
-              //     <button onClick={() => downloadFile(f.filename, f.name)} className="border-none btn text-[14px] text-white ml-[10px]" download>Tải xuống</button>
+              (f.contentType === 'image/jpeg' || f.contentType === 'image/png' || f.contentType === 'image/svg+xml') ? (
+                <li key={i} className="list-none  h-fit p-1">
+                  <div className="flex items-center">
+                    <img src={'http://localhost:8080/api/files/File/' + f.filename} className="w-[100px] h-[100px]" alt={f.name} />
+                    <span className="truncate w-[100px]">{f.name}</span>
+                  </div>
+                  <button onClick={() => downloadFile(f.filename, f.name)} className={`border-none btn text-[14px]  ml-[10px] font-medium ${own ? "text-white" : "text-black"}`} download>Tải xuống</button>
 
-              //   </li>
-              // ) : (
-              <li key={i} className="list-none  h-fit p-1">
-                <div className="flex items-center">
-                  <FcDocument className="text-[100px]" />
-                  <span className="truncate w-[100px]">{f.name}</span>
-                </div>
-                <button onClick={() => downloadFile(f.filename, f.name)} className="border-none btn text-[14px] text-white ml-[10px]" download>Tải xuống</button>
+                </li>
+              ) : (
+                <li key={i} className="list-none  h-fit p-1">
+                  <div className="flex items-center">
+                    <FcDocument className="text-[100px]" />
+                    <span className="truncate w-[100px]">{f.name}</span>
+                  </div>
+                  <button onClick={() => downloadFile(f.filename, f.name)} className={`border-none btn text-[14px] font-medium ${own ? "text-white" : "text-black"} ml-[10px]`} download>Tải xuống</button>
 
-              </li>
-
+                </li>
+              )
 
             ))
           }
