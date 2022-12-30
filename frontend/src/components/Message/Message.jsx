@@ -5,12 +5,13 @@ import * as timeago from 'timeago.js';
 import vi from 'timeago.js/lib/lang/vi';
 import { FcDocument } from "react-icons/fc";
 import messageApi from "apis/messageApi";
+import { BASE_URL } from "settings/apiConfig";
 
 export default function Message({ message, own, sender, createdAt, filesId }) {
   timeago.register('vi', vi);
   const downloadFile = async (filename, name) => {
     // const res = await messageApi.getAllFiles(filename);
-    fetch(`http://localhost:8080/api/files/File/${filename}`)
+    fetch(`${BASE_URL}/files/File/${filename}`)
       .then(res => {
         res.blob().then(blob => {
 
@@ -28,6 +29,9 @@ export default function Message({ message, own, sender, createdAt, filesId }) {
 
     // window.location.href = response.url;
   }
+  const removeMessage =()=>{
+     
+  }
   return (
     <div className={own ? "message own" : "message"}>
       <div className="messageTop">
@@ -44,7 +48,7 @@ export default function Message({ message, own, sender, createdAt, filesId }) {
               (f.contentType === 'image/jpeg' || f.contentType === 'image/png' || f.contentType === 'image/svg+xml') ? (
                 <li key={i} className="list-none  h-fit p-1">
                   <div className="flex items-center">
-                    <img src={'http://localhost:8080/api/files/File/' + f.filename} className="w-[100px] h-[100px]" alt={f.name} />
+                    <img src={`${BASE_URL}/files/File/' + f.filename`} className="w-[100px] h-[100px]" alt={f.name} />
                     <span className="truncate w-[100px]">{f.name}</span>
                   </div>
                   <button onClick={() => downloadFile(f.filename, f.name)} className={`border-none btn text-[14px]  ml-[10px] font-medium ${own ? "text-white" : "text-black"}`} download>Tải xuống</button>
@@ -74,11 +78,16 @@ export default function Message({ message, own, sender, createdAt, filesId }) {
             <BsThreeDots className=" text-[16px]" />
           </button>
           <ul className="dropdown-menu text-[13px]">
-            <li>
-              <a className="dropdown-item" href="#chat">
-                Thu hồi
-              </a>
-            </li>
+            {
+              own?(
+                <li>
+                <a className="dropdown-item" href="#chat" onClick={removeMessage}>
+                  Thu hồi
+                </a>
+              </li>
+              ):""
+            }
+
             <li>
               <a className="dropdown-item" href="#saochep">
                 Sao chép

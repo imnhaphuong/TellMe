@@ -11,12 +11,12 @@ const Conversation = () => {
   const conver = useSelector((state) => state.conversReducer)
   const [currentC, setCurrentC] = useState("")
   const [onlineUser, setOnlineUser] = useState([])
-
+  const [newMess, setNewMess]=useState(null);
   console.log("currentC", currentC)
   return (
     <div className="flex ">
-      <ConversationList setCurrentC={setCurrentC} onlineUser={onlineUser} userId={userId} />
-      <Chat currentC={currentC} setOnlineUser={setOnlineUser} userId={userId} />
+      <ConversationList setCurrentC={setCurrentC} onlineUser={onlineUser} userId={userId} newMess={newMess} />
+      <Chat currentC={currentC} setOnlineUser={setOnlineUser} userId={userId} setNewMess={setNewMess}  />
     </div>
   );
 };

@@ -13,7 +13,7 @@ import ContactTab from "./Contacts/ContactTab";
 import { IoMdSearch } from "react-icons/io";
 import { useEffect, useState } from "react";
 import userApi from "apis/userApi";
-const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
+const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
   console.log("onlineUser", onlineUser)
   var settings = {
     dots: false,
@@ -161,7 +161,7 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
           <Contact />
         </ul>
         <div className="tab-content" id="pills-tabContent">
-          <MessageTab setCurrentC={setCurrentC} currentUserId={userId} />
+          <MessageTab setCurrentC={setCurrentC} currentUserId={userId} newMess={newMess} />
           <CallTab />
           <ContactTab />
         </div>

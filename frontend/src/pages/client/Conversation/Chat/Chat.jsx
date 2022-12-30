@@ -32,7 +32,10 @@ export default function Chat(props) {
   const socket = useRef();
   const [files, setFiles] = useState([])
   const [filesId, setFilesId] = useState([])
-
+  //scroll to bottom
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages]);
   const onEmojiClick = (emojiObject, event) => {
     setNewMessage(newMessage + emojiObject.emoji);
     setShowPicker(false);
@@ -96,11 +99,7 @@ export default function Chat(props) {
       setMessages(pre => [...pre, arrivalMessage]);
 
   }, [arrivalMessage]);
-  //scroll to bottom
-  useEffect(() => {
-    console.log("scroll",messages)
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages]);
+
   //enterKey
   useEffect(() => {
     const listener = event => {
@@ -185,6 +184,7 @@ export default function Chat(props) {
       try {
         const res = await messageApi.sendMessage(message);
         setMessages([...messages, res.data]);
+        props.setNewMess(res.data)
         setNewMessage("");
       } catch (err) {
         console.log(err);
