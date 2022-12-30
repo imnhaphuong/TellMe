@@ -9,10 +9,12 @@ import VerifyOTP from "components/Modal/VerifyOTP";
 import ChangePassword from "components/Modal/ChangePassword";
 import authService from "services/auth.service";
 import { useDispatch } from "react-redux";
-import {signin} from "stores/slices/userSlice";
+import { signin } from "stores/slices/userSlice";
+import { useCookies } from 'react-cookie';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
+	const [cookies, setCookie] = useCookies(['User']);
 	const dispatch = useDispatch();
 	const [userData, setUserData] = useState({ phone: "", password: "", remember: false });
 	const [errorMessageSignIn, setErrorMessageSignIn] = useState();
@@ -54,30 +56,19 @@ const LoginForm = () => {
 	 * Đăng nhập
 	 */
 	const signIn = () => {
-		authService.signin(userData.phone, userData.password).then(res => {
-			if (res.data.status === "FAILD") {
-				setErrorMessageSignIn(res.data.message)
-			} else {
-				console.log("DATA",res.data);
-				dispatch(signin(res.data));
-				navigate("/")
-			}
-		});
-
-		// if (userData.phone || userData.password !== "") {
-		// 	const res = await axios({
-		// 		method: 'post',
-		// 		url: `${BASE_URL}/users/signin`,
-		// 		data: userData
-		// 	});
-		// 	if (res.data.status === "FAILD") {
-		// 		setErrorMessageSignIn(res.data.message)
-		// 	} else {
-		// 		navigate("/")
-		// 	}
-		// } else {
-		// 	setErrorMessageSignIn("Vui lòng nhập đầy đủ thông tin")
-		// }
+		if (userData.phone == "" || userData.password == "") {
+			setErrorMessageSignIn("Vui lòng nhập đầy đủ thông tin")
+		} else {
+			authService.signin(userData.phone, userData.password, userData.remember, setCookie).then(res => {
+				if (res.status == "FAILD") {
+					setErrorMessageSignIn(res.message)
+				} else {
+					console.log("DATA", res.data);
+					dispatch(signin(res.data));
+					navigate("/")
+				}
+			});
+		}
 	}
 	/**
 	 * Xác nhận email người dùng
@@ -105,11 +96,15 @@ const LoginForm = () => {
 	 * Verify OTP cho email
 	 */
 	const cofirmOTP = async (otpData) => {
+		console.log("otpData", otpData);
 		if (otpData.otp !== "") {
 			const res = await axios({
 				method: 'post',
 				url: `${BASE_URL}/users/verifyOTP`,
-				data: otpData
+				data: {
+					Userid: id,
+					otp: otpData.otp
+				}
 			});
 			if (res.data.status === "FAILD") {
 				throw "Mã OTP không hợp lệ"
@@ -131,7 +126,10 @@ const LoginForm = () => {
 				const res = await axios({
 					method: 'post',
 					url: `${BASE_URL}/users/updatePassword`,
-					data: newPassword
+					data: {
+						Userid: id,
+						newPassword: newPassword.newPassword
+					}
 				});
 				if (res.data.status === "FAILD") {
 				} else {
@@ -176,7 +174,7 @@ const LoginForm = () => {
 				<ForgotPassword cofirmEmail={cofirmEmail} onCloseModal={setModalFogotPassword} />
 			}
 			{modalVerifyOTP &&
-				<VerifyOTP cofirmOTP={cofirmOTP} onCloseModal={setModalVerifyOTP} UserId={id} />
+				<VerifyOTP cofirmOTP={cofirmOTP} onCloseModal={setModalVerifyOTP} />
 			}
 			{modalChangePassword &&
 				<ChangePassword confirmPassword={confirmPassword} onCloseModal={setModalChangePassword} />

@@ -12,9 +12,11 @@ import { MdMessage } from "react-icons/md";
 import { memo, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
 import { useSelector } from "react-redux";
+import SignOutModal from "components/Modal/SignOut";
 
 
 const Sidebar = () => {
+  const [singOutModal, setSingOutModal] = useState(true)
   const [current, setCurrent] = useState(0);
   const { user } = useSelector(state => state.userReducer);
   console.log("USER", user);
@@ -64,7 +66,7 @@ const Sidebar = () => {
     {
       title: "Signout",
       icon: <AiOutlinePoweroff />,
-      page: <span>Signout</span>,
+      page: <SignOutModal onCloseModal={setSingOutModal}/>,
       selectedIcon: <AiOutlinePoweroff className="text-white " />,
     },
   ];

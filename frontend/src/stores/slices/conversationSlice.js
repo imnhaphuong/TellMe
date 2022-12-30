@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     idConvers: 'eqweqw',
     lastMessage: 'qweqweqw',
-
 }
 export const conversationSlice = createSlice({
     name: 'conver',

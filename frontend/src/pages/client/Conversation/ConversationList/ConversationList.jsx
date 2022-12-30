@@ -80,7 +80,6 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
     startTransition(async () =>{
       setKeyWord(e.target.value)
     })
-    console.log(isPending);
   }
 
   return (

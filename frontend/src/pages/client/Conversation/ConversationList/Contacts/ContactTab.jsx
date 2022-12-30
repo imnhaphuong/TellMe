@@ -4,19 +4,34 @@ import { BsTelephone } from "react-icons/bs";
 import { FiVideo } from "react-icons/fi";
 import "./ContactTab.scss";
 import userApi from "apis/userApi"
+import { useSelector } from "react-redux";
+import UserModal from "components/Modal/User";
 
 export default function ContactTab(props) {
-  const [user, setUser] = useState([])
-  const [listUser, setListUser] = useState()
+  const [modal, setModal] = useState(false)
+  const [userState, setUserState] = useState([])
+  const [listUser, setListUser] = useState([])
+  const { user } = useSelector(state => state.userReducer);
+  const [searchData, setSearchData] = useState()
+
   useEffect(() => {
-    userApi.getUserByID(setUser)
+    userApi.getUserByID(setUserState, user)
   }, [])
+
   useEffect(() => {
     const featchData = async () => {
-      await userApi.searchUser(props.keyWord);
+      const data = await userApi.searchUser(props.keyWord, user.id, user.refreshToken, user.accessToken);
+      console.log("data", data);
+      if (data.data) {
+        setModal(true);
+        setSearchData(data.data);
+        console.log("data", data);
+      } else {
+        setModal(false);
+      }
     }
     featchData()
-  }, [props.keyWord])
+  }, [props.keyWord, userState])
 
   const popUp = (channelName, partner) => {
     const width = 1000
@@ -36,27 +51,10 @@ export default function ContactTab(props) {
     >
       <div className="tab-content">
         <ul className="list p-0">
+          {modal && <UserModal searchData={searchData} onCloseModal={setModal} />}
+          122
           {
-            user.hasOwnProperty('contacts') ? user.contacts.map(e => (
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={e.avatar} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">{e.name}</h6>
-                    <p className="text-[12px] truncate ">{e.email}</p>
-                  </div>
-                </a>
-                <div className="contact-action flex">
-                  {/* ti-pin */}
-                  <button className=" border-none icon-btn text-primary mr-2">
-                    <BsTelephone className="left-[25%] top-[25%] absolute" />
-                  </button>
-                  <button className="icon-btn border-none text-[18px]  text-success" onClick={() => popUp((user._id + e._id), e.name)}>
-                    <FiVideo className=" left-[25%] top-[25%] absolute" />
-                  </button>
-                </div>
-              </li>
-            )) : null
+            listUser.length ?? <div>123</div>
           }
         </ul>
       </div>

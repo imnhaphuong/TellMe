@@ -1,30 +1,35 @@
 import axios from "axios";
-import userSlice from "stores/slices/userSlice";
+import { signout } from "stores/slices/userSlice";
 
 const API_URL = "http://localhost:8080/api/users/";
 
-  const signin = async (phone, password) => {
-    return axios
-      .post(API_URL + "signin", { phone, password })
-      .then((response) => {
-        console.log("RESPONE",response);
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
-        return response.data;
-      });
-  }
+const signin = async (phone, password, remember, setCookie) => {
+  return axios
+    .post(API_URL + "signin", { phone, password, remember }, { withCredentials: false })
+    .then((response) => {
+      console.log("RESPONE", response);
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      if (remember) {
+        setCookie('User', response.data.data, { path: '/' });
+      }
+      return response.data;
 
-  const signout = () => {
-    localStorage.removeItem("user");
-  }
-
-  const signup = (phone, name, email, password) => {
-    return axios.post(API_URL + "signup", {
-      phone,
-      name,
-      email,
-      password,
     });
-  }
-export default {signin, signout, signup}
+}
+
+const signoutAPI = (dispatch,removeCookie) => {
+  dispatch(signout());
+  removeCookie('User',{ path: '/' })
+}
+
+const signup = (phone, name, email, password) => {
+  return axios.post(API_URL + "signup", {
+    phone,
+    name,
+    email,
+    password,
+  });
+}
+export default { signin, signoutAPI, signup }
