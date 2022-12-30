@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
     status: "success",
   });
 });
+app.get('/rtc/:channel/:role/:tokentype', nocache , generateAccessToken)
 app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
@@ -69,6 +70,10 @@ io.on("connection", (socket) => {
     socketEvents.call(socket, io , call)
   });
 
+  //decline a call
+  socket.on("res-decline", (call) =>{
+    socketEvents.decline(socket, io, call)
+  })
   //user disconnect
   socket.on("disconnect", () => {
     socketEvents.disconnect(socket, io);

@@ -1,8 +1,10 @@
 import axios from "axios";
+import { ROOT_URL } from "settings/apiConfig";
 
 const getToken = async (channel) => {
+  console.log('get token');
   await axios
-    .get(`https://tellme-api.vercel.app/access-token?channel=${channel}`)
+    .get(`${ROOT_URL}/rtc/${channel}/audience/uid`)
     .then((res) => {
       sessionStorage.setItem('uid', res.data._uid);
       sessionStorage.setItem('token', res.data._token);

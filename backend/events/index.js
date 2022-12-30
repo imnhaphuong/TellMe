@@ -18,28 +18,42 @@ const socketEvents = {
 
   call: (socket, io, call) => {
     //get a socket id of receiver
+    const sender = getUserByUserId(call.sender)[0];
     const receiver = getUserByUserId(call.receiver)[0];
 
-    //receiver is offline
-    if (receiver === undefined) {
-      call.status = "OFF";
+    //check status of SENDER
+    if (sender.call.status === 'EMPTY') {
+      call.status = 'WAITING' //can push the call
     } else {
-      //receiver is calling
-      if (receiver.calling) {
-        call.status = "CALLING";
-      } else {
-        call.status = "WAITING";
-        //return sender infor after had setted calling
-        const senderData = setIsCalling(call.sender, true, call.receiverName);
-        //return receiver infor after had setted calling
-        // const receiverData = setIsCalling(call.receiver, true, call.senderName);
-        //push call infor to receiver
+      call.status = 'HAV'
+    }
+
+    if (call.status == 'WAITING') {
+      //check status of RECEIVER
+      if (receiver === undefined)
+        call.status = 'OFF';
+      else if (receiver.call.status !== 'EMPTY') {
+        call.status = 'CALLING'
+      }
+      else if (receiver.call.status === 'EMPTY') {
+        //successfully
+        setIsCalling(call.sender, 'WAITING', call.receiverName)
+        setIsCalling(call.receiver, 'WAITING', call.senderName)
         io.to(receiver.socket).emit("incomming-call", call);
       }
     }
-
     //return status call
     socket.emit("call-status", call);
+  },
+
+  decline(socket, io, call) {
+    const sender = getUserByUserId(call.sender)[0];
+    console.log('sender', sender);
+    console.log('decline', call);
+    call.status = 'DECLINE'
+    setIsCalling(call.sender, 'EMPTY', '')
+    setIsCalling(call.receiver, 'EMPTY', '')
+    io.to(sender.socket).emit("decline", call);
   },
 
   disconnect: (socket, io) => {

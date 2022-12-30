@@ -10,7 +10,9 @@ function storeUser(socketId, userId) {
   const user = {};
   user.socket = socketId;
   user._id = userId;
-  user.call = {};
+  user.call = {}
+  user.call.status = 'EMPTY';
+  user.call.partnerName = '';
   console.log("store user ", user);
   USERS.push(user);
   return user;

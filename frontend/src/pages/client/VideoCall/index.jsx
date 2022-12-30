@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from "react";
 import {
   appId,
-  channelName,
   useClient,
   useMicrophoneAndCameraTracks,
 } from "../../../utils/agora";
 import Video from "./Video";
 import Controls from "./Controls";
+import { useParams } from "react-router-dom";
+import getToken from "apis/agoraTempToken";
 
-export default function VideoCall(props) {
+
+export default function VideoCall() {
+
   const [users, setUsers] = useState([]);
   const [start, setStart] = useState(false);
+  const params = useParams()
 
+  useEffect(() => {
+    getToken(params.channel)
+  })
   //config client 
   const client = useClient()
-  const channel = channelName
+  const channel = params.channel
   const { ready, tracks } = useMicrophoneAndCameraTracks();
+
 
   useEffect(() => {
     let init = async (channelName) => {
@@ -54,10 +62,10 @@ export default function VideoCall(props) {
         console.log("error");
       }
 
-      if (tracks){
+      if (tracks) {
         await client.publish([tracks[0], tracks[1]]);
         setStart(true);
-      } 
+      }
     };
 
     if (ready && tracks) {
@@ -72,7 +80,7 @@ export default function VideoCall(props) {
   return (
     <div className="relative h-screen w-screen">
       <div className="fixed bottom-5 right-5 z-10">
-        <Controls tracks={tracks} setStart={setStart}/>
+        <Controls tracks={tracks} setStart={setStart} />
       </div>
       <div>
         {start && tracks && <Video tracks={tracks} users={users} />}
