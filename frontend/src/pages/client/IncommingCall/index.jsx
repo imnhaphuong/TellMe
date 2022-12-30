@@ -9,7 +9,6 @@ import { socket } from "utils/socket";
 const IncommingCall = () => {
     const [sender, setSender] = useState([])
     const ringtone = new Audio(InCommingRingTone)
-    const [socketConnected, setSocketConnected] = useState(false);
 
     ringtone.loop = true
 

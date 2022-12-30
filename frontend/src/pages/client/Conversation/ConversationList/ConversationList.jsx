@@ -12,8 +12,6 @@ import CallTab from "./Calls/CallTab";
 import ContactTab from "./Contacts/ContactTab";
 import { IoMdSearch } from "react-icons/io";
 import { useState, useTransition } from "react";
-import axios from "axios";
-import { BASE_URL } from "settings/apiConfig";
 
 const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
   var settings = {

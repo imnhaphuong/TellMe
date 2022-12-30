@@ -13,7 +13,6 @@ import { memo, useEffect, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
 import userApi from "apis/userApi";
 import { socket } from "utils/socket"
-import { useSelector } from "react-redux";
 import SignOutModal from "components/Modal/SignOut";
 
 const Sidebar = () => {

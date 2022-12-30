@@ -6,7 +6,6 @@ import NoPage from "./404";
 import VideoCall from "./client/VideoCall";
 import { RequireAuth, NotRequireAuth } from "./shared/VerifyAuth";
 import { RequireStatus } from "./shared/VerifyCallStatus";
-import Chat from "./client/Conversation/Chat/Chat";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { checkLogin } from "stores/slices/userSlice";

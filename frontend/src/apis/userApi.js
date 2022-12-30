@@ -1,7 +1,6 @@
 import axios from "axios";
 import callApi from "utils/callApi";
 import { BASE_URL } from "settings/apiConfig";
-import { useSelector } from "react-redux";
 
 const userApi = {
   signUpApi: (user) => {
