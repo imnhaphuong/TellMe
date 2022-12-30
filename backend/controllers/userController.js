@@ -2,9 +2,9 @@ const User = require("../models/user");
 const UserOTPVerification = require("../models/userOtpVerification");
 const senOTPVerificationEmail = require("../services/VerificationEmail");
 const bcrypt = require("bcrypt");
-const user = require("../models/user");
 const authMethod = require("../auth/auth.method")
 const randToken = require("rand-token");
+var ObjectId = require('mongoose').Types.ObjectId;
 
 const jwtVariable = {
   accessTokenSecret: "access-token-secret-example",
@@ -30,7 +30,7 @@ const userController = {
     const userdefaultEmail = await User.findOne({ email: email })
     if (userdefaultPhone || userdefaultEmail) {
       return res.json({
-        status: 'error',
+        status: 'FAILD',
         error: 'Tài khoản đã được đăng ký'
       })
     } else {
@@ -61,7 +61,9 @@ const userController = {
       } else {
         const UserOTPVerificationRecords = await UserOTPVerification.find({
           Userid,
+
         });
+        console.log("BACKEND", UserOTPVerificationRecords);
         if (UserOTPVerificationRecords.length <= 0) {
           throw new Error(
             "Account record doesn't exist or has been verified already."
@@ -138,13 +140,22 @@ const userController = {
         }
 
         let refreshToken = randToken.generate(accessTokenSize); // tạo 1 refresh token ngẫu nhiên
-        console.log("USERSIGN",Usersignin);
+        console.log("USERSIGN", Usersignin);
         if (!Usersignin.refreshToken) {
           // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
           await User.findByIdAndUpdate(Usersignin._id, { refreshToken: refreshToken });
         } else {
           // Nếu user này đã có refresh token thì lấy refresh token đó từ database
           refreshToken = Usersignin.refreshToken;
+        }
+        console.log("req.body ",req.body);
+        if (req.body.remember) {
+          res.cookie('User', {
+            phone: req.body.phone,
+            id: Usersignin._id,
+            accessToken,
+            refreshToken
+          }, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true });
         }
         return res.json({
           status: "SUCCES",
@@ -162,47 +173,16 @@ const userController = {
     }
   },
   async refreshToken(req, res) {
-    // Lấy access token từ header
-	const accessTokenFromHeader = req.headers.x_authorization;
-	if (!accessTokenFromHeader) {
-		return res.status(400).send('Không tìm thấy access token.');
-	}
-    // Lấy refresh token từ body
-    const refreshTokenFromBody = req.body.refreshToken;
-    if (!refreshTokenFromBody) {
-      return res.status(400).send('Không tìm thấy refresh token.');
+    const id = this.checkJWT(req, res);
+    if (!ObjectId.isValid(id)) {
+      return id;
     }
-
-    const accessTokenSecret =
-      process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
-    const accessTokenLife =
-      process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
-
-    // Decode access token đó
-    const decoded = await authMethod.decodeToken(
-      accessTokenFromHeader,
-      accessTokenSecret,
-    );
-    if (!decoded) {
-      return res.status(400).send('Access token không hợp lệ.');
-    }
-
-    const id = decoded.payload.id; // Lấy id từ payload
-    console.log("id", id);
-    const user = await User.findById(id);
-    console.log("USER",user);
-    if (!user) {
-      return res.status(401).send('User không tồn tại.');
-    }
-
-    if (refreshTokenFromBody !== user.refreshToken) {
-      return res.status(400).send('Refresh token không hợp lệ.');
-    }
-
     // Tạo access token mới
     const dataForAccessToken = {
       id,
     };
+    const accessTokenLife =
+      process.env.ACCESS_TOKEN_LIFE || jwtVariable.accessTokenLife;
 
     const accessToken = await authMethod.generateToken(
       dataForAccessToken,
@@ -243,45 +223,42 @@ const userController = {
   },
   getUserByEmailOrPhone: async (req, res) => {
     const find = req.body.find
-    const UserFindPhone = await User.find({ phone: find })
-    if (!UserFindPhone.length) {
-      const UserFindEmail = await user.find({ email: find })
-      if (!UserFindEmail.length) {
-        return res.json({
-          status: "FAILD",
-          message: `Không có người dùng nào`,
-        })
-      } else {
-        console.log("Email", UserFindEmail);
-        return res.json({
-          status: "SUCCESs",
-          data: {
-            email: UserFindEmail[0].email,
-            id: UserFindEmail[0]._id,
-            phone: UserFindEmail[0].phone,
-            name: UserFindEmail[0].name,
-            avatar: UserFindEmail[0].avatar,
-          },
-        })
-      }
-    }
-    else {
-      console.log("Phone", UserFindPhone);
+    const userId = req.body.userId
+
+    console.log("123123", req.body);
+
+    //const userId = this.checkJWT(req,res);
+    // if(!ObjectId.isValid(userId)){
+    //   return userId;
+    // }
+    const UserFind = await User.find({ $or: [{ phone: find }, { email: find }] })
+    if (UserFind.length) {
+      UserFind[0].contacts.filter((e) => {
+        return e == userId
+      })
       return res.json({
-        status: "SUCCESs",
+        status: "SUCCESS",
         data: {
-          email: UserFindPhone[0].email,
-          id: UserFindPhone[0]._id,
-          phone: UserFindPhone[0].phone,
-          name: UserFindPhone[0].name,
-          avatar: UserFindPhone[0].avatar,
+          type: UserFind[0].contacts.length != 0,//Nếu true là có kết bạn và ngược lại
+          email: UserFind[0].email,
+          id: UserFind[0]._id,
+          phone: UserFind[0].phone,
+          name: UserFind[0].name,
+          avatar: UserFind[0].avatar,
+          typeRes: find == UserFind[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
         },
       })
+    } else {
+      return res.json({
+        status: "ERROR",
+        data: null,
+      })
     }
+
   },
   updatePassword: async (req, res) => {
     req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 10);
-    User.findByIdAndUpdate(req.body.id, { password: req.body.newPassword })
+    User.findByIdAndUpdate(req.body.Userid, { password: req.body.newPassword })
       .then((data) => {
         console.log("update password success");
         res.send(data);
@@ -290,6 +267,55 @@ const userController = {
         console.log("err", err);
         res.send([]);
       });
+  },
+  checkJWT: async (req, res) => {
+    const accessTokenFromHeader = req.headers.x_authorization;
+    if (!accessTokenFromHeader) {
+      return res.status(400).send('Không tìm thấy access token.');
+    }
+    // Lấy refresh token từ body
+    const refreshTokenFromBody = req.body.refreshToken;
+    if (!refreshTokenFromBody) {
+      return res.status(400).send('Không tìm thấy refresh token.');
+    }
+
+    const accessTokenSecret =
+      process.env.ACCESS_TOKEN_SECRET || jwtVariable.accessTokenSecret;
+
+
+    // Decode access token đó
+    const decoded = await authMethod.decodeToken(
+      accessTokenFromHeader,
+      accessTokenSecret,
+    );
+    if (!decoded) {
+      return res.status(400).send('Access token không hợp lệ.');
+    }
+
+    const id = decoded.payload.id; // Lấy id từ payload
+    console.log("id", id);
+    const user = await User.findById(id);
+    console.log("USER", user);
+    if (!user) {
+      return res.status(401).send('User không tồn tại.');
+    }
+
+    if (refreshTokenFromBody !== user.refreshToken) {
+      return res.status(400).send('Refresh token không hợp lệ.');
+    }
+
+    return id;
+  },
+  checkLogin: async (req, res) => {
+    console.log("req.cookies--------",req.cookies);
+    if (req.cookies) {
+      return res.send({
+        status: "SUCCESS",
+        message: `LOGIN SUCCESS`,
+        data: req.cookies.User
+      });
+    }
+    return  res.send({ message: "failed" });
   }
 };
 

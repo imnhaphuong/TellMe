@@ -8,8 +8,8 @@ const http = require("http");
 var app = express();
 app.use(express.json());
 const server = http.createServer(app);
-// const cookieParser = require('cookie-parser');
-// app.use(cookieParser());
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 
 //Config socket.io
@@ -56,6 +56,7 @@ app.use(
   cors({
     origin: "*",
     optionsSuccessStatus: 200,
+    credentials: false,
   })
 );
 
