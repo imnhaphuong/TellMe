@@ -1,18 +1,18 @@
 import axios from 'axios';
-const PORT = process.env.PORT;
+import { BASE_URL } from "settings/apiConfig";
 
 const converApi = {
 
   getConverByUserAPI(owner) {
     return axios({
-      url: `http://localhost:8080/api/convers/userId/${owner}`,
+      url: `${BASE_URL}/convers/userId/${owner}`,
       method: 'get',
     });
 
   },
   getAllConverAPI() {
     return axios({
-      url: `http://localhost:8080/api/convers/`,
+      url: `${BASE_URL}/convers/`,
       method: 'get',
     });
 

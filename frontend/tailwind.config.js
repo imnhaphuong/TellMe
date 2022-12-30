@@ -17,6 +17,7 @@ module.exports = {
     },
     colors: {
       success: "#3fcc35",
+      light_green: '#6dfc62',
       primary: "#1c9dea",
       error: "#ff4e2b ",
       gray: "#647589",

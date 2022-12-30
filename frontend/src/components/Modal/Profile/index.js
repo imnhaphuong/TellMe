@@ -13,7 +13,7 @@ const ProfileModal = (props) => {
         </div>
         <div className="p-3 bg-white d-flex justify-content-center">
           <div className="w-25 text-center">
-            <img class="w-20 h-20 rounded-full mb-2" src={require("../../../asset/image/avatar.jpg")} alt="user-avatar" />
+            <img class="w-20 h-20 rounded-full mb-2" src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfp3M9XyoW9s9iquQoa10D2KVOxhX7EHIFLA&usqp=CAU'} alt="user-avatar" />
             <p className="flex-1 m-0 text-[#0033CC] text-[20px] mb-2">{props.searchData.name}</p>
             <p className="flex-1 mb-0 bg-light-gray rounded-1 p-1 text-[#30769f]">Nhắn tin</p>
           </div>
