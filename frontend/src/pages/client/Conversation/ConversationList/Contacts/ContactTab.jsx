@@ -26,11 +26,11 @@ export default function ContactTab(props) {
   const [modal, setModal] = useState(false)
   const [userState, setUserState] = useState([])
   const [listUser, setListUser] = useState([])
-  //const { user } = useSelector(state => state.userReducer);
+  const { user } = useSelector(state => state.userReducer);
   const [searchData, setSearchData] = useState()
-  const [user, setUser] = useState([]);
+  //const [user, setUser] = useState([]);
   const [socketConnected, setSocketConnected] = useState(false);
-
+  console.log("USER", user);
   const callFailed = (message) =>
     toast.warn(message, {
       position: "top-right",
@@ -48,11 +48,10 @@ export default function ContactTab(props) {
   useEffect(() => {
     const featchData = async () => {
       const data = await userApi.searchUser(props.keyWord, user.id, user.refreshToken, user.accessToken);
-      console.log("data", data);
+      console.log("DATA",data);
       if (data.data) {
         setModal(true);
         setSearchData(data.data);
-        console.log("data", data);
       } else {
         setModal(false);
       }
@@ -63,7 +62,7 @@ export default function ContactTab(props) {
   useEffect(() => {
     userApi.getUserById(setUserState, user)
     // getUser()
-    userApi.getCurrentUser(setUser);
+    //userApi.getCurrentUser(setUser);
     //check connect
     socket.on("connected", () => setSocketConnected(true));
     console.log("connect socket ", socketConnected);
