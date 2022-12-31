@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 const Conversation = () => {
 
-  // const userId = "639c998f7ca070cc12e2f5b6"
   const userId = localStorage.getItem('yourId');
   const conver = useSelector((state) => state.conversReducer)
   const [currentC, setCurrentC] = useState("")

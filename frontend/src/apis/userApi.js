@@ -48,6 +48,7 @@ const userApi = {
     await axios
       .post(`${BASE_URL}/users/id`, { id: localStorage.getItem('yourId') })
       .then((res) => {
+        console.log("res.data.contacts",res.data.contacts)
         handleData(res.data.contacts);
       })
       .catch((err) => {
