@@ -27,6 +27,7 @@ const generateAccessToken = require("./access-token");
 const userAPI = require("./routes/userRoutes");
 const messageAPI = require("./routes/messageRoute");
 const conversationAPI = require("./routes/conversationRoute");
+const callAPI = require("./routes/callRoutes");
 
 //config cors
 const cors = require("cors");
@@ -62,12 +63,12 @@ app.get("/", (req, res) => {
     status: "success",
   });
 });
-app.get('/rtc/:channel/:role/:tokentype', nocache, generateAccessToken)
-app.get("/access-token", nocache, generateAccessToken);
+app.get('/rtc/:channel/:role/:tokentype', nocache , generateAccessToken)
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
 app.use('/auth', authRouter);
+app.use('/api/calls', callAPI);
 
 //middleware
 app.use(methodOverride('_method'));
@@ -165,6 +166,7 @@ io.on("connection", (socket) => {
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
+    
   });
   console.log("socket",socket.id)
 
@@ -181,6 +183,18 @@ io.on("connection", (socket) => {
 
   });
 
+  //accept a call
+  socket.on("res-accept", (call) =>{
+    socketEvents.accept(socket, io, call)
+  })
+  //call end (with waiting call status)
+  socket.on("res-missed", (call) =>{
+    socketEvents.missed(socket, io, call)
+  })
+    //call end (with waiting call status)
+    socket.on("res-endcall", (call) =>{
+      socketEvents.endcall(socket, io, call)
+    })
   //user disconnect
   socket.on("disconnect", () => {
     socketEvents.disconnect(socket, io);

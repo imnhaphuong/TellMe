@@ -63,7 +63,6 @@ export default function ContactTab(props) {
   useEffect(() => {
     userApi.getUserById(setUserState, user)
     // getUser()
-    console.log(socket);
     userApi.getCurrentUser(setUser);
     //check connect
     socket.on("connected", () => setSocketConnected(true));
@@ -88,11 +87,12 @@ export default function ContactTab(props) {
       else if (call.status === "WAITING") {
         //005
         CallWindow('005', call.sender, call.senderName, call.receiver, call.receiverName, call.receiverName)
-      } else if (call.status === "ACCEPTENCE") {
-        //007
-        CallWindow('007', call.sender, call.senderName, call.receiver, call.receiverName, call.receiverName)
+      } else if (call.status === "ACCEPT") {
+        callFailed(`Kết nối thành công với ${call.receiverName} ✅`);
       } else if (call.status === "DECLINE") {
-        // callFailed(`Không thể kết nối với ${call.receiverName} ❌`);
+        callFailed(`Không thể kết nối với ${call.receiverName} ❌`);
+      } else if (call.status === "MISSED") {
+        callFailed(`${call.receiverName} đã bỏ lỡ cuộc gọi từ bạn❌`);
       }
     });
   }, []);

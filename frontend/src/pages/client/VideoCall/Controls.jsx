@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useClient } from "../../../utils/agora";
 import MicIcon from "@material-ui/icons/Mic";
 import MicOffIcon from "@material-ui/icons/MicOff";
@@ -15,7 +15,7 @@ export default function Controls(props) {
     e.preventDefault();
     e.returnValue = 'Thoat nha';
   });
-  
+
   const mute = async (type) => {
     if (type === "audio") {
       await tracks[0].setEnabled(!trackState.audio);
@@ -36,8 +36,20 @@ export default function Controls(props) {
     tracks[0].close();
     tracks[1].close();
     setStart(false);
+    socket.emit('res-endcall', {
+      sender: sessionStorage.getItem('sender'),
+      receiver: sessionStorage.getItem('receiver'),
+      senderName: sessionStorage.getItem('senderName'),
+      receiverName: sessionStorage.getItem('receiverName')
+    })
     window.open('', '_self').close()
   };
+
+  useEffect(() => {
+    socket.on('endcall', (call) => {
+      window.close()
+    })
+  }, [])
 
   return (
     <div className="grid grid-cols-1 gap-4">

@@ -57,6 +57,43 @@ const socketEvents = {
     io.to(sender.socket).emit("call-status", call);
   },
 
+
+  accept(socket, io, call) {
+    const sender = getUserByUserId(call.sender)[0];
+    console.log('sender', sender);
+    console.log('accept', call);
+    call.status = 'ACCEPT'
+    setIsCalling(call.sender, 'CALLING', call.receiverName)
+    setIsCalling(call.receiver, 'CALLING', call.senderName)
+    io.to(call.sender).emit("accept", call);
+    socket.emit("call-status", call);
+  },
+
+  missed(socket, io, call) {
+    const receiver = getUserByUserId(call.receiver)[0];
+    console.log('call missed ', call);
+    call.status = 'MISSED'
+    setIsCalling(call.sender, 'EMPTY', '')
+    setIsCalling(call.receiver, 'EMPTY', '')
+    //push stop notify to receiver
+    io.to(call.receiver).emit("missed", call);
+    io.to(call.sender).emit("missed", call);
+    socket.emit("call-status", call);
+  },
+
+  endcall(socket, io, call) {
+    const receiver = getUserByUserId(call.receiver)[0];
+    console.log('call ended ', call);
+    call.status = 'ENDED'
+    setIsCalling(call.sender, 'EMPTY', '')
+    setIsCalling(call.receiver, 'EMPTY', '')
+    //push stop notify to receiver
+    io.to(call.receiver).emit("endcall", call);
+    io.to(call.sender).emit("endcall", call);
+    socket.emit("call-status", call);
+  },
+
+
   disconnect: (socket, io) => {
     //leave all call joined
     const user = getUserBySocketId(socket.id);
