@@ -20,6 +20,7 @@ const generateAccessToken = require("./access-token");
 const userAPI = require("./routes/userRoutes");
 const messageAPI = require("./routes/messageRoute");
 const conversationAPI = require("./routes/conversationRoute");
+const callAPI = require("./routes/callRoutes");
 
 //config cors
 const cors = require("cors");
@@ -56,11 +57,11 @@ app.get("/", (req, res) => {
   });
 });
 app.get('/rtc/:channel/:role/:tokentype', nocache , generateAccessToken)
-app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
 app.use('/auth', authRouter);
+app.use('/api/calls', callAPI);
 
 //Connect mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -109,6 +110,14 @@ io.on("connection", (socket) => {
   //decline a call
   socket.on("res-decline", (call) =>{
     socketEvents.decline(socket, io, call)
+  })
+  //accept a call
+  socket.on("res-accept", (call) =>{
+    socketEvents.accept(socket, io, call)
+  })
+  //call end (with waiting call status)
+  socket.on("res-missed", (call) =>{
+    socketEvents.missed(socket, io, call)
   })
   //user disconnect
   socket.on("disconnect", () => {
