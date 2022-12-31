@@ -13,11 +13,14 @@ import { memo, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
 import { useSelector } from "react-redux";
 import SignOutModal from "components/Modal/SignOut";
+import ProfileModal from "components/Modal/Profile";
 
 
 const Sidebar = () => {
-  const [singOutModal, setSingOutModal] = useState(true)
+  const [singOutModal, setSingOutModal] = useState(true);
+  const [profileModal, setProfileModal] = useState(false)
   const [current, setCurrent] = useState(0);
+
   const { user } = useSelector(state => state.userReducer);
   console.log("USER", user);
   const menus = [
@@ -84,11 +87,14 @@ const Sidebar = () => {
         <div className="p-5 ">
           <div>
             <img
-              src={require("../../../asset/image/avatar.jpg")}
+              src={user.avatar}
               width="50"
               height="50"
               className="border-4 border-blue-700 rounded-full"
-              alt=""
+              alt="avatar"
+              onClick={()=>{
+                setProfileModal(true)
+              }}
             />
           </div>
           <div className=" flex items-center flex-col pt-3 ">
@@ -111,6 +117,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="h-screen ">{menus[current].page}</div>
+      {profileModal && <ProfileModal Data={user} onClodeModal={setProfileModal} method={"user"} />}
     </div>
   );
 };

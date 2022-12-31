@@ -7,7 +7,6 @@ import ProfileModal from "../Profile";
 
 const UserModal = (props) => {
   const [profileModal, setProfileModal] = useState(false)
-
   return (
     <div className="overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
       <div className="relative w-full h-full max-w-md md:h-auto">
@@ -36,7 +35,7 @@ const UserModal = (props) => {
           </div>
         </div>
       </div>
-      {profileModal && <ProfileModal searchData={props.searchData} onClodeModal={setProfileModal} />}
+      {profileModal && <ProfileModal Data={props.searchData} onClodeModal={setProfileModal} method={"search"} />}
     </div>
   );
 }

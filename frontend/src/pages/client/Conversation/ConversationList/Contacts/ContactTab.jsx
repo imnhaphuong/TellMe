@@ -21,6 +21,7 @@ export default function ContactTab(props) {
   useEffect(() => {
     const featchData = async () => {
       const data = await userApi.searchUser(props.keyWord, user.id, user.refreshToken, user.accessToken);
+      console.log("user", user);
       console.log("data", data);
       if (data.data) {
         setModal(true);

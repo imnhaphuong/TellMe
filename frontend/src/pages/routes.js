@@ -16,7 +16,6 @@ const WebRoutes = () => {
   const [cookies, setCookie] = useCookies(['User']);
 
   useEffect(() => {
-    console.log(cookies);
     if (cookies.User) {
       dispatch(checkLogin(cookies.User));
     } else {
