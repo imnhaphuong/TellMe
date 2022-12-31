@@ -90,7 +90,7 @@ const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
   useEffect(() => {
 
     if (onlineUser !== undefined) {
-      onlineUser.map((u, i) => {
+      onlineUser.map(u => {
         console.log("friends",friends)
         const fOnline = friends.find(user => user._id === u.userId)
         if (fOnline !== undefined) {
