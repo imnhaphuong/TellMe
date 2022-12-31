@@ -30,7 +30,7 @@ const userController = {
     const userdefaultEmail = await User.findOne({ email: email })
     if (userdefaultPhone || userdefaultEmail) {
       return res.json({
-        status: 'FAILD',
+        status: 'error',
         error: 'Tài khoản đã được đăng ký'
       })
     } else {
@@ -61,9 +61,7 @@ const userController = {
       } else {
         const UserOTPVerificationRecords = await UserOTPVerification.find({
           Userid,
-
         });
-        console.log("BACKEND", UserOTPVerificationRecords);
         if (UserOTPVerificationRecords.length <= 0) {
           throw new Error(
             "Account record doesn't exist or has been verified already."
@@ -246,13 +244,13 @@ const userController = {
       return res.json({
         status: "SUCCESS",
         data: {
-          type: UserFind[0].contacts.length != 0,//Nếu true là có kết bạn và ngược lại
-          email: UserFind[0].email,
-          id: UserFind[0]._id,
-          phone: UserFind[0].phone,
-          name: UserFind[0].name,
-          avatar: UserFind[0].avatar,
-          typeRes: find == UserFind[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
+          type: UserFind[0].contacts.length != 0,//Nếu type = 1 là có kết bạn và ngược lại
+          email: UserFindPhone[0].email,
+          id: UserFindPhone[0]._id,
+          phone: UserFindPhone[0].phone,
+          name: UserFindPhone[0].name,
+          avatar: UserFindPhone[0].avatar,
+          typeRes: find == UserFindPhone[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
         },
       })
     } else {
@@ -265,7 +263,7 @@ const userController = {
   },
   updatePassword: async (req, res) => {
     req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 10);
-    User.findByIdAndUpdate(req.body.Userid, { password: req.body.newPassword })
+    User.findByIdAndUpdate(req.body.id, { password: req.body.newPassword })
       .then((data) => {
         console.log("update password success");
         res.send(data);
@@ -313,6 +311,7 @@ const userController = {
 
     return id;
   },
+<<<<<<< HEAD
   checkLogin: async (req, res) => {
     console.log("req.cookies--------", req.cookies);
     if (req.cookies) {
@@ -323,6 +322,10 @@ const userController = {
       });
     }
     return res.send({ message: "failed" });
+=======
+  checkLogin: async (req,res) =>{
+    res.send({message:"Success"});
+>>>>>>> parent of 8b3d6a8 (edit remember me)
   }
 };
 
