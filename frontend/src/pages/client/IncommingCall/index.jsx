@@ -54,6 +54,10 @@ const IncommingCall = () => {
             senderName: window.senderName,
             receiverName: window.receiverName
         })
+        sessionStorage.setItem('receiver', window.receiverId)
+        sessionStorage.setItem('receiverName', window.receiverName)
+        sessionStorage.setItem('sender', window.senderId)
+        sessionStorage.setItem('senderName', window.senderName)
         window.location.replace(`${window.location.protocol}//${window.location.host}/call/${hashMD5('007')}/${window.senderId + window.receiverId}`)
     }
 

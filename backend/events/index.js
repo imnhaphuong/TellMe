@@ -80,6 +80,18 @@ const socketEvents = {
     socket.emit("call-status", call);
   },
 
+  endcall(socket, io, call) {
+    const receiver = getUserByUserId(call.receiver)[0];
+    console.log('call ended ', call);
+    call.status = 'ENDED'
+    setIsCalling(call.sender, 'EMPTY', '')
+    setIsCalling(call.receiver, 'EMPTY', '')
+    //push stop notify to receiver
+    io.to(call.receiver).emit("endcall", call);
+    io.to(call.sender).emit("endcall", call);
+    socket.emit("call-status", call);
+  },
+
 
   disconnect: (socket, io) => {
     //leave all call joined

@@ -43,6 +43,10 @@ const CallWaiting = () => {
         //when accept the call processing
         socket.on("accept", (call) => {
             window.location.replace(`${window.location.protocol}//${window.location.host}/call/${hashMD5('007')}/${window.senderId + window.receiverId}`)
+            sessionStorage.setItem('receiver', call.receiver)
+            sessionStorage.setItem('receiverName', call.receiverName)
+            sessionStorage.setItem('sender', call.sender)
+            sessionStorage.setItem('senderName', call.senderName)
         })
         //when your call is missed cause timeout
         socket.on("missed", (call) => {

@@ -166,6 +166,7 @@ io.on("connection", (socket) => {
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
+    
   });
   console.log("socket",socket.id)
 
@@ -190,6 +191,10 @@ io.on("connection", (socket) => {
   socket.on("res-missed", (call) =>{
     socketEvents.missed(socket, io, call)
   })
+    //call end (with waiting call status)
+    socket.on("res-endcall", (call) =>{
+      socketEvents.endcall(socket, io, call)
+    })
   //user disconnect
   socket.on("disconnect", () => {
     socketEvents.disconnect(socket, io);
