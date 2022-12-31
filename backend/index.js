@@ -13,34 +13,13 @@ app.use(cookieParser());
 
 
 
-//Config socket.io
-const socketIo = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-  },
-});
-socketIo.on("connection", (socket) => {
-  ///Handle khi có connect từ client tới
-  console.log("New client connected" + socket.id);
-
-  socket.on("sendDataClient", function (data) {
-    // Handle khi có sự kiện tên là sendDataClient từ phía client
-    socketIo.emit("sendDataServer", { data }); // phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
-  });
-  socket.on("disconnect", () => {
-    console.log("Client disconnected"); // Khi client disconnect thì log ra terminal.
-  });
-});
-
 const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");
 const nocache = require("./access-token");
 // gridfs
 const multer = require("multer");
-const {GridFsStorage} = require("multer-gridfs-storage")
-const Grid = require("gridfs-stream")
+const { GridFsStorage } = require("multer-gridfs-storage")
 const methodOverride = require("method-override")
-const bodyParser = require('body-parser');
 const path = require('path');
 const crypto = require('crypto');
 //call API
@@ -84,7 +63,7 @@ app.get("/", (req, res) => {
     status: "success",
   });
 });
-app.get('/rtc/:channel/:role/:tokentype', nocache , generateAccessToken)
+app.get('/rtc/:channel/:role/:tokentype', nocache, generateAccessToken)
 app.get("/access-token", nocache, generateAccessToken);
 app.use("/api/users", userAPI);
 app.use("/api/messages", messageAPI);
@@ -94,7 +73,7 @@ app.use('/auth', authRouter);
 //middleware
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
-app.set('view engine','ejs')
+app.set('view engine', 'ejs')
 //Connect mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(mongoUri, {
@@ -124,7 +103,7 @@ const storage = new GridFsStorage({
   }
 });
 const upload = multer({ storage });
-app.use('/api/files',fileRouter(upload));
+app.use('/api/files', fileRouter(upload));
 //Check connection
 mongoose.connection.on("connected", () => {
   console.log("Yehhh, congratulation! Connected with Mongo");
@@ -135,17 +114,31 @@ mongoose.connection.on("error", (err) => {
 
 // ------------------------------------------------------- //
 //Config socket.io
+let users = [];
 const socketEvents = require("./events");
-const io = require ("socket.io") (server, {
+const io = require("socket.io")(server, {
   cors: {
     origin: "*",
   },
 });
 
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
 io.on("connection", (socket) => {
   console.log("Connected to Socket. New client is " + socket.id);
   socket.on('userConnected', (uid) => {
-    socket.join (uid)
+    socket.join(uid)
     io.to(uid).emit("connected", uid);
   });
   socket.on('userDisconnected', (uid) => {
@@ -160,13 +153,34 @@ io.on("connection", (socket) => {
 
   //send call notif
   socket.on("calling", (call) => {
-    socketEvents.call(socket, io , call)
+    socketEvents.call(socket, io, call)
   });
 
   //decline a call
-  socket.on("res-decline", (call) =>{
+  socket.on("res-decline", (call) => {
     socketEvents.decline(socket, io, call)
   })
+
+  //take userId and socketId from user
+  socket.on("addUser", (userId) => {
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
+  });
+  console.log("socket",socket.id)
+
+  // //send and get message
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
+    // console.log("receiverId",user);
+    if (user !== undefined) {
+      io.to(user.socketId).emit("getMessage", {
+        senderId,
+        text,
+      });
+    }
+
+  });
+
   //user disconnect
   socket.on("disconnect", () => {
     socketEvents.disconnect(socket, io);

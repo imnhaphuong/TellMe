@@ -17,6 +17,7 @@ function storeUser(socketId, userId) {
   USERS.push(user);
   return user;
 }
+let users =[];
 
 function getAllUsers() {
   return USERS;
@@ -53,4 +54,5 @@ module.exports = {
   getUserBySocketId,
   userLeave,
   setIsCalling,
+
 };
