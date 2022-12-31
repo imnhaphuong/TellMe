@@ -12,9 +12,36 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
 
+//Config socket.io
+const socketIo = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+socketIo.on("connection", (socket) => {
+  ///Handle khi có connect từ client tới
+  console.log("New client connected" + socket.id);
+
+  socket.on("sendDataClient", function (data) {
+    // Handle khi có sự kiện tên là sendDataClient từ phía client
+    socketIo.emit("sendDataServer", { data }); // phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
+  });
+  socket.on("disconnect", () => {
+    console.log("Client disconnected"); // Khi client disconnect thì log ra terminal.
+  });
+});
+
 const port = process.env.PORT || 4000;
 const mongoose = require("mongoose");
 const nocache = require("./access-token");
+// gridfs
+const multer = require("multer");
+const {GridFsStorage} = require("multer-gridfs-storage")
+const Grid = require("gridfs-stream")
+const methodOverride = require("method-override")
+const bodyParser = require('body-parser');
+const path = require('path');
+const crypto = require('crypto');
 //call API
 const generateAccessToken = require("./access-token");
 const userAPI = require("./routes/userRoutes");
@@ -41,6 +68,7 @@ app.use(
   })
 );
 
+const fileRouter = require('./routes/fileRoute');
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -62,12 +90,40 @@ app.use("/api/messages", messageAPI);
 app.use("/api/convers", conversationAPI);
 app.use('/auth', authRouter);
 
+//middleware
+app.use(methodOverride('_method'));
+app.use(bodyParser.json());
+app.set('view engine','ejs')
 //Connect mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+
+
+//create storage emgie
+const storage = new GridFsStorage({
+  url: mongoUri,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+const upload = multer({ storage });
+app.use('/api/files',fileRouter(upload));
 //Check connection
 mongoose.connection.on("connected", () => {
   console.log("Yehhh, congratulation! Connected with Mongo");

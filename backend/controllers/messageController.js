@@ -15,6 +15,7 @@ const messageController = {
   },
   sendMess: async (req, res) => {
     const newMessage = new Message(req.body);
+    console.log(req.body)
     try {
       const savedMessage = await newMessage.save();
       res.status(200).json(savedMessage);
@@ -26,13 +27,23 @@ const messageController = {
     try {
       const messages = await Message.find({
         conversationId: req.params.conversationId,
-      }).populate('sender').populate('conversationId');
+      }).populate('sender').populate('conversationId').populate('filesId');
       res.status(200).json(messages);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-
+  getLastMessByConvers: async (req, res) => {
+    try {
+      const messages = await Message.find({
+        conversationId: req.params.conversationId,
+      }).populate('sender').populate('conversationId').populate('filesId');
+      const lastMess = messages[messages.length - 1];
+      res.status(200).json(lastMess); 
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
 
 module.exports = messageController;
