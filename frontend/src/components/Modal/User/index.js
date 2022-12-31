@@ -22,21 +22,21 @@ const UserModal = (props) => {
 
           <div className="p-2" onClick={() => { setProfileModal(true) }}>
             <a href="#" className="flex items-center p-3 no-underline text-black hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-              <img class="w-10 h-10 rounded-full" src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfp3M9XyoW9s9iquQoa10D2KVOxhX7EHIFLA&usqp=CAU'} alt="user-avatar" />
+              <img class="w-10 h-10 rounded-full" src={props.searchData.avatar} alt="user-avatar" />
               <div className="me-lg-auto font-worksans">
                 <p className="ml-3 text-sm mb-0">{props.searchData.name}</p>
-                <p className="ml-3 text-sm mb-0" style={{ color: "#0033CC " }} >{props.searchData.typeRes == 1 ? props.searchData.phone : props.searchData.email}</p>
+                <p className="ml-3 text-sm mb-0" style={{ color: "#0033CC " }} >{props.searchData.typeRes === 1 ? props.searchData.phone : props.searchData.email}</p>
               </div>
               <div className="pt-3">
                 {
-                  props.searchData.type == true ? <AiOutlineUserAdd color="#0033CC" size="25" /> : <AiOutlineUserDelete color="#AAAAAA" size="25" />
+                  props.searchData.type === true ? <AiOutlineUserAdd color="#0033CC" size="25" /> : <AiOutlineUserDelete color="#AAAAAA" size="25" />
                 }
               </div>
             </a>
           </div>
         </div>
       </div>
-      {profileModal && <ProfileModal searchData={props.searchData} onClodeModal={setProfileModal} />}
+      {profileModal && <ProfileModal Data={props.searchData} onClodeModal={setProfileModal} method={"search"} />}
     </div>
   );
 }

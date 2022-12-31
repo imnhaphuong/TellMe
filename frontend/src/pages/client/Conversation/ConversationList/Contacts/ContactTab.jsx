@@ -5,6 +5,8 @@ import "./ContactTab.scss";
 import { socket } from "utils/socket";
 import userApi from "apis/userApi";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import UserModal from "components/Modal/User";
 import "react-toastify/dist/ReactToastify.css";
 import CallWindow from "pages/client/CallWindow";
 /**
@@ -19,7 +21,13 @@ import CallWindow from "pages/client/CallWindow";
  * 7: missed call -> emit to socket(set status==EMPTY , recei) for user and receiver, push missed event (leave window) 
  * 8: off call: -> emit to socket(set status==EMPTY , recei) for user and receiver, push off event (leave window) 
  */
-export default function ContactTab() {
+
+export default function ContactTab(props) {
+  const [modal, setModal] = useState(false)
+  const [userState, setUserState] = useState([])
+  const [listUser, setListUser] = useState([])
+  //const { user } = useSelector(state => state.userReducer);
+  const [searchData, setSearchData] = useState()
   const [user, setUser] = useState([]);
   const [socketConnected, setSocketConnected] = useState(false);
 
@@ -38,6 +46,22 @@ export default function ContactTab() {
     );
 
   useEffect(() => {
+    const featchData = async () => {
+      const data = await userApi.searchUser(props.keyWord, user.id, user.refreshToken, user.accessToken);
+      console.log("data", data);
+      if (data.data) {
+        setModal(true);
+        setSearchData(data.data);
+        console.log("data", data);
+      } else {
+        setModal(false);
+      }
+    }
+    featchData()
+  }, [props.keyWord, userState]);
+
+  useEffect(() => {
+    userApi.getUserById(setUserState, user)
     // getUser()
     userApi.getCurrentUser(setUser);
     //check connect
@@ -84,6 +108,7 @@ export default function ContactTab() {
       >
         <div className="tab-content">
           <ul className="list p-0">
+            {modal && <UserModal searchData={searchData} onCloseModal={setModal} />}
             {user.hasOwnProperty("contacts")
               ? user.contacts.map((e) => (
                 <li key={e._id} className="blank flex">

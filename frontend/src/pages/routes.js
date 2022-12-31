@@ -20,7 +20,7 @@ const WebRoutes = () => {
     console.log(cookies);
     if (cookies.User) {
       dispatch(checkLogin(cookies.User));
-    } 
+    }
   }, [])
 
 

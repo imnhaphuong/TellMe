@@ -45,7 +45,6 @@ app.use(
   cors({
     origin: "*",
     optionsSuccessStatus: 200,
-    credentials: false,
   })
 );
 
@@ -122,6 +121,7 @@ const io = require("socket.io")(server, {
     origin: "*",
   },
 });
+
 
 
 const addUser = (userId, socketId) => {

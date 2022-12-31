@@ -30,7 +30,7 @@ const userController = {
     const userdefaultEmail = await User.findOne({ email: email })
     if (userdefaultPhone || userdefaultEmail) {
       return res.json({
-        status: 'FAILD',
+        status: 'error',
         error: 'Tài khoản đã được đăng ký'
       })
     } else {
@@ -61,9 +61,7 @@ const userController = {
       } else {
         const UserOTPVerificationRecords = await UserOTPVerification.find({
           Userid,
-
         });
-        console.log("BACKEND", UserOTPVerificationRecords);
         if (UserOTPVerificationRecords.length <= 0) {
           throw new Error(
             "Account record doesn't exist or has been verified already."
@@ -138,35 +136,42 @@ const userController = {
             .status(401)
             .send('Đăng nhập không thành công, vui lòng thử lại.');
         }
-
-        let refreshToken = randToken.generate(accessTokenSize); // tạo 1 refresh token ngẫu nhiên
-        console.log("USERSIGN", Usersignin);
-        if (!Usersignin.refreshToken) {
-          // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
-          await User.findByIdAndUpdate(Usersignin._id, { refreshToken: refreshToken });
-        } else {
-          // Nếu user này đã có refresh token thì lấy refresh token đó từ database
-          refreshToken = Usersignin.refreshToken;
+        else {
+          let refreshToken = randToken.generate(accessTokenSize); // tạo 1 refresh token ngẫu nhiên
+          console.log("USERSIGN", Usersignin);
+          if (!Usersignin.refreshToken) {
+            // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
+            await User.findByIdAndUpdate(Usersignin._id, { refreshToken: refreshToken });
+          } else {
+            // Nếu user này đã có refresh token thì lấy refresh token đó từ database
+            refreshToken = Usersignin.refreshToken;
+          }
+          console.log("req.body ", req.body);
+          if (req.body.remember) {
+            res.cookie('User', {
+              phone: req.body.phone,
+              id: Usersignin._id,
+              avatar: Usersignin.avatar,
+              name: Usersignin.name,
+              email: Usersignin.email,
+              accessToken,
+              refreshToken
+            }, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true });
+          }
+          return res.json({
+            status: "SUCCES",
+            message: `LOGIN SUCCESS`,
+            data: {
+              phone: req.body.phone,
+              id: Usersignin._id,
+              avatar: Usersignin.avatar,
+              name: Usersignin.name,
+              email: Usersignin.email,
+              accessToken,
+              refreshToken
+            },
+          })
         }
-        console.log("req.body ",req.body);
-        if (req.body.remember) {
-          res.cookie('User', {
-            phone: req.body.phone,
-            id: Usersignin._id,
-            accessToken,
-            refreshToken
-          }, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true });
-        }
-        return res.json({
-          status: "SUCCES",
-          message: `LOGIN SUCCESS`,
-          data: {
-            phone: req.body.phone,
-            id: Usersignin._id,
-            accessToken,
-            refreshToken
-          },
-        })
       }
     } catch (error) {
       console.log(error);
@@ -239,13 +244,13 @@ const userController = {
       return res.json({
         status: "SUCCESS",
         data: {
-          type: UserFind[0].contacts.length != 0,//Nếu true là có kết bạn và ngược lại
-          email: UserFind[0].email,
-          id: UserFind[0]._id,
-          phone: UserFind[0].phone,
-          name: UserFind[0].name,
-          avatar: UserFind[0].avatar,
-          typeRes: find == UserFind[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
+          type: UserFind[0].contacts.length != 0,//Nếu type = 1 là có kết bạn và ngược lại
+          email: UserFindPhone[0].email,
+          id: UserFindPhone[0]._id,
+          phone: UserFindPhone[0].phone,
+          name: UserFindPhone[0].name,
+          avatar: UserFindPhone[0].avatar,
+          typeRes: find == UserFindPhone[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
         },
       })
     } else {
@@ -258,7 +263,7 @@ const userController = {
   
   updatePassword: async (req, res) => {
     req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 10);
-    User.findByIdAndUpdate(req.body.Userid, { password: req.body.newPassword })
+    User.findByIdAndUpdate(req.body.id, { password: req.body.newPassword })
       .then((data) => {
         console.log("update password success");
         res.send(data);
@@ -307,7 +312,7 @@ const userController = {
     return id;
   },
   checkLogin: async (req, res) => {
-    console.log("req.cookies--------",req.cookies);
+    console.log("req.cookies--------", req.cookies);
     if (req.cookies) {
       return res.send({
         status: "SUCCESS",
@@ -315,7 +320,7 @@ const userController = {
         data: req.cookies.User
       });
     }
-    return  res.send({ message: "failed" });
+    return res.send({ message: "failed" });
   }
 };
 

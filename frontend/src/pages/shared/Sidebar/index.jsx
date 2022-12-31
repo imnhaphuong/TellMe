@@ -14,10 +14,13 @@ import Conversation from '../../client/Conversation/Conversation';
 import userApi from "apis/userApi";
 import { socket } from "utils/socket"
 import SignOutModal from "components/Modal/SignOut";
+import ProfileModal from "components/Modal/Profile";
 
 const Sidebar = () => {
   const [user, setUser] = useState([])
   const [singOutModal, setSingOutModal] = useState(true)
+  const [profileModal, setProfileModal] = useState(false)
+  //const { user } = useSelector(state => state.userReducer);
 
   useEffect(() => {
     userApi.getCurrentUser(setUser)
@@ -95,18 +98,19 @@ const Sidebar = () => {
               width="50"
               height="50"
               className="border-4 border-blue-700 rounded-full"
-              alt=""
+              alt="avatar"
+              onClick={() => {
+                setProfileModal(true)
+              }}
             />
           </div>
           <div className=" flex items-center flex-col pt-3 ">
             {menus.map((menu, index) => (
               <div
                 key={index}
-                className={`rounded-[50%] flex w-[50px] h-[50px] items-center justify-center p-3 my-5 cursor-pointer duration-300 ${
-                  current === index ? "bg-primary" : "bg-light-gray"
-                } hover/item:${
-                  current === index ? "bg-primary" : "bg-dark-gray"
-                }`}
+                className={`rounded-[50%] flex w-[40px] h-[40px] items-center justify-center p-3 my-3 cursor-pointer duration-300 ${current === index ? "bg-primary" : "bg-light-gray"
+                  } hover/item:${current === index ? "bg-primary" : "bg-dark-gray"
+                  }`}
                 onClick={() => {
                   setCurrent(index);
                 }}
@@ -118,6 +122,9 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="h-screen ">{menus[current].page}</div>
+      {
+        profileModal && <ProfileModal Data={user} onClodeModal={setProfileModal} />
+      }
     </div>
   );
 };
