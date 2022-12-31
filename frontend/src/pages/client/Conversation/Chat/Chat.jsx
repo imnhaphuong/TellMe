@@ -15,6 +15,9 @@ import messageApi from "apis/messageApi";
 import converApi from "apis/converApi";
 import { io } from "socket.io-client";
 import Picker from 'emoji-picker-react'
+import { socket } from "utils/socket";
+
+
 export default function Chat(props) {
   const userId = props.userId
   const [converId, setConverId] = useState("");
@@ -29,21 +32,29 @@ export default function Chat(props) {
   const [onlUser, setOnlUser] = useState([])
 
   const scrollRef = useRef(null);
-  const socket = useRef();
   const [files, setFiles] = useState([])
   const [filesId, setFilesId] = useState([])
   //scroll to bottom
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages]);
+  useEffect(() => { 
+    socket.emit("addUser", userId)
+    socket.on("getUsers", users => {
+      console.log("users", users)
+      props.setOnlineUser(
+        users
+      )
+      setOnlUser(users);
+    })
+  }, [userId])
   const onEmojiClick = (emojiObject, event) => {
     setNewMessage(newMessage + emojiObject.emoji);
     setShowPicker(false);
   };
   //connect socket && get message
   useEffect(() => {
-    socket.current = io("ws://localhost:8900")
-    socket.current.on("getMessage", (data) => {
+    socket.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
         content: data.text,
@@ -51,16 +62,7 @@ export default function Chat(props) {
       });
     });
   }, [])
-  useEffect(() => {
-    socket.current.emit("addUser", userId)
-    socket.current.on("getUsers", users => {
-      // console.log(users)
-      props.setOnlineUser(
-        users
-      )
-      setOnlUser(users);
-    })
-  }, [userId])
+
   useEffect(() => {
     setConverId(props.currentC);
     if (props.currentC !== "") {
@@ -176,7 +178,7 @@ export default function Chat(props) {
       let receiverId;
       receiverId = convers.members.find(user => user._id !== userId)._id
       // console.log("receiverId",receiverId);
-      socket.current.emit("sendMessage", {
+      socket.emit("sendMessage", {
         senderId: userId,
         receiverId,
         text: newMessage,
@@ -212,7 +214,7 @@ export default function Chat(props) {
                           <div className="detail-account items-center  ml-3">
                             <h6 className="font-semibold truncate mt-2">{partner.name}</h6>
                             {
-                              onlUser.find(user => user.userId === partner._id) && partner._id === onlUser.find(user => user.userId === partner._id).userId ? (
+                               onlUser.find(user => user.userId === partner._id) && partner._id === onlUser.find(user => user.userId === partner._id).userId ? (
                                 <p className="account-active bg-[#3fcc35]">Hoạt động</p>
                               ) : (
                                 <p className="account-active bg-danger">Không hoạt động</p>

@@ -15,17 +15,7 @@ export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
   const userId = currentUserId
-  // connect socket && get message
-  useEffect(() => {
-    socket.current = io("ws://localhost:8900")
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        content: data.text,
-        createdAt: Date.now(),
-      });
-    });
-  }, [])
+
   useEffect(() => {
     converApi
       .getConverByUserAPI(userId)
@@ -38,7 +28,6 @@ export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
               if (!lastMess.includes(result.data)) {
                 lastMess.push(result.data)
               }
-              console.log("ldsadasd", lastMess);
             })
             .catch((err) => {
               console.log("err", err);
@@ -52,8 +41,6 @@ export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
       });
   }, [userId,newMess]);
 
-
-  console.log("lastMess", lastMess)
   return (
     <div
       className="tab-pane fade show active"
