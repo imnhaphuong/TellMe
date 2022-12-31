@@ -17,14 +17,14 @@ const CallWaiting = () => {
     const [isMissed, setIsMissed] = useState(false)
     ringtone.loop = true
     disconnected_ringtone.loop = true
-   
+
     useEffect(() => {
         userApi.getOrtherUserByID(setReceiver, window.receiverId)
         //auto play audio background
         ringtone.autoplay = true;
         disconnected_ringtone.autoplay = true;
         disconnected_ringtone.muted = true
-        
+
         //loader ...
         let times = 0
         setInterval(() => {

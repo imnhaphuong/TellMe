@@ -4,7 +4,10 @@ const CallSchema = new mongoose.Schema(
     {
         sender: { type: mongoose.Types.ObjectId, ref: 'user', required: true },
         receiver: {
-            type: mongoose.Types.ObjectId, ref: 'user', required: true },
+            type: mongoose.Types.ObjectId, ref: 'user', required: true
+        },
+        //0: ok
+        //1: missed
         status: {
             type: Number,
             default: 0,
