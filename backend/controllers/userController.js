@@ -137,36 +137,41 @@ const userController = {
           return res
             .status(401)
             .send('Đăng nhập không thành công, vui lòng thử lại.');
-        }
-
-        let refreshToken = randToken.generate(accessTokenSize); // tạo 1 refresh token ngẫu nhiên
-        console.log("USERSIGN", Usersignin);
-        if (!Usersignin.refreshToken) {
-          // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
-          await User.findByIdAndUpdate(Usersignin._id, { refreshToken: refreshToken });
         } else {
-          // Nếu user này đã có refresh token thì lấy refresh token đó từ database
-          refreshToken = Usersignin.refreshToken;
+          let refreshToken = randToken.generate(accessTokenSize); // tạo 1 refresh token ngẫu nhiên
+          console.log("USERSIGN", Usersignin);
+          if (!Usersignin.refreshToken) {
+            // Nếu user này chưa có refresh token thì lưu refresh token đó vào database
+            await User.findByIdAndUpdate(Usersignin._id, { refreshToken: refreshToken });
+          } else {
+            // Nếu user này đã có refresh token thì lấy refresh token đó từ database
+            refreshToken = Usersignin.refreshToken;
+          }
+          if (req.body.remember) {
+            res.cookie('User', {
+              phone: req.body.phone,
+              id: Usersignin._id,
+              email: Usersignin.email,
+              name: Usersignin.name,
+              avatar: Usersignin.avatar,
+              accessToken,
+              refreshToken
+            }, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true });
+          }
+          return res.json({
+            status: "SUCCES",
+            message: `LOGIN SUCCESS`,
+            data: {
+              phone: req.body.phone,
+              id: Usersignin._id,
+              email: Usersignin.email,
+              name: Usersignin.name,
+              avatar: Usersignin.avatar,
+              accessToken,
+              refreshToken
+            },
+          })
         }
-        console.log("req.body ",req.body);
-        if (req.body.remember) {
-          res.cookie('User', {
-            phone: req.body.phone,
-            id: Usersignin._id,
-            accessToken,
-            refreshToken
-          }, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true });
-        }
-        return res.json({
-          status: "SUCCES",
-          message: `LOGIN SUCCESS`,
-          data: {
-            phone: req.body.phone,
-            id: Usersignin._id,
-            accessToken,
-            refreshToken
-          },
-        })
       }
     } catch (error) {
       console.log(error);
@@ -307,7 +312,7 @@ const userController = {
     return id;
   },
   checkLogin: async (req, res) => {
-    console.log("req.cookies--------",req.cookies);
+    console.log("req.cookies--------", req.cookies);
     if (req.cookies) {
       return res.send({
         status: "SUCCESS",
@@ -315,7 +320,7 @@ const userController = {
         data: req.cookies.User
       });
     }
-    return  res.send({ message: "failed" });
+    return res.send({ message: "failed" });
   }
 };
 
