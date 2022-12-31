@@ -21,7 +21,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     userApi.getCurrentUser(setUser)
-  console.log("USER", user);
+    console.log("USER", user);
     socket.emit('setup', localStorage.getItem('yourId'))
   }, [])
 
@@ -73,7 +73,7 @@ const Sidebar = () => {
     {
       title: "Signout",
       icon: <AiOutlinePoweroff />,
-      page: <SignOutModal onCloseModal={setSingOutModal}/>,
+      page: <SignOutModal onCloseModal={setSingOutModal} />,
       selectedIcon: <AiOutlinePoweroff className="text-white " />,
     },
   ];

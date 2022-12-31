@@ -254,8 +254,8 @@ const userController = {
         data: null,
       })
     }
-
   },
+  
   updatePassword: async (req, res) => {
     req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 10);
     User.findByIdAndUpdate(req.body.Userid, { password: req.body.newPassword })

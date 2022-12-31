@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import avt from "assets/images/person-1.jpg";
 import { BsTelephoneInbound } from "react-icons/bs";
 import { BsTelephoneOutbound } from "react-icons/bs";
@@ -7,8 +7,16 @@ import { BsTelephone } from "react-icons/bs";
 import { MdCallMade } from "react-icons/md";
 import { MdCallReceived } from "react-icons/md";
 import { MdCallMissed } from "react-icons/md";
+import Timestamp from 'react-timestamp'
+import callApi from "apis/callApi";
 
 export default function CallTab() {
+  const [calls, setCalls] = useState([])
+
+  useEffect(() => {
+    callApi.getAllCurrentUserCalls(setCalls)
+  }, [])
+
   return (
     <div
       className="tab-pane fade"
@@ -22,7 +30,7 @@ export default function CallTab() {
         id="pills-tab"
         role="tablist"
       >
-        <li className="nav-item nav-item-2 " role="presentation">
+        <li key="all" className="nav-item nav-item-2 " role="presentation">
           <button
             className="btn nav-link active  text-[13px] "
             id="pills-all-tab"
@@ -36,7 +44,7 @@ export default function CallTab() {
             Tất cả
           </button>
         </li>
-        <li className="nav-item nav-item-2" role="presentation">
+        <li key="received" className="nav-item nav-item-2" role="presentation">
           <button
             className="nav-link text-[14px]"
             id="pills-inphone-tab"
@@ -50,7 +58,7 @@ export default function CallTab() {
             <BsTelephoneInbound />
           </button>
         </li>
-        <li className="nav-item nav-item-2" role="presentation">
+        <li key="sent" className="nav-item nav-item-2" role="presentation">
           <button
             className="nav-link text-[14px]"
             id="pills-outphone-tab"
@@ -64,7 +72,7 @@ export default function CallTab() {
             <BsTelephoneOutbound />
           </button>
         </li>
-        <li className="nav-item nav-item-2" role="presentation">
+        <li key="missed" className="nav-item nav-item-2" role="presentation">
           <button
             className="nav-link text-[14px]"
             id="pills-phoneX-tab"
@@ -89,60 +97,40 @@ export default function CallTab() {
         >
           <div className="tab-content">
             <ul className="list p-0">
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Justin Bieber</h6>
-                    <p className="text-[12px] truncate ">
-                      <MdCallMade className="text-success" />
-                      2:30
-                    </p>
-                  </div>
-                </a>
-                <div className="contact-action lg:ml-6 flex ">
-                  {/* ti-pin */}
-                  <button className=" border-none icon-btn text-success ml-4">
-                    <BsTelephone className="left-[25%] top-[25%] absolute" />
-                  </button>
-                </div>
-              </li>
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Justin Bieber</h6>
-                    <p className="text-[12px] truncate ">
-                      <MdCallMissed className="text-error" />
-                      3:30
-                    </p>
-                  </div>
-                </a>
-                <div className="contact-action lg:ml-6 flex ">
-                  {/* ti-pin */}
-                  <button className=" border-none bg-[rgba(255,78,43,0.15)] icon-btn text-error ml-4">
-                    <BsTelephone className="left-[25%]  top-[25%] absolute" />
-                  </button>
-                </div>
-              </li>
-              <li className="blank flex">
-                <a className="no-underline flex text-[#223645]" href="#chat">
-                  <img className="bg-img" src={avt} alt="avt" />
-                  <div className="details">
-                    <h6 className=" truncate">Justin Bieber</h6>
-                    <p className="text-[12px] truncate ">
-                      <MdCallReceived className="text-success" />
-                      3:30
-                    </p>
-                  </div>
-                </a>
-                <div className="contact-action flex lg:ml-6 ">
-                  {/* ti-pin */}
-                  <button className=" border-none icon-btn text-success ml-4">
-                    <BsTelephone className="left-[25%] top-[25%] absolute" />
-                  </button>
-                </div>
-              </li>
+              {/* map */}
+              {calls?.missed_list?.concat(calls?.received_list?.concat(calls?.sent_list))?.map(e => {
+                return (
+                  <li className="blank flex" key={e?._id}>
+                    <a className="no-underline flex text-[#223645]" href="#chat">
+                      <img className="bg-img" src={e.sender?._id == localStorage.getItem('0_glb') ? e.receiver?.avatar : e.sender?.avatar} alt="avt" />
+                      <div className="details">
+                        <h6 className=" truncate">{e.sender?._id == localStorage.getItem('0_glb') ? e.receiver?.name : e.sender?.name}</h6>
+                        <p className="text-[12px] truncate ">
+                          {e?.status == '1' ?
+                            <MdCallMissed className="text-error" /> :
+                            e.sender._id == localStorage.getItem('0_glb') ?
+                              <MdCallMade className="text-success" /> :
+                              <MdCallReceived className="text-success" />
+                          }
+
+                          <Timestamp relative date={e?.createdAt} autoUpdate />
+                        </p>
+                      </div>
+                    </a>
+                    <div className="contact-action lg:ml-6 flex ">
+                      {e?.status == '1' ?
+                        <button className=" border-none bg-[rgba(255,78,43,0.15)] icon-btn text-error ml-4">
+                          <BsTelephone className="left-[25%]  top-[25%] absolute" />
+                        </button> :
+                        <button className=" border-none icon-btn text-success ml-4">
+                          <BsTelephone className="left-[25%] top-[25%] absolute" />
+                        </button>
+                      }
+                    </div>
+                  </li>
+                )
+              }
+              )}
             </ul>
           </div>
         </div>
