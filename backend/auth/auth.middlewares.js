@@ -15,6 +15,7 @@ exports.isAuth = async (req, res, next) => {
 		accessTokenFromHeader,
 		accessTokenSecret,
 	);
+	
 	if (!verified) {
 		return res
 			.status(401)

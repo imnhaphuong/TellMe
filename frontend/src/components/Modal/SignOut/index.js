@@ -12,6 +12,7 @@ const SignOutModal = (props) => {
   const signOut = () => {
     console.log("SIGNOUT");
     authService.signoutAPI(dispatch, removeCookie)
+    localStorage.clear()
     navigate("signin")
   }
   return (

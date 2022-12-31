@@ -311,7 +311,6 @@ const userController = {
 
     return id;
   },
-<<<<<<< HEAD
   checkLogin: async (req, res) => {
     console.log("req.cookies--------", req.cookies);
     if (req.cookies) {
@@ -322,10 +321,6 @@ const userController = {
       });
     }
     return res.send({ message: "failed" });
-=======
-  checkLogin: async (req,res) =>{
-    res.send({message:"Success"});
->>>>>>> parent of 8b3d6a8 (edit remember me)
   }
 };
 

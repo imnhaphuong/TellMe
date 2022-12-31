@@ -38,14 +38,14 @@ export default function Chat(props) {
   console.log("picker", newMessage)
   //connect socket && get message
   useEffect(() => {
-    socket.current = io("ws://localhost:8900")
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-      });
-    });
+    // socket.current = io("ws://localhost:8900")
+    // socket.current.on("getMessage", (data) => {
+    //   setArrivalMessage({
+    //     sender: data.senderId,
+    //     text: data.text,
+    //     createdAt: Date.now(),
+    //   });
+    // });
   }, [])
 
   useEffect(() => {
@@ -55,11 +55,11 @@ export default function Chat(props) {
   }, [arrivalMessage, convers]);
 
   useEffect(() => {
-    socket.current.emit("addUser", userId)
-    socket.current.on("getUsers", users => {
-      console.log(users)
-      props.setOnlineUsers(users)
-    })
+    // socket.current.emit("addUser", userId)
+    // socket.current.on("getUsers", users => {
+    //   console.log(users)
+    //   props.setOnlineUsers(users)
+    // })
 
   }, [userId])
 
@@ -113,11 +113,11 @@ export default function Chat(props) {
       receiverId = item.members.find(user => user._id !== userId)._id
     })
     // console.log("receiverId",receiverId);
-    socket.current.emit("sendMessage", {
-      senderId: userId,
-      receiverId,
-      text: newMessage,
-    });
+    // socket.current.emit("sendMessage", {
+    //   senderId: userId,
+    //   receiverId,
+    //   text: newMessage,
+    // });
     try {
       const res = await messageApi.sendMessage(message);
       setMessages([...messages, res.data]);

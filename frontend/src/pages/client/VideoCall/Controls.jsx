@@ -5,12 +5,17 @@ import MicOffIcon from "@material-ui/icons/MicOff";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import CallEndIcon from "@material-ui/icons/CallEnd";
+import { socket } from "utils/socket";
 
 export default function Controls(props) {
   const client = useClient()
-  const { tracks, setStart} = props;
+  const { tracks, setStart } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
-
+  window.open('', '_self').addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = 'Thoat nha';
+  });
+  
   const mute = async (type) => {
     if (type === "audio") {
       await tracks[0].setEnabled(!trackState.audio);
@@ -31,7 +36,7 @@ export default function Controls(props) {
     tracks[0].close();
     tracks[1].close();
     setStart(false);
-    window.open('','_self').close()
+    window.open('', '_self').close()
   };
 
   return (

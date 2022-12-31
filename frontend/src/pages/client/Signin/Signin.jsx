@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import Welcome from "../header";
@@ -66,6 +66,8 @@ const LoginForm = () => {
 					console.log("DATA", res.data);
 					dispatch(signin(res.data));
 					navigate("/")
+					localStorage.setItem('yourId',  res.data.id)
+					localStorage.setItem('0_glb',  res.data.id)
 				}
 			});
 		}

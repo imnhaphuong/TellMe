@@ -1,10 +1,11 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Signup from "./client/Singup/Signup";
 import Signin from "./client/Signin/Signin";
 import Sidebar from "./shared/Sidebar";
 import NoPage from "./404";
 import VideoCall from "./client/VideoCall";
-import Chat from "./client/Conversation/Chat/Chat";
+import { RequireAuth, NotRequireAuth } from "./shared/VerifyAuth";
+import { RequireStatus } from "./shared/VerifyCallStatus";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { checkLogin } from "stores/slices/userSlice";
@@ -19,27 +20,31 @@ const WebRoutes = () => {
     console.log(cookies);
     if (cookies.User) {
       dispatch(checkLogin(cookies.User));
-    } else {
     }
   }, [])
 
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {user ?
-          <><Route path="call" element={<VideoCall />} />
-            <Route path="chat" element={<Chat />} />
-            <Route path="/" element={<Sidebar />} />
-          </>
-          :
-          <>
-            <Route path="signin" element={<Signin />} />
-            <Route path="signup" element={<Signup />} />
-          </>
-        }
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {user ?
+        <>
+          <Route path="call/:status/:channel"
+            element={
+              <RequireAuth>
+                <RequireStatus><VideoCall /></RequireStatus>
+              </RequireAuth>
+            }
+          />
+          <Route path="/" element={<RequireAuth><Sidebar /></RequireAuth>} />
+        </> :
+        <>
+          <Route path="signin" element={<NotRequireAuth><Signin /></NotRequireAuth>} />
+          <Route path="signup" element={<NotRequireAuth><Signup /></NotRequireAuth>} />
+
+          <Route path="*" element={<NoPage />} />
+        </>
+      }
+    </Routes>
   );
 };
 export default WebRoutes;

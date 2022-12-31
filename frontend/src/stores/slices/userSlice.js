@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   user: null,
@@ -14,7 +14,6 @@ export const userSlice = createSlice({
     //       return{...state,accessToken:action.payload.accessToken,refreshToken:action.payload.refreshToken}
     // },
     signin: (state,action) =>{
-      console.log(action.payload);
       state.user = action.payload
     },
     checkLogin: (state,action) =>{
