@@ -30,9 +30,9 @@ const Sidebar = () => {
   const menus = [
     {
       title: "Message",
-      icon: <MdMessage className="text-[18px]" />,
+      icon: <MdMessage className="text-[20px]" />,
       page: <Conversation />,
-      selectedIcon: <MdMessage className="text-white text-[18px] " />,
+      selectedIcon: <MdMessage className="text-white text-[20px] " />,
     },
     {
       title: "Favourite",
@@ -52,18 +52,18 @@ const Sidebar = () => {
       page: <span>Contact</span>,
       selectedIcon: <BsPeopleFill className="text-white" />,
     },
-    {
-      title: "Notification",
-      icon: <BsFillBellFill />,
-      page: <span>Notification</span>,
-      selectedIcon: <BsFillBellFill className="text-white" />,
-    },
-    {
-      title: "Settings",
-      icon: <AiFillSetting />,
-      page: <span>Settings</span>,
-      selectedIcon: <AiFillSetting className="text-white" />,
-    },
+    // {
+    //   title: "Notification",
+    //   icon: <BsFillBellFill />,
+    //   page: <span>Notification</span>,
+    //   selectedIcon: <BsFillBellFill className="text-white" />,
+    // },
+    // {
+    //   title: "Settings",
+    //   icon: <AiFillSetting />,
+    //   page: <span>Settings</span>,
+    //   selectedIcon: <AiFillSetting className="text-white" />,
+    // },
     {
       title: "Change Mode",
       icon: <BsMoon />,
@@ -102,9 +102,11 @@ const Sidebar = () => {
             {menus.map((menu, index) => (
               <div
                 key={index}
-                className={`rounded-[50%] flex w-[40px] h-[40px] items-center justify-center p-3 my-3 cursor-pointer duration-300 ${current === index ? "bg-primary" : "bg-light-gray"
-                  } hover/item:${current === index ? "bg-primary" : "bg-dark-gray"
-                  }`}
+                className={`rounded-[50%] flex w-[50px] h-[50px] items-center justify-center p-3 my-5 cursor-pointer duration-300 ${
+                  current === index ? "bg-primary" : "bg-light-gray"
+                } hover/item:${
+                  current === index ? "bg-primary" : "bg-dark-gray"
+                }`}
                 onClick={() => {
                   setCurrent(index);
                 }}

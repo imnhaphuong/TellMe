@@ -29,7 +29,7 @@ const conversController = {
     },
     getConverById: async (req, res) => {
         try {
-            const conversation = await Conversation.find({
+            const conversation = await Conversation.findById({
                 _id: req.params.converId,
             }).populate("members")
             res.status(200).json(conversation);

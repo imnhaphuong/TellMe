@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { BASE_URL } from "settings/apiConfig";
-
 const converApi = {
 
   getConverByUserAPI(owner) {
@@ -19,7 +18,7 @@ const converApi = {
   },
   getConverByIdAPI(converId) {
     return axios({
-      url: `http://localhost:8080/api/convers/${converId}`,
+      url: `${BASE_URL}/convers/${converId}`,
       method: 'get',
     });
 
