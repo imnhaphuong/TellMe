@@ -84,18 +84,17 @@ const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
   const [onlFriends, setOnlFriends] = useState([]);
 
   useEffect(() => {
-    console.log("userId",userId)
     userApi.getContactApi(setFriends)
   }, [userId])
   useEffect(() => {
 
     if (onlineUser !== undefined) {
-      onlineUser.map((u, i) => {
+      onlineUser.map(u => {
         console.log("friends",friends)
         const fOnline = friends.find(user => user._id === u.userId)
         if (fOnline !== undefined) {
           if (!onlFriends.includes(fOnline)) {
-            setOnlFriends([...onlFriends, fOnline])
+            setOnlFriends(f=>[...f, fOnline])
           }
         }
         console.log("fonline", fOnline)
@@ -122,14 +121,14 @@ const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
               <Slider {...settings}>
                 {
                   onlFriends.map((f, i) => (
-                    <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
+                    <OnlineItem key={i} name={f.name} avt={f.avatar} />
                   ))
                 }
 
               </Slider>
             ) : (
               onlFriends.map((f, i) => (
-                <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
+                <OnlineItem key={i} name={f.name} avt={f.avatar} />
               ))
             )
           }

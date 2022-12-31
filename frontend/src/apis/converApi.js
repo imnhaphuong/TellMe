@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from "settings/apiConfig";
+import callApi from "utils/callApi";
 
 const converApi = {
 
@@ -24,5 +25,12 @@ const converApi = {
     });
 
   },
+  creatConverApi(senderId, receiverId) {
+    const data ={
+      senderId:senderId,
+      receiverId:receiverId,
+    }
+    return callApi("convers/create", "POST", data);
+  }
 }
 export default converApi;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BsTelephone } from "react-icons/bs";
+import { MdMessage } from "react-icons/md";
 import { FiVideo } from "react-icons/fi";
 import "./ContactTab.scss";
 import { socket } from "utils/socket";
@@ -9,6 +9,10 @@ import { useSelector } from "react-redux";
 import UserModal from "components/Modal/User";
 import "react-toastify/dist/ReactToastify.css";
 import CallWindow from "pages/client/CallWindow";
+import converApi from "apis/converApi";
+import Chat from "../../Chat/Chat";
+
+
 /**
  * Cases:
  * ~0: you have a other call: call -> push event call (check current status != EMPTY of sender(co cuoc goi) -> emit return fe status display callfailed  
@@ -96,6 +100,16 @@ export default function ContactTab(props) {
     });
   }, []);
 
+  const createConvers=async (senderId,receiverId)=>{
+    const res = await converApi.creatConverApi(senderId,receiverId);
+    socket.emit("createConver", {
+      senderId: senderId,
+      conversId:res.data._id
+    });
+    // if(res){
+    //   <Chat currentC={res.data._id}/>
+    // }
+  }
   return (
     <>
       <div
@@ -125,9 +139,9 @@ export default function ContactTab(props) {
                     {/* ti-pin */}
                     <button
                       className=" border-none icon-btn text-primary mr-2"
-                      onClick={() => { }}
+                      onClick={()=>createConvers(user._id,e._id)}
                     >
-                      <BsTelephone className="left-[25%] top-[25%] absolute" />
+                      <MdMessage className="left-[23%] top-[25%] absolute text-[20px]" />
                     </button>
                     <button
                       className="icon-btn border-none text-[18px]  text-success"
