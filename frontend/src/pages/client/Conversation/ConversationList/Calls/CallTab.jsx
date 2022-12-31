@@ -7,7 +7,7 @@ import { BsTelephone } from "react-icons/bs";
 import { MdCallMade } from "react-icons/md";
 import { MdCallReceived } from "react-icons/md";
 import { MdCallMissed } from "react-icons/md";
-import Timestamp from 'react-timestamp'
+//import Timestamp from 'react-timestamp'
 import callApi from "apis/callApi";
 
 export default function CallTab() {
@@ -113,7 +113,7 @@ export default function CallTab() {
                               <MdCallReceived className="text-success" />
                           }
 
-                          <Timestamp relative date={e?.createdAt} autoUpdate />
+                          {/* <Timestamp relative date={e?.createdAt} autoUpdate /> */}
                         </p>
                       </div>
                     </a>
