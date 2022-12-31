@@ -33,6 +33,17 @@ const messageController = {
       res.status(500).json(err);
     }
   },
+  getLastMessByConvers: async (req, res) => {
+    try {
+      const messages = await Message.find({
+        conversationId: req.params.conversationId,
+      }).populate('sender').populate('conversationId').populate('filesId');
+      const lastMess = messages[messages.length - 1];
+      res.status(200).json(lastMess); 
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
 
 module.exports = messageController;

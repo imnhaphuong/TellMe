@@ -2,6 +2,7 @@ const express = require('express');
 const fileRouter = express.Router();
 const mongoose = require('mongoose');
 const File = require('../models/file');
+const { response } = require('express');
 
 module.exports = (upload) => {
     const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.nepewkn.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -28,9 +29,9 @@ module.exports = (upload) => {
             let newFile = new File({
                 conversationId: req.body.conversationId,
                 sender: req.body.sender,
-                name:req.body.name,
+                name: req.body.name,
                 filename: req.file.filename,
-                contentType:req.file.contentType
+                contentType: req.file.contentType
             });
 
             newFile.save()
@@ -120,14 +121,6 @@ module.exports = (upload) => {
                     });
                 }
 
-                // files.map(file => {
-                //     if (file.contentType === 'File/jpeg' || file.contentType === 'File/png' || file.contentType === 'File/svg') {
-                //         file.isFile = true;
-                //     } else {
-                //         file.isFile = false;
-                //     }
-                // });
-
                 res.status(200).json({
                     success: true,
                     files,
@@ -138,22 +131,22 @@ module.exports = (upload) => {
     /*
         GET: Fetches a particular file by filename
     */
-    fileRouter.route('/file/:filename')
-        .get((req, res, next) => {
-            gfs.find({ filename: req.params.filename }).toArray((err, files) => {
-                if (!files[0] || files.length === 0) {
-                    return res.status(200).json({
-                        success: false,
-                        message: 'No files available',
-                    });
-                }
+    // fileRouter.route('/file/:filename')
+    //     .get((req, res, next) => {
+    //         gfs.find({ filename: req.params.filename }).toArray((err, files) => {
+    //             if (!files[0] || files.length === 0) {
+    //                 return res.status(200).json({
+    //                     success: false,
+    //                     message: 'No files available',
+    //                 });
+    //             }
 
-                res.status(200).json({
-                    success: true,
-                    file: files[0],
-                });
-            });
-        });
+    //             res.status(200).json({
+    //                 success: true,
+    //                 file: files[0],
+    //             });
+    //         });
+    //     });
 
     /* 
         GET: Fetches a particular File and render on browser
@@ -167,9 +160,17 @@ module.exports = (upload) => {
                         message: 'No files available',
                     });
                 }
-               
-                gfs.openDownloadStreamByName(req.params.filename).pipe(res);
 
+                console.log("files[0]",files[0])
+                if (files[0].contentType === 'image/jpeg' || files[0].contentType === 'image/png' || files[0].contentType === 'image/svg+xml') {
+                    // render File to browser
+                    // const readstream = gfs.createReadStream(files[0].filename)
+                    // readstream.pipe(res)
+                    console.log("files[0]",files[0])
+                    gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+                } else {
+                    gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+                }
             });
         });
 
