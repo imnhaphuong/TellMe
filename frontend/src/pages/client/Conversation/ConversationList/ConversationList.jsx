@@ -122,14 +122,14 @@ const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
               <Slider {...settings}>
                 {
                   onlFriends.map((f, i) => (
-                    <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
+                    <OnlineItem key={i} name={f.name} avt={f.avatar} />
                   ))
                 }
 
               </Slider>
             ) : (
               onlFriends.map((f, i) => (
-                <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
+                <OnlineItem key={i} name={f.name} avt={f.avatar} />
               ))
             )
           }
