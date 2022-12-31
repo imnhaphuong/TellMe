@@ -9,8 +9,8 @@ const OnlineItem = ({ name, avt, key }) => {
         </span>
         <div className="item-info">
           <img className="online-item" src={avt} alt={name} />
+          <h6 className="online-name text-[14px]">{name}</h6>
         </div>
-        <h6 className="online-name text-[14px] justify-center">{name}</h6>
 
       </div>
     </div>

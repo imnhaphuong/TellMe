@@ -24,11 +24,12 @@
                 width: 100px;
                 border-radius: 20px;
             }
-            
+            .online-name {
+                color: #000;
+                margin: 0;
+                position: absolute;
+            }
         }
-        .online-name {
-            color: #000;
-            margin: 0;
-        }
+        
     }
 }

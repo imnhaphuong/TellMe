@@ -84,7 +84,6 @@ const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
   const [onlFriends, setOnlFriends] = useState([]);
 
   useEffect(() => {
-    console.log("userId",userId)
     userApi.getContactApi(setFriends)
   }, [userId])
   useEffect(() => {
@@ -95,7 +94,7 @@ const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
         const fOnline = friends.find(user => user._id === u.userId)
         if (fOnline !== undefined) {
           if (!onlFriends.includes(fOnline)) {
-            setOnlFriends([...onlFriends, fOnline])
+            setOnlFriends(f=>[...f, fOnline])
           }
         }
         console.log("fonline", fOnline)

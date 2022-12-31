@@ -28,9 +28,9 @@ export default function Chat(props) {
   const [isLoading, setIsLoading] = useState(false)
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [partner, setPartner] = useState(null);
-  const [isOnline, setIsOnline] = useState(false)
-  const [onlUser, setOnlUser] = useState([])
+  const [onlUser, setOnlUser] = useState([]);
 
+  const [createConver, setCreateConver] = useState(null)
   const scrollRef = useRef(null);
   const [files, setFiles] = useState([])
   const [filesId, setFilesId] = useState([])
@@ -38,7 +38,7 @@ export default function Chat(props) {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages]);
-  useEffect(() => { 
+  useEffect(() => {
     socket.emit("addUser", userId)
     socket.on("getUsers", users => {
       console.log("users", users)
@@ -62,9 +62,21 @@ export default function Chat(props) {
       });
     });
   }, [])
-
+  //connect socket && get message
   useEffect(() => {
-    setConverId(props.currentC);
+    socket.on("getConver", (data) => {
+      setCreateConver({
+        sender: data.senderId,
+        converID: data.conversId,
+      });
+    });
+  }, [])
+  useEffect(() => {
+    if (createConver !== null) {
+      setConverId(createConver);
+    } else {
+      setConverId(props.currentC);
+    }
     if (props.currentC !== "") {
       messageApi
         .getMessageAPI(props.currentC)
@@ -214,7 +226,7 @@ export default function Chat(props) {
                           <div className="detail-account items-center  ml-3">
                             <h6 className="font-semibold truncate mt-2">{partner.name}</h6>
                             {
-                               onlUser.find(user => user.userId === partner._id) && partner._id === onlUser.find(user => user.userId === partner._id).userId ? (
+                              onlUser.find(user => user.userId === partner._id) && partner._id === onlUser.find(user => user.userId === partner._id).userId ? (
                                 <p className="account-active bg-[#3fcc35]">Hoạt động</p>
                               ) : (
                                 <p className="account-active bg-danger">Không hoạt động</p>
