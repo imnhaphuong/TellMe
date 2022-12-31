@@ -39,7 +39,7 @@ export default function MessageTab({ setCurrentC, currentUserId, newMess }) {
         console.log("err", err);
       });
   }, [userId, newMess]);
-  console.log("lastMess", lastMess)
+
   return (
     <div
       className="tab-pane fade show active"
@@ -102,7 +102,7 @@ export default function MessageTab({ setCurrentC, currentUserId, newMess }) {
                         <img className="bg-img" src={partner.avatar} alt="avt" />
                         <div className="details">
                           <h6 className=" truncate">{partner.name}</h6>
-                          {
+                          {/* {
                             lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index].content !== "" ? (
                               <p className="text-[12px] truncate ">
                                 {lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index] !== "" ? (lastMess[index].sender._id === userId ? "Bạn:" : "") : ""}
@@ -113,23 +113,10 @@ export default function MessageTab({ setCurrentC, currentUserId, newMess }) {
                                 {lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index] !== "" ? (lastMess[index].sender._id === userId ? "Bạn đã gửi một file" : `${lastMess[index].sender.name} đã gửi một file`) : ""}
                               </p>
                             )
-                          }
+                          } */}
 
                         </div>
-                        {
-                           lastMess.length > 0 && lastMess[index] !== "" ? (
-                            <div className="date-status">
-                              {/* ti-pin */}
-                              <p className="text-[12px] mb-2 font-medium"><TimeAgo
-                                datetime={lastMess[index] !== undefined ? lastMess[index].createdAt : ""}
-                                locale='vi'
-                              /></p>
-                              <p className="text-success status text-[12px] font-semibold ">
-                                Đã xem
-                              </p>
-                            </div>
-                          ) : ""
-                        }
+                        
 
                       </a>
                     </li>
