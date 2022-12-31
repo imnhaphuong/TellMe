@@ -1,7 +1,7 @@
 import './OnlineItem.scss';
-const OnlineItem = ({ name, avt, keyIndex }) => {
+const OnlineItem = ({ name, avt, key }) => {
   return (
-    <div key={keyIndex} className="owl-item font-worksans">
+    <div key={key} className="owl-item font-worksans">
       <div className="item">
         <span className="flex absolute z-[1000] h-3 w-3 right-[0px]">
           <span className="animate-ping absolute z-[1000] top-[3px]  inline-flex rounded-full h-3 w-3 bg-success"></span>
