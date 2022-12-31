@@ -25,18 +25,18 @@ const UserModal = (props) => {
               <img class="w-10 h-10 rounded-full" src={require("../../../asset/image/avatar.jpg")} alt="user-avatar" />
               <div className="me-lg-auto font-worksans">
                 <p className="ml-3 text-sm mb-0">{props.searchData.name}</p>
-                <p className="ml-3 text-sm mb-0" style={{ color: "#0033CC " }} >{props.searchData.typeRes == 1 ? props.searchData.phone : props.searchData.email}</p>
+                <p className="ml-3 text-sm mb-0" style={{ color: "#0033CC " }} >{props.searchData.typeRes === 1 ? props.searchData.phone : props.searchData.email}</p>
               </div>
               <div className="pt-3">
                 {
-                  props.searchData.type == true ? <AiOutlineUserAdd color="#0033CC" size="25" /> : <AiOutlineUserDelete color="#AAAAAA" size="25" />
+                  props.searchData.type === true ? <AiOutlineUserAdd color="#0033CC" size="25" /> : <AiOutlineUserDelete color="#AAAAAA" size="25" />
                 }
               </div>
             </a>
           </div>
         </div>
       </div>
-      {profileModal && <ProfileModal searchData={props.searchData} onClodeModal={setProfileModal} />}
+      {profileModal && <ProfileModal Data={props.searchData} onClodeModal={setProfileModal} method={"search"} />}
     </div>
   );
 }
