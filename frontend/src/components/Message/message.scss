@@ -15,20 +15,18 @@
             margin-top: 10px;
         }
         .info-message {
-
-
+            overflow-wrap: break-word;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 20px;
+            background-color: $gray-secondary;
+            max-width: 300px;
             .messageText {
-                font-size: 14px;
-                font-weight: 500;
-                padding: 10px;
-                border-radius: 20px;
-                background-color: $blue;
-                color: white;
-                max-width: 300px;
+            color: black;
+
             }
         }
-        
-        
     }
     .messageBottom {
         font-size: 12px;
@@ -37,11 +35,19 @@
 }
 .message.own {
     align-items: flex-end;
-    .messageTop{
+    .messageTop {
         flex-direction: row-reverse;
         .messageImg {
             margin-left: 10px;
             margin-right: 0;
+        }
+        .info-message {
+            overflow-wrap: break-word;
+            background-color: $blue;
+            .messageText {
+            color: white;
+
+            }
         }
     }
     .messageBottom {
@@ -49,4 +55,3 @@
         margin-right: 50px;
     }
 }
-

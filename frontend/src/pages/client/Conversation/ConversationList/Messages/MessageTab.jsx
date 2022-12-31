@@ -1,30 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./MessageTab.scss";
 import converApi from "apis/converApi";
-import { useDispatch, useSelector } from 'react-redux'
-import { setConverById } from "stores/slices/conversationSlice";
-
-export default function MessageTab({setCurrentC}) {
+import messageApi from "apis/messageApi";
+import { io } from "socket.io-client";
+import TimeAgo from 'timeago-react';
+import * as timeago from 'timeago.js';
+import vi from 'timeago.js/lib/lang/vi';
+export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
+  timeago.register('vi', vi);
   const [convers, setConvers] = useState([]);
-  const dispatch = useDispatch();
+  const [active, setActive] = useState(false)
+  const [lastMess, setLastMess] = useState([]);
+  const socket = useRef();
+  const [arrivalMessage, setArrivalMessage] = useState(null);
 
-  const userId = "639c998f7ca070cc12e2f5b6"
-  const showMessage=(id)=>{
-    // console.log(id);
-    dispatch(setConverById(id))
-    
-  }
-  
+  const userId = currentUserId
+
   useEffect(() => {
     converApi
       .getConverByUserAPI(userId)
       .then((result) => {
         setConvers(result.data);
+        for (let index = 0; index < result.data.length; index++) {
+          messageApi
+            .getLastMessageAPI(result.data[index]._id)
+            .then((result) => {
+              if (!lastMess.includes(result.data)) {
+                lastMess.push(result.data)
+              }
+            })
+            .catch((err) => {
+              console.log("err", err);
+            });
+          setLastMess(lastMess)
+
+        }
       })
       .catch((err) => {
         console.log("err", err);
       });
-  }, []);
+  }, [userId,newMess]);
+
   return (
     <div
       className="tab-pane fade show active"
@@ -77,23 +93,36 @@ export default function MessageTab({setCurrentC}) {
           tabIndex="0"
         >
           <div className="tab-content">
-            <ul className="list p-0">
+            <ul className="list p-0" >
               {
                 convers.map((conver, index) => {
-                  const partner = conver.members.find(user=>user._id!==userId)
+                  const partner = conver.members.find(user => user._id !== userId)
                   return (
-                    <li key={conver._id} className="blank flex">
-                      <a className="no-underline flex text-[#223645]" href="#chat" onClick={()=>setCurrentC(conver._id)}>
-                        <img className="bg-img" src={partner?.avatar} alt="avt" />
+                    <li key={conver._id} className={` hover:bg-light-gray blank flex p-[5px] ${active === index && 'bg-light-gray'} `} >
+                      <a className=" no-underline flex text-[#223645] items-center " href="#chat" onClick={() => { setCurrentC(conver._id); setActive(index) }}>
+                        <img className="bg-img" src={partner.avatar} alt="avt" />
                         <div className="details">
-                          <h6 className=" truncate">{partner?.name}</h6>
-                          <p className="text-[12px] truncate ">
-                            Hi,I am Tomy welcome to my website
-                          </p>
+                          <h6 className=" truncate">{partner.name}</h6>
+                          {
+                            lastMess.length > 0 &&lastMess[index]!==undefined&& lastMess[index].content !== "" ? (
+                              <p className="text-[12px] truncate ">
+                                {lastMess.length > 0 && lastMess[index] !==undefined ? (lastMess[index].sender._id === userId ? "Bạn:" : "") : ""}
+                                {lastMess.length > 0&& lastMess[index] !==undefined ? lastMess[index].content : ""}
+                              </p>
+                            ) : (
+                              <p className="text-[12px] truncate ">
+                                {lastMess.length > 0&& lastMess[index] !==undefined ? (lastMess[index].sender._id === userId ? "Bạn đã gửi một file" : `${lastMess[index].sender.name} đã gửi một file`) : ""}
+                              </p>
+                            )
+                          }
+
                         </div>
                         <div className="date-status">
                           {/* ti-pin */}
-                          <p className="text-[12px] mb-2 font-medium">20/11/2022</p>
+                          <p className="text-[12px] mb-2 font-medium"><TimeAgo
+            datetime={lastMess[index] !==undefined  ? lastMess[index].createdAt : ""}
+            locale='vi'
+          /></p>
                           <p className="text-success status text-[12px] font-semibold ">
                             Đã xem
                           </p>

@@ -33,9 +33,9 @@ const Sidebar = () => {
   const menus = [
     {
       title: "Message",
-      icon: <MdMessage className="text-[18px]" />,
+      icon: <MdMessage className="text-[20px]" />,
       page: <Conversation />,
-      selectedIcon: <MdMessage className="text-white text-[18px] " />,
+      selectedIcon: <MdMessage className="text-white text-[20px] " />,
     },
     {
       title: "Favourite",
@@ -55,18 +55,18 @@ const Sidebar = () => {
       page: <span>Contact</span>,
       selectedIcon: <BsPeopleFill className="text-white" />,
     },
-    {
-      title: "Notification",
-      icon: <BsFillBellFill />,
-      page: <span>Notification</span>,
-      selectedIcon: <BsFillBellFill className="text-white" />,
-    },
-    {
-      title: "Settings",
-      icon: <AiFillSetting />,
-      page: <span>Settings</span>,
-      selectedIcon: <AiFillSetting className="text-white" />,
-    },
+    // {
+    //   title: "Notification",
+    //   icon: <BsFillBellFill />,
+    //   page: <span>Notification</span>,
+    //   selectedIcon: <BsFillBellFill className="text-white" />,
+    // },
+    // {
+    //   title: "Settings",
+    //   icon: <AiFillSetting />,
+    //   page: <span>Settings</span>,
+    //   selectedIcon: <AiFillSetting className="text-white" />,
+    // },
     {
       title: "Change Mode",
       icon: <BsMoon />,

@@ -1,6 +1,6 @@
 import React from "react";
 const ProfileModal = (props) => {
-  console.log("DROP",props);
+  console.log("DROP", props);
   return (
     <div className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full d-flex justify-content-center align-content-center" style={{ background: "rgba(0,0,0,0.5)" }}>
       <div className="relative w-full max-w-md h-50 bg-light-gray">

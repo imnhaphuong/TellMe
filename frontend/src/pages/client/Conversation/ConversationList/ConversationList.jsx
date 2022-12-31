@@ -11,9 +11,10 @@ import Call from "./Calls/Call";
 import CallTab from "./Calls/CallTab";
 import ContactTab from "./Contacts/ContactTab";
 import { IoMdSearch } from "react-icons/io";
-import { useState, useTransition } from "react";
-
-const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
+import { useEffect, useState, useTransition } from "react";
+import userApi from "apis/userApi";
+const ConversationList = ({ setCurrentC, onlineUser, userId,newMess }) => {
+  console.log("onlineUser", onlineUser)
   var settings = {
     dots: false,
     infinite: true,
@@ -79,6 +80,30 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
       setKeyWord(e.target.value)
     })
   }
+  const [friends, setFriends] = useState([]);
+  const [onlFriends, setOnlFriends] = useState([]);
+
+  useEffect(() => {
+    console.log("userId",userId)
+    userApi.getContactApi(setFriends)
+  }, [userId])
+  useEffect(() => {
+
+    if (onlineUser !== undefined) {
+      onlineUser.map((u, i) => {
+        console.log("friends",friends)
+        const fOnline = friends.find(user => user._id === u.userId)
+        if (fOnline !== undefined) {
+          if (!onlFriends.includes(fOnline)) {
+            setOnlFriends([...onlFriends, fOnline])
+          }
+        }
+        console.log("fonline", fOnline)
+      })
+    }
+
+  }, [userId, onlineUser])
+  console.log("setOnlFriends", onlFriends)
 
   return (
     <div className="conversation__list font-worksans h-screen ">
@@ -87,11 +112,29 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
           <h4 className="font-worksans font-semibold">Đang hoạt động</h4>
         </div>
         <div className="online__body mt-6">
-          <Slider {...settings}>
-            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser} />
-            <OnlineItem setCurrentChat={setCurrentC} userId={userId} onlineUser={onlineUser} />
+          {
+            onlFriends.length === 0 ? (
+              <h5>Hiện không có ai hoạt động</h5>
+            ) : ""
+          }
+          {
+            onlFriends.length > 1 ? (
+              <Slider {...settings}>
+                {
+                  onlFriends.map((f, i) => (
+                    <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
+                  ))
+                }
 
-          </Slider>
+              </Slider>
+            ) : (
+              onlFriends.map((f, i) => (
+                <OnlineItem keyIndex={i} name={f.name} avt={f.avatar} />
+              ))
+            )
+          }
+
+
         </div>
       </div>
       <div className="scrollbar message__list scroll-smooth overflow-y-scroll ">
@@ -128,7 +171,7 @@ const ConversationList = ({ setCurrentC, onlineUser, userId }) => {
           <Contact />
         </ul>
         <div className="tab-content" id="pills-tabContent">
-          <MessageTab setCurrentC={setCurrentC} />
+          <MessageTab setCurrentC={setCurrentC} currentUserId={userId} newMess={newMess} />
           <CallTab />
           <ContactTab keyWord={keyWord} />
         </div>

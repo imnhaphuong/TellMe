@@ -80,22 +80,7 @@ export default function ContactTab(props) {
         // callFailed(`Không thể kết nối với ${call.receiverName} ❌`);
       }
     });
-  }, [])
-
-  useEffect(() => {
-    const featchData = async () => {
-      const data = await userApi.searchUser(props.keyWord, user.id, user.refreshToken, user.accessToken);
-      console.log("data", data);
-      if (data.data) {
-        setModal(true);
-        setSearchData(data.data);
-        console.log("data", data);
-      } else {
-        setModal(false);
-      }
-    }
-    featchData()
-  }, [props.keyWord, userState])
+  }, []);
 
   return (
     <>
