@@ -6,13 +6,12 @@ import { io } from "socket.io-client";
 import TimeAgo from 'timeago-react';
 import * as timeago from 'timeago.js';
 import vi from 'timeago.js/lib/lang/vi';
-export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
+export default function MessageTab({ setCurrentC, currentUserId, newMess }) {
   timeago.register('vi', vi);
   const [convers, setConvers] = useState([]);
   const [active, setActive] = useState(false)
   const [lastMess, setLastMess] = useState([]);
-  const socket = useRef();
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+
 
   const userId = currentUserId
 
@@ -39,8 +38,8 @@ export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
       .catch((err) => {
         console.log("err", err);
       });
-  }, [userId,newMess]);
-
+  }, [userId, newMess]);
+  console.log("lastMess", lastMess)
   return (
     <div
       className="tab-pane fade show active"
@@ -104,29 +103,34 @@ export default function MessageTab({ setCurrentC, currentUserId,newMess }) {
                         <div className="details">
                           <h6 className=" truncate">{partner.name}</h6>
                           {
-                            lastMess.length > 0 &&lastMess[index]!==undefined&& lastMess[index].content !== "" ? (
+                            lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index].content !== "" ? (
                               <p className="text-[12px] truncate ">
-                                {lastMess.length > 0 && lastMess[index] !==undefined ? (lastMess[index].sender._id === userId ? "Bạn:" : "") : ""}
-                                {lastMess.length > 0&& lastMess[index] !==undefined ? lastMess[index].content : ""}
+                                {lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index] !== "" ? (lastMess[index].sender._id === userId ? "Bạn:" : "") : ""}
+                                {lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index] !== "" ? lastMess[index].content : ""}
                               </p>
                             ) : (
                               <p className="text-[12px] truncate ">
-                                {lastMess.length > 0&& lastMess[index] !==undefined ? (lastMess[index].sender._id === userId ? "Bạn đã gửi một file" : `${lastMess[index].sender.name} đã gửi một file`) : ""}
+                                {lastMess.length > 0 && lastMess[index] !== undefined && lastMess[index] !== "" ? (lastMess[index].sender._id === userId ? "Bạn đã gửi một file" : `${lastMess[index].sender.name} đã gửi một file`) : ""}
                               </p>
                             )
                           }
 
                         </div>
-                        <div className="date-status">
-                          {/* ti-pin */}
-                          <p className="text-[12px] mb-2 font-medium"><TimeAgo
-            datetime={lastMess[index] !==undefined  ? lastMess[index].createdAt : ""}
-            locale='vi'
-          /></p>
-                          <p className="text-success status text-[12px] font-semibold ">
-                            Đã xem
-                          </p>
-                        </div>
+                        {
+                           lastMess.length > 0 && lastMess[index] !== "" ? (
+                            <div className="date-status">
+                              {/* ti-pin */}
+                              <p className="text-[12px] mb-2 font-medium"><TimeAgo
+                                datetime={lastMess[index] !== undefined ? lastMess[index].createdAt : ""}
+                                locale='vi'
+                              /></p>
+                              <p className="text-success status text-[12px] font-semibold ">
+                                Đã xem
+                              </p>
+                            </div>
+                          ) : ""
+                        }
+
                       </a>
                     </li>
                   )
