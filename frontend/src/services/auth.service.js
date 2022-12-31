@@ -1,7 +1,9 @@
 import axios from "axios";
 import { signout } from "stores/slices/userSlice";
 
-const API_URL = "http://localhost:8080/api/users/";
+//const API_URL = "http://localhost:8080/api/users/";
+const API_URL = "https://tellme-api.vercel.app/api/users/";
+
 
 const signin = async (phone, password, remember, setCookie) => {
   return axios
