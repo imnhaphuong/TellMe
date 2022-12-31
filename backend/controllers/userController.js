@@ -245,12 +245,12 @@ const userController = {
         status: "SUCCESS",
         data: {
           type: UserFind[0].contacts.length != 0,//Nếu type = 1 là có kết bạn và ngược lại
-          email: UserFindPhone[0].email,
-          id: UserFindPhone[0]._id,
-          phone: UserFindPhone[0].phone,
-          name: UserFindPhone[0].name,
-          avatar: UserFindPhone[0].avatar,
-          typeRes: find == UserFindPhone[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
+          email: UserFind[0].email,
+          id: UserFind[0]._id,
+          phone: UserFind[0].phone,
+          name: UserFind[0].name,
+          avatar: UserFind[0].avatar,
+          typeRes: find == UserFind[0].phone ? 1 : 0// Nếu tìm bằng số điện thoại thì type bằng 1 và ngược lại
         },
       })
     } else {

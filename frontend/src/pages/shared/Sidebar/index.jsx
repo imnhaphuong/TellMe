@@ -15,15 +15,19 @@ import userApi from "apis/userApi";
 import { socket } from "utils/socket"
 import SignOutModal from "components/Modal/SignOut";
 import ProfileModal from "components/Modal/Profile";
+import { useSelector } from "react-redux";
+
 
 const Sidebar = () => {
-  const [user, setUser] = useState([])
+  //const [user, setUser] = useState([])
   const [singOutModal, setSingOutModal] = useState(true)
   const [profileModal, setProfileModal] = useState(false)
+  const { user } = useSelector(state => state.userReducer);
+
   //const { user } = useSelector(state => state.userReducer);
 
   useEffect(() => {
-    userApi.getCurrentUser(setUser)
+    //userApi.getCurrentUser(setUser)
     console.log("USER", user);
     socket.emit('setup', localStorage.getItem('yourId'))
   }, [])
