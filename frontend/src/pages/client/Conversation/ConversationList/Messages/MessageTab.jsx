@@ -84,9 +84,9 @@ export default function MessageTab({setCurrentC}) {
                   return (
                     <li key={conver._id} className="blank flex">
                       <a className="no-underline flex text-[#223645]" href="#chat" onClick={()=>setCurrentC(conver._id)}>
-                        <img className="bg-img" src={partner.avatar} alt="avt" />
+                        <img className="bg-img" src={partner?.avatar} alt="avt" />
                         <div className="details">
-                          <h6 className=" truncate">{partner.name}</h6>
+                          <h6 className=" truncate">{partner?.name}</h6>
                           <p className="text-[12px] truncate ">
                             Hi,I am Tomy welcome to my website
                           </p>

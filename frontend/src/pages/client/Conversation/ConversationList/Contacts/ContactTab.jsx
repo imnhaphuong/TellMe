@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { BsTelephone } from "react-icons/bs";
 import { FiVideo } from "react-icons/fi";
 import "./ContactTab.scss";
-import userApi from "apis/userApi"
+import { socket } from "utils/socket";
+import userApi from "apis/userApi";
+import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import UserModal from "components/Modal/User";
+import "react-toastify/dist/ReactToastify.css";
+import CallWindow from "pages/client/CallWindow";
 /**
  * Cases:
  * ~0: you have a other call: call -> push event call (check current status != EMPTY of sender(co cuoc goi) -> emit return fe status display callfailed  
@@ -42,7 +46,7 @@ export default function ContactTab(props) {
     );
 
   useEffect(() => {
-    //userApi.getUserByID(setUserState, user)
+    userApi.getUserById(setUserState, user)
     // getUser()
     console.log(socket);
     userApi.getCurrentUser(setUser);

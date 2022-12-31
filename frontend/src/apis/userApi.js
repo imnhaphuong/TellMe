@@ -6,18 +6,21 @@ const userApi = {
   signUpApi: (user) => {
     return callApi("SignUp", "POST", user);
   },
+
   getCurrentUser: async (handleData) => {
     const res = await axios.post(`${BASE_URL}/users/id`, {
       id: localStorage.getItem("yourId"),
     });
     if (res.status === 200) { handleData(res.data) }
   },
+
   getOrtherUserByID: async (handleData, _id) => {
     const res = await axios.post(`${BASE_URL}/users/id`, {
       id: _id
     });
     if (res.status === 200) { handleData(res.data) }
   },
+  
   getUserById: async (handleData, user) => {
     await axios
       .post(`${BASE_URL}/users/id`, { id: user.id, refreshToken: user.refreshToken }, { headers: { 'x_authorization': user.accessToken } })

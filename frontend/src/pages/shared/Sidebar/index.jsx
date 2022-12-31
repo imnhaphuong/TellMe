@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     userApi.getCurrentUser(setUser)
-  console.log("USER", user);
+    console.log("USER", user);
     socket.emit('setup', localStorage.getItem('yourId'))
   }, [])
 
@@ -76,7 +76,7 @@ const Sidebar = () => {
     {
       title: "Signout",
       icon: <AiOutlinePoweroff />,
-      page: <SignOutModal onCloseModal={setSingOutModal}/>,
+      page: <SignOutModal onCloseModal={setSingOutModal} />,
       selectedIcon: <AiOutlinePoweroff className="text-white " />,
     },
   ];
@@ -85,7 +85,7 @@ const Sidebar = () => {
       <div className="h-screen border scrollbar scroll-smooth overflow-y-scroll w-[95px]">
         <div className="p-5 border-bottom">
           <img
-            src={require("../../../asset/image/avatar.jpg")}
+            src={user.avatar}
             width="50"
             height="50"
             alt=""
@@ -99,7 +99,7 @@ const Sidebar = () => {
               height="50"
               className="border-4 border-blue-700 rounded-full"
               alt="avatar"
-              onClick={()=>{
+              onClick={() => {
                 setProfileModal(true)
               }}
             />
@@ -123,7 +123,7 @@ const Sidebar = () => {
       </div>
       <div className="h-screen ">{menus[current].page}</div>
       {
-        profileModal && <ProfileModal Data={user} onClodeModal={setProfileModal}/>
+        profileModal && <ProfileModal Data={user} onClodeModal={setProfileModal} />
       }
     </div>
   );

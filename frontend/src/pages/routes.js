@@ -26,24 +26,17 @@ const WebRoutes = () => {
 
   return (
     <Routes>
-      {user ?
-        <>
-          <Route path="call/:status/:channel"
-            element={
-              <RequireAuth>
-                <RequireStatus><VideoCall /></RequireStatus>
-              </RequireAuth>
-            }
-          />
-          <Route path="/" element={<RequireAuth><Sidebar /></RequireAuth>} />
-        </> :
-        <>
-          <Route path="signin" element={<NotRequireAuth><Signin /></NotRequireAuth>} />
-          <Route path="signup" element={<NotRequireAuth><Signup /></NotRequireAuth>} />
-
-          <Route path="*" element={<NoPage />} />
-        </>
-      }
+      <Route path="/" element={<RequireAuth><Sidebar /></RequireAuth>} />
+      <Route path="signin" element={<NotRequireAuth><Signin /></NotRequireAuth>} />
+      <Route path="signup" element={<NotRequireAuth><Signup /></NotRequireAuth>} />
+      <Route path="call/:status/:channel"
+        element={
+          <RequireAuth>
+            <RequireStatus><VideoCall/></RequireStatus>
+          </RequireAuth>
+        }
+      />
+      <Route path="*" element={<NoPage />} />
     </Routes>
   );
 };

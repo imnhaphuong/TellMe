@@ -1,5 +1,6 @@
 import React from "react";
 const ProfileModal = (props) => {
+  console.log("DROP",props);
   return (
     <div className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full d-flex justify-content-center align-content-center" style={{ background: "rgba(0,0,0,0.5)" }}>
       <div className="relative w-full max-w-md h-50 bg-light-gray">
@@ -13,7 +14,7 @@ const ProfileModal = (props) => {
         </div>
         <div className="p-3 bg-white d-flex justify-content-center">
           <div className="w-25 text-center">
-            <img class="w-20 h-20 rounded-full mb-2" src={require("../../../asset/image/avatar.jpg")} alt="user-avatar" />
+            <img class="w-20 h-20 rounded-full mb-2" src={props.Data.avatar} alt="user-avatar" />
             <p className="flex-1 m-0 text-[#0033CC] text-[20px] mb-2">{props.Data.name}</p>
             {
               props.method === "search" ? <p className="flex-1 mb-0 bg-light-gray rounded-1 p-1 text-[#30769f]">Nhắn tin</p> : <> </>
