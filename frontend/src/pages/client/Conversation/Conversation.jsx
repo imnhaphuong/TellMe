@@ -12,7 +12,6 @@ const Conversation = () => {
   const [currentC, setCurrentC] = useState("")
   const [onlineUser, setOnlineUser] = useState([])
   const [newMess, setNewMess]=useState(null);
-
   return (
     <div className="flex ">
       <ConversationList setCurrentC={setCurrentC} onlineUser={onlineUser} userId={userId} newMess={newMess} />

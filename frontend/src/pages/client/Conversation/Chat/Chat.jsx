@@ -158,12 +158,16 @@ export default function Chat(props) {
         content: newMessage,
         conversationId: converId,
       };
-      const res = await messageApi.sendMessage(message);
-      setFiles([])
-      setFilesId([])
-
+      try {
+        await messageApi.sendMessage(message);
+        setFiles([])
+        setFilesId([])
+        setNewMessage("");
+      } catch (err) {
+        console.log(err);
+      }
     } else {
-
+      console.log("2")
       const message = {
         sender: userId,
         content: newMessage,
