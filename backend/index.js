@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
 
+
 //Config socket.io
 const socketIo = require("socket.io")(server, {
   cors: {
