@@ -1,10 +1,11 @@
 import callApi from "utils/callApi";
 import axios from 'axios';
-const PORT = process.env.PORT;
+import { BASE_URL } from "settings/apiConfig";
+
 const messageApi = {
   getMessageAPI(converId) {
     return axios({
-      url: `http://localhost:8080/api/messages/${converId}`,
+      url: `${BASE_URL}/messages/${converId}`,
       method: 'get',
 
     });

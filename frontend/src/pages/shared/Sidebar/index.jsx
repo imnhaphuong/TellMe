@@ -9,20 +9,25 @@ import {
   AiOutlinePoweroff,
 } from "react-icons/ai";
 import { MdMessage } from "react-icons/md";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Conversation from '../../client/Conversation/Conversation';
-import { useSelector } from "react-redux";
+import userApi from "apis/userApi";
+import { socket } from "utils/socket"
 import SignOutModal from "components/Modal/SignOut";
 import ProfileModal from "components/Modal/Profile";
-
 
 const Sidebar = () => {
   const [singOutModal, setSingOutModal] = useState(true);
   const [profileModal, setProfileModal] = useState(false)
-  const [current, setCurrent] = useState(0);
-
   const { user } = useSelector(state => state.userReducer);
+  useEffect(() => {
+    userApi.getCurrentUser(setUser)
   console.log("USER", user);
+    socket.emit('setup', localStorage.getItem('yourId'))
+  }, [])
+
+  const [current, setCurrent] = useState(0);
+  // const { user } = useSelector(state => state.userReducer);
   const menus = [
     {
       title: "Message",
@@ -78,7 +83,7 @@ const Sidebar = () => {
       <div className="h-screen border scrollbar scroll-smooth overflow-y-scroll w-[95px]">
         <div className="p-5 border-bottom">
           <img
-            src={require("../../../asset/image/avatar.jpg")}
+            src={user.avatar}
             width="50"
             height="50"
             alt=""
@@ -101,11 +106,9 @@ const Sidebar = () => {
             {menus.map((menu, index) => (
               <div
                 key={index}
-                className={`rounded-[50%] flex w-[40px] h-[40px] items-center justify-center p-3 my-3 cursor-pointer duration-300 ${
-                  current === index ? "bg-primary" : "bg-light-gray"
-                } hover/item:${
-                  current === index ? "bg-primary" : "bg-dark-gray"
-                }`}
+                className={`rounded-[50%] flex w-[40px] h-[40px] items-center justify-center p-3 my-3 cursor-pointer duration-300 ${current === index ? "bg-primary" : "bg-light-gray"
+                  } hover/item:${current === index ? "bg-primary" : "bg-dark-gray"
+                  }`}
                 onClick={() => {
                   setCurrent(index);
                 }}

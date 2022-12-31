@@ -1,22 +1,49 @@
 import React, { useEffect, useState } from "react";
-import avt from "assets/images/person-1.jpg";
 import { BsTelephone } from "react-icons/bs";
 import { FiVideo } from "react-icons/fi";
 import "./ContactTab.scss";
-import userApi from "apis/userApi"
-import { useSelector } from "react-redux";
-import UserModal from "components/Modal/User";
+import { socket } from "utils/socket";
+import userApi from "apis/userApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CallWindow from "pages/client/CallWindow";
+/**
+ * Cases:
+ * ~0: you have a other call: call -> push event call (check current status != EMPTY of sender(co cuoc goi) -> emit return fe status display callfailed  
+ * ~1: receiver offline  OFF
+ * ~2: push a call request success: pass 0 & 1 & 3 cases, set sender (call status =="WAITING", partnerid) and receiver (call status=="WAITING", partnerid), push call event popup window to recever 
+ * ~3: receiver has a other call push event call (check current status receiver !=EMPTY (may ban)->resCALIING ) -> emit return fe status display callfailed  
+ * 4: waiting for acceptence
+ * 5: receiver decline the call -> pass 0 & 1 & 2 & 3 cases, status call == EMPTY for user and receiver, emit to sender resDECLINE,  push decline event to sender
+ * 6: receiver accept the call ->  pass 0 & 1 & 2 & 3 cases, set status== CALLING for user and receiver, , emit to sender resACCEPT,  push accept event to sender 
+ * 7: missed call -> emit to socket(set status==EMPTY , recei) for user and receiver, push missed event (leave window) 
+ * 8: off call: -> emit to socket(set status==EMPTY , recei) for user and receiver, push off event (leave window) 
+ */
+export default function ContactTab() {
+  const [user, setUser] = useState([]);
+  const [socketConnected, setSocketConnected] = useState(false);
 
-export default function ContactTab(props) {
-  const [modal, setModal] = useState(false)
-  const [userState, setUserState] = useState([])
-  const [listUser, setListUser] = useState([])
-  const { user } = useSelector(state => state.userReducer);
-  const [searchData, setSearchData] = useState()
+  const callFailed = (message) =>
+    toast.warn(message, {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    },
+      { containerId: "call-failed" }
+    );
 
   useEffect(() => {
-    userApi.getUserByID(setUserState, user)
-  }, [])
+    // getUser()
+    console.log(socket);
+    userApi.getCurrentUser(setUser);
+    //check connect
+    socket.on("connected", () => setSocketConnected(true));
+    console.log("connect socket ", socketConnected);
 
   useEffect(() => {
     const featchData = async () => {
@@ -29,36 +56,100 @@ export default function ContactTab(props) {
         console.log("data", data);
       } else {
         setModal(false);
+    //receive incomming call
+    socket.on("incomming-call", (call) => {
+      console.log("the incomming call ", call);
+      CallWindow('006', call.sender, call.senderName, call.receiver, call.receiverName, call.senderName)
+    });
+    //update online users
+    socket.on("online-users", (data) => console.log("online list ", data));
+    //when pick call
+    socket.on("call-status", (call) => {
+      console.log("the call", call);
+      if (call.status === "HAV")
+        callFailed(`Bạn đang có cuộc gọi khác, hãy thử lại sau ❌`);
+      else if (call.status === "OFF")
+        callFailed(`${call.receiverName} hiện không hoạt động ❌`);
+      else if (call.status === "CALLING")
+        callFailed(`${call.receiverName} đang có cuộc gọi khác, hãy gọi lại sau  ❌`);
+      else if (call.status === "WAITING") {
+        //005
+        CallWindow('005', call.sender, call.senderName, call.receiver, call.receiverName, call.receiverName)
+      } else if (call.status === "ACCEPTENCE") {
+        //007
+        CallWindow('007', call.sender, call.senderName, call.receiver, call.receiverName, call.receiverName)
+      } else if (call.status === "DECLINE") {
+        // callFailed(`Không thể kết nối với ${call.receiverName} ❌`);
       }
-    }
-    featchData()
-  }, [props.keyWord, userState])
+    });
+  }}}, [])});
 
-  const popUp = (channelName, partner) => {
-    const width = 1000
-    const height = 800
-    const x = window.top.outerWidth / 2 + window.top.screenX - (1000 / 2);
-    const y = window.top.outerHeight / 2 + window.top.screenY - (800 / 2);
-    var callWindow = window.open(`/call?channel=${channelName}`, "", `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, top=${y},left=${x},width=${width},height=${height}`);
-    callWindow.onload = function () { this.document.title = `Cuộc gọi với ${partner}`; }
-  }
   return (
-    <div
-      className="tab-pane fade"
-      id="pills-contact"
-      role="tabpanel"
-      aria-labelledby="pills-contact-tab"
-      tabIndex="0"
-    >
-      <div className="tab-content">
-        <ul className="list p-0">
-          {modal && <UserModal searchData={searchData} onCloseModal={setModal} />}
-          122
-          {
-            listUser.length ?? <div>123</div>
-          }
-        </ul>
+    <>
+      <div
+        className="tab-pane fade"
+        id="pills-contact"
+        role="tabpanel"
+        aria-labelledby="pills-contact-tab"
+        tabIndex="0"
+      >
+        <div className="tab-content">
+          <ul className="list p-0">
+            {user.hasOwnProperty("contacts")
+              ? user.contacts.map((e) => (
+                <li key={e._id} className="blank flex">
+                  <a
+                    className="no-underline flex text-[#223645]"
+                    href="#chat"
+                  >
+                    <img className="bg-img" src={e.avatar} alt="avt" />
+                    <div className="details">
+                      <h6 className=" truncate">{e.name}</h6>
+                      <p className="text-[12px] truncate ">{e.email}</p>
+                    </div>
+                  </a>
+                  <div className="contact-action flex">
+                    {/* ti-pin */}
+                    <button
+                      className=" border-none icon-btn text-primary mr-2"
+                      onClick={() => { }}
+                    >
+                      <BsTelephone className="left-[25%] top-[25%] absolute" />
+                    </button>
+                    <button
+                      className="icon-btn border-none text-[18px]  text-success"
+                      onClick={() => {
+                        socket.emit("calling", {
+                          sender: user._id,
+                          senderName: user.name,
+                          receiver: e._id,
+                          receiverName: e.name,
+                        });
+                      }}
+                    >
+                      <FiVideo className=" left-[25%] top-[25%] absolute" />
+                    </button>
+                  </div>
+                </li>
+              ))
+              : null}
+          </ul>
+        </div>
       </div>
-    </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        containerId={"call-failed"}
+      />
+    </>
   );
 }
